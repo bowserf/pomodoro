@@ -11,6 +11,7 @@
 		941CECD52211E8C300316FDC /* PomodorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECD42211E8C300316FDC /* PomodorVC.swift */; };
 		941CECDA2211E8C400316FDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941CECD92211E8C400316FDC /* Assets.xcassets */; };
 		941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */; };
+		941CECE62212345500316FDC /* TextAndImageAnimatedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		941CECD92211E8C400316FDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		941CECDC2211E8C400316FDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		941CECDE2211E8C400316FDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAndImageAnimatedButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		941CECD12211E8C300316FDC /* pomodoro */ = {
 			isa = PBXGroup;
 			children = (
+				941CECE42212342700316FDC /* ui */,
 				941CECD22211E8C300316FDC /* AppDelegate.swift */,
 				941CECD42211E8C300316FDC /* PomodorVC.swift */,
 				941CECD92211E8C400316FDC /* Assets.xcassets */,
@@ -59,6 +62,14 @@
 				941CECDE2211E8C400316FDC /* Info.plist */,
 			);
 			path = pomodoro;
+			sourceTree = "<group>";
+		};
+		941CECE42212342700316FDC /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */,
+			);
+			path = ui;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				941CECD52211E8C300316FDC /* PomodorVC.swift in Sources */,
+				941CECE62212345500316FDC /* TextAndImageAnimatedButton.swift in Sources */,
 				941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
