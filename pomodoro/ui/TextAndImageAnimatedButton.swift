@@ -6,6 +6,8 @@ class TextAndImageAnimatedButton: UIControl {
     private struct Constants {
         static let iconSize: CGFloat = 20
 
+        static let halfRotationAnimDuration = 0.2
+
         static let shadowOffset = CGSize(width: 2, height: 2)
         static let shadowOpacity: Float = 2.0
         static let shadowColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.5)
@@ -52,7 +54,7 @@ class TextAndImageAnimatedButton: UIControl {
         // Icon properties
         icon.tintColor = contentColor
 
-        updateToStateOn()
+        updateContent()
 
         initShadow()
     }
@@ -67,21 +69,29 @@ class TextAndImageAnimatedButton: UIControl {
 
     public func updateState() {
         stateOn = !stateOn
-        if(stateOn) {
-            updateToStateOn()
+        rotateView()
+    }
+
+    private func rotateView() {
+        UIView.animate(withDuration: Constants.halfRotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
+            self.transform = CGAffineTransform(rotationAngle: .pi)
+        }, completion: { success in
+            UIView.animate(withDuration: Constants.halfRotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
+                self.transform = CGAffineTransform(rotationAngle: .pi * 2)
+            }, completion: { (success) in
+                self.updateContent()
+            })
+        })
+    }
+
+    private func updateContent() {
+        if(self.stateOn) {
+            text.text = textOn
+            icon.image = imageOn
         } else {
-            updateToStateOff()
+            text.text = textOff
+            icon.image = imageOff
         }
-    }
-
-    private func updateToStateOn() {
-        text.text = textOn
-        icon.image = imageOn
-    }
-
-    private func updateToStateOff() {
-        text.text = textOff
-        icon.image = imageOff
     }
 
     private func initShadow() {
