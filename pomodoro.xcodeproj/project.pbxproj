@@ -12,6 +12,7 @@
 		941CECDA2211E8C400316FDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941CECD92211E8C400316FDC /* Assets.xcassets */; };
 		941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */; };
 		941CECE62212345500316FDC /* TextAndImageAnimatedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */; };
+		9443C0C8221385AF00EFE7C2 /* TomatoBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9443C0C7221385AF00EFE7C2 /* TomatoBackground.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		941CECDC2211E8C400316FDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		941CECDE2211E8C400316FDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAndImageAnimatedButton.swift; sourceTree = "<group>"; };
+		9443C0C7221385AF00EFE7C2 /* TomatoBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomatoBackground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */,
+				9443C0C7221385AF00EFE7C2 /* TomatoBackground.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				941CECD52211E8C300316FDC /* PomodorVC.swift in Sources */,
+				9443C0C8221385AF00EFE7C2 /* TomatoBackground.swift in Sources */,
 				941CECE62212345500316FDC /* TextAndImageAnimatedButton.swift in Sources */,
 				941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */,
 			);
