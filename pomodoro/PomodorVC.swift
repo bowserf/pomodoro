@@ -23,6 +23,8 @@ class PomodoroVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        initTopBar()
+
         self.view.addSubview(tomatoBackground)
         self.view.addSubview(startStopBtn)
 
@@ -42,6 +44,29 @@ class PomodoroVC: UIViewController {
         tomatoBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         tomatoBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+    }
+
+    private func initTopBar() {
+        let navigationBar = self.navigationController!.navigationBar
+        let calendarBtn = UIBarButtonItem(
+                barButtonSystemItem: UIBarButtonItem.SystemItem.stop,
+                target: self,
+                action: #selector(onClickTopBarCalendar))
+        navigationBar.topItem!.setLeftBarButton(calendarBtn, animated: false)
+
+        let aboutBtn = UIBarButtonItem(
+                barButtonSystemItem: UIBarButtonItem.SystemItem.stop,
+                target: self,
+                action: #selector(onClickTopBarAbout))
+        navigationBar.topItem!.setRightBarButton(aboutBtn, animated: false)
+    }
+
+    @IBAction private func onClickTopBarCalendar() {
+        print("onClickTopBarCalendar")
+    }
+
+    @IBAction private func onClickTopBarAbout() {
+        print("onClickTopBarAbout")
     }
 
     @IBAction @objc private func onClickStartStopBtn() {

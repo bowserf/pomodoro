@@ -8,7 +8,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow()
         window?.makeKeyAndVisible()
-        application.keyWindow?.rootViewController = PomodoroVC()
+        application.keyWindow?.rootViewController = TransparentNavigationController(rootViewController: PomodoroVC())
         return true
     }
 

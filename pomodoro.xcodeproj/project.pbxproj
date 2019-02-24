@@ -14,6 +14,7 @@
 		941CECE62212345500316FDC /* TextAndImageAnimatedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */; };
 		9443C0C8221385AF00EFE7C2 /* TomatoBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9443C0C7221385AF00EFE7C2 /* TomatoBackground.swift */; };
 		9451754C2215BAC3001805B0 /* LeafView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9451754B2215BAC3001805B0 /* LeafView.swift */; };
+		D50F564EB39C239CB52DDE0B /* TransparentNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F54456A75B5BAE9398D30 /* TransparentNavigationController.swift */; };
 		D50F56ACA0E374E89B6C90C2 /* OneRoundBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5A07062AF654E9571794 /* OneRoundBorderButton.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		941CECE52212345500316FDC /* TextAndImageAnimatedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAndImageAnimatedButton.swift; sourceTree = "<group>"; };
 		9443C0C7221385AF00EFE7C2 /* TomatoBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomatoBackground.swift; sourceTree = "<group>"; };
 		9451754B2215BAC3001805B0 /* LeafView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafView.swift; sourceTree = "<group>"; };
+		D50F54456A75B5BAE9398D30 /* TransparentNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentNavigationController.swift; sourceTree = "<group>"; };
 		D50F5A07062AF654E9571794 /* OneRoundBorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoundBorderButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 				941CECD92211E8C400316FDC /* Assets.xcassets */,
 				941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */,
 				941CECDE2211E8C400316FDC /* Info.plist */,
+				D50F54456A75B5BAE9398D30 /* TransparentNavigationController.swift */,
 			);
 			path = pomodoro;
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 				9451754C2215BAC3001805B0 /* LeafView.swift in Sources */,
 				941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */,
 				D50F56ACA0E374E89B6C90C2 /* OneRoundBorderButton.swift in Sources */,
+				D50F564EB39C239CB52DDE0B /* TransparentNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
