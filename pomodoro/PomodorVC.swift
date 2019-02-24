@@ -9,6 +9,8 @@ class PomodoroVC: UIViewController {
     private let startStopBtn: TextAndImageAnimatedButton
     private let tomatoBackground: TomatoBackground
 
+    private var isStatusBarHidden: Bool = false
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         startStopBtn = TextAndImageAnimatedButton()
         tomatoBackground = TomatoBackground()
@@ -46,6 +48,18 @@ class PomodoroVC: UIViewController {
         tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return self.isStatusBarHidden
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
+
     private func initTopBar() {
         let navigationBar = self.navigationController!.navigationBar
         let calendarBtn = UIBarButtonItem(
@@ -59,6 +73,12 @@ class PomodoroVC: UIViewController {
                 target: self,
                 action: #selector(onClickTopBarAbout))
         navigationBar.topItem!.setRightBarButton(aboutBtn, animated: false)
+    }
+
+    private func updateNavBarAndStatusBarDIsplay() {
+        self.isStatusBarHidden = !self.isStatusBarHidden
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.setNavigationBarHidden(self.isStatusBarHidden, animated: true)
     }
 
     @IBAction private func onClickTopBarCalendar() {
