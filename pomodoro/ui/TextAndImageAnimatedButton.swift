@@ -6,7 +6,7 @@ class TextAndImageAnimatedButton: UIControl {
     private struct Constants {
         static let iconSize: CGFloat = 20
 
-        static let halfRotationAnimDuration = 0.2
+        static let rotationAnimDuration = 2.4
 
         static let shadowOffset = CGSize(width: 2, height: 2)
         static let shadowOpacity: Float = 2.0
@@ -73,15 +73,46 @@ class TextAndImageAnimatedButton: UIControl {
     }
 
     private func rotateView() {
-        UIView.animate(withDuration: Constants.halfRotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
-            self.transform = CGAffineTransform(rotationAngle: .pi)
-        }, completion: { success in
-            UIView.animate(withDuration: Constants.halfRotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
-                self.transform = CGAffineTransform(rotationAngle: .pi * 2)
-            }, completion: { (success) in
-                self.updateContent()
+        // rotation animation clockwise
+        //UIView.animate(withDuration: Constants.rotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
+        //    self.transform = CGAffineTransform(rotationAngle: .pi)
+        //}, completion: { success in
+        //    UIView.animate(withDuration: Constants.rotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
+        //        self.transform = CGAffineTransform(rotationAngle: .pi * 2)
+        //    }, completion: { (success) in
+        //        self.updateContent()
+        //    })
+        //})
+
+        // rotation animation clockwise
+        UIView.animateKeyframes(withDuration: Constants.rotationAnimDuration, delay: 0, options: [.calculationModeLinear], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0 / 4.0, animations: {
+                self.transform = CGAffineTransform(rotationAngle: .pi / 2)
             })
+            UIView.addKeyframe(withRelativeStartTime: 1.0 / 4.0, relativeDuration: 1.0 / 4.0, animations: {
+                self.transform = CGAffineTransform(rotationAngle: .pi)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 2.0 / 4.0, relativeDuration: 1.0 / 4.0, animations: {
+                self.transform = CGAffineTransform(rotationAngle: .pi * 3 / 2)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 3.0 / 4.0, relativeDuration: 1.0 / 4.0, animations: {
+                self.transform = CGAffineTransform(rotationAngle: .pi * 2)
+            })
+        }, completion: { (success) in
+            self.updateContent()
         })
+
+        // rotation animation counterclockwise
+        //UIView.animateKeyframes(withDuration: Constants.rotationAnimDuration, delay: 0, options: [.calculationModeLinear], animations: {
+        //    UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0 / 2.0, animations: {
+        //        self.transform = CGAffineTransform(rotationAngle: .pi)
+        //    })
+        //    UIView.addKeyframe(withRelativeStartTime: 1.0 / 2.0, relativeDuration: 1.0 / 2.0, animations: {
+        //        self.transform = CGAffineTransform(rotationAngle: -.pi * 2)
+        //    })
+        //}, completion: { (success) in
+        //    self.updateContent()
+        //})
     }
 
     private func updateContent() {
