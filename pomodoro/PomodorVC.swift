@@ -4,7 +4,6 @@ class PomodoroVC: UIViewController {
 
     private struct Constants {
         static let startStopBtnSize: CGFloat = 100
-
         static let borderButtonWidth: CGFloat = 100
         static let borderButtonHeight: CGFloat = 60
         static let leftButtonMarginBottom: CGFloat = 100
@@ -48,6 +47,8 @@ class PomodoroVC: UIViewController {
         self.leftButton.tintColor = Constants.borderButtonIconColor
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+
+        self.startStopBtn.addTarget(self, action: #selector(onClickStartStopBtn), for: .touchDown)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -59,34 +60,32 @@ class PomodoroVC: UIViewController {
 
         initTopBar()
 
-        self.view.addSubview(tomatoBackground)
+        self.view.addSubview(self.tomatoBackground)
         self.view.addSubview(self.leafView)
-        self.view.addSubview(startStopBtn)
+        self.view.addSubview(self.startStopBtn)
         self.view.addSubview(self.leftButton)
         self.view.addSubview(self.rightButton)
 
         self.view.backgroundColor = UIColor.white
 
         // leafView constraints
-        self.leavesHeightConstraints = leafView.heightAnchor.constraint(equalToConstant: LeafView.defaultViewHeight)
+        self.leavesHeightConstraints = self.leafView.heightAnchor.constraint(equalToConstant: LeafView.defaultViewHeight)
         self.leavesHeightConstraints.isActive = true
         self.leafView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.leafView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.leafView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 
         // startStopBtn constraints
-        startStopBtn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        startStopBtn.widthAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
-        startStopBtn.heightAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
-        startStopBtn.addTarget(self, action: #selector(onClickStartStopBtn), for: .touchDown)
-        
-        // tomatoBackground
-        tomatoBackground.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        tomatoBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        tomatoBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.startStopBtn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        self.startStopBtn.widthAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
+        self.startStopBtn.heightAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
 
+        // tomatoBackground
+        self.tomatoBackground.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.tomatoBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.tomatoBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 
         // leftButton constraints
         self.leftButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -128,7 +127,7 @@ class PomodoroVC: UIViewController {
         navigationBar.topItem!.setRightBarButton(aboutBtn, animated: false)
     }
 
-    private func updateNavBarAndStatusBarDIsplay() {
+    private func updateNavBarAndStatusBarDisplay() {
         self.isStatusBarHidden = !self.isStatusBarHidden
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(self.isStatusBarHidden, animated: true)
@@ -142,8 +141,8 @@ class PomodoroVC: UIViewController {
         print("onClickTopBarAbout")
     }
 
-    @IBAction @objc private func onClickStartStopBtn() {
-        startStopBtn.updateState()
+    @IBAction private func onClickStartStopBtn() {
+        self.startStopBtn.updateState()
     }
 
 }
