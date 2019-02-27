@@ -4,6 +4,8 @@ class PomodoroVC: UIViewController {
 
     private struct Constants {
         static let startStopBtnSize: CGFloat = 100
+        static let verticalThresholdMode: CGFloat = 200
+        static let resetPositionAnimationDuration: CGFloat = 1
         static let borderButtonWidth: CGFloat = 100
         static let borderButtonHeight: CGFloat = 60
         static let leftButtonMarginBottom: CGFloat = 100
@@ -17,6 +19,8 @@ class PomodoroVC: UIViewController {
     private let leftButton: OneRoundBorderButton
     private let rightButton: OneRoundBorderButton
 
+    private var tomatoBackgroundTopConstraint: NSLayoutConstraint!
+    private var startStopBtnVerticalConstraint: NSLayoutConstraint!
     private var leavesHeightConstraints: NSLayoutConstraint!
 
     private var isStatusBarHidden: Bool = false
@@ -77,13 +81,15 @@ class PomodoroVC: UIViewController {
 
         // startStopBtn constraints
         self.startStopBtn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        self.startStopBtnVerticalConstraint = self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        self.startStopBtnVerticalConstraint.isActive = true
         self.startStopBtn.widthAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
         self.startStopBtn.heightAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
 
-        // tomatoBackground
-        self.tomatoBackground.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.tomatoBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        // tomatoBackground constraints
+        self.tomatoBackgroundTopConstraint = self.tomatoBackground.topAnchor.constraint(equalTo: self.view.topAnchor)
+        self.tomatoBackgroundTopConstraint.isActive = true
+        self.tomatoBackground.heightAnchor.constraint(equalToConstant: self.view.bounds.height).isActive = true
         self.tomatoBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 
@@ -98,6 +104,10 @@ class PomodoroVC: UIViewController {
         self.rightButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.rightButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
         self.rightButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.rightButtonMarginBottom).isActive = true
+
+        // pull down gesture
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        self.view.addGestureRecognizer(panGesture)
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -143,6 +153,33 @@ class PomodoroVC: UIViewController {
 
     @IBAction private func onClickStartStopBtn() {
         self.startStopBtn.updateState()
+    }
+
+    @IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+        let verticalTranslation = max(0, recognizer.translation(in: self.view).y)
+        if (recognizer.state == UIPanGestureRecognizer.State.changed) {
+            self.startStopBtnVerticalConstraint.constant = verticalTranslation
+            self.tomatoBackgroundTopConstraint.constant = verticalTranslation
+            self.leavesHeightConstraints.constant = LeafView.defaultViewHeight + verticalTranslation
+            self.view.layoutIfNeeded()
+            self.leafView.setNeedsDisplay()
+        } else if (recognizer.state == UIPanGestureRecognizer.State.ended
+                && verticalTranslation < Constants.verticalThresholdMode) {
+            animateResetPosition()
+        }
+    }
+
+    private func animateResetPosition() {
+        UIView.animate(withDuration: TimeInterval(Constants.resetPositionAnimationDuration),
+                delay: 0,
+                options: .curveEaseOut,
+                animations: {
+                    self.startStopBtnVerticalConstraint.constant = 0.0
+                    self.tomatoBackgroundTopConstraint.constant = 0.0
+                    self.leavesHeightConstraints.constant = LeafView.defaultViewHeight
+                    self.view.layoutIfNeeded()
+                    self.leafView.setNeedsDisplay()
+                }, completion: nil)
     }
 
 }
