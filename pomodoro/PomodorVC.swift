@@ -4,11 +4,19 @@ class PomodoroVC: UIViewController {
 
     private struct Constants {
         static let startStopBtnSize: CGFloat = 100
+
+        static let borderButtonWidth: CGFloat = 100
+        static let borderButtonHeight: CGFloat = 60
+        static let leftButtonMarginBottom: CGFloat = 100
+        static let rightButtonMarginBottom: CGFloat = 200
+        static let borderButtonIconColor = UIColor.red
     }
 
     private let startStopBtn: TextAndImageAnimatedButton
     private let tomatoBackground: TomatoBackground
     private let leafView: LeafView
+    private let leftButton: OneRoundBorderButton
+    private let rightButton: OneRoundBorderButton
 
     private var leavesHeightConstraints: NSLayoutConstraint!
 
@@ -23,6 +31,21 @@ class PomodoroVC: UIViewController {
 
         self.leafView = LeafView()
         self.leafView.translatesAutoresizingMaskIntoConstraints = false
+
+        let rightIcon = UIImage(named: "Add")!.withRenderingMode(.alwaysTemplate)
+
+        self.rightButton = OneRoundBorderButton()
+        self.rightButton.translatesAutoresizingMaskIntoConstraints = false
+        self.rightButton.roundBorder = .Left
+        self.rightButton.setImage(rightIcon, for: .normal)
+        self.rightButton.tintColor = Constants.borderButtonIconColor
+
+        let leftIcon = UIImage(named: "Add")!.withRenderingMode(.alwaysTemplate)
+
+        self.leftButton = OneRoundBorderButton()
+        self.leftButton.translatesAutoresizingMaskIntoConstraints = false
+        self.leftButton.setImage(leftIcon, for: .normal)
+        self.leftButton.tintColor = Constants.borderButtonIconColor
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -39,6 +62,8 @@ class PomodoroVC: UIViewController {
         self.view.addSubview(tomatoBackground)
         self.view.addSubview(self.leafView)
         self.view.addSubview(startStopBtn)
+        self.view.addSubview(self.leftButton)
+        self.view.addSubview(self.rightButton)
 
         self.view.backgroundColor = UIColor.white
 
@@ -61,6 +86,19 @@ class PomodoroVC: UIViewController {
         tomatoBackground.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         tomatoBackground.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+
+
+        // leftButton constraints
+        self.leftButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.leftButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
+        self.leftButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
+        self.leftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.leftButtonMarginBottom).isActive = true
+
+        // rightButton constraints
+        self.rightButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.rightButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
+        self.rightButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
+        self.rightButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.rightButtonMarginBottom).isActive = true
     }
 
     override var prefersStatusBarHidden: Bool {
