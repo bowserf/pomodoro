@@ -11,6 +11,7 @@ class PomodoroVC: UIViewController {
         static let leftButtonMarginBottom: CGFloat = 100
         static let rightButtonMarginBottom: CGFloat = 200
         static let borderButtonIconColor = UIColor.red
+        static let animationDisplaySideButtonsDuration: TimeInterval = 0.6
     }
 
     private let startStopBtn: TextAndImageAnimatedButton
@@ -18,6 +19,9 @@ class PomodoroVC: UIViewController {
     private let leafView: LeafView
     private let leftButton: OneRoundBorderButton
     private let rightButton: OneRoundBorderButton
+
+    private var leftButtonHorizontalConstraint: NSLayoutConstraint!
+    private var rightButtonHorizontalConstraint: NSLayoutConstraint!
 
     private var tomatoBackgroundTopConstraint: NSLayoutConstraint!
     private var startStopBtnVerticalConstraint: NSLayoutConstraint!
@@ -40,14 +44,14 @@ class PomodoroVC: UIViewController {
         self.rightButton = OneRoundBorderButton()
         self.rightButton.translatesAutoresizingMaskIntoConstraints = false
         self.rightButton.roundBorder = .Left
-        self.rightButton.setImage(rightIcon, for: .normal)
+        self.rightButton.setIconImage(rightIcon)
         self.rightButton.tintColor = Constants.borderButtonIconColor
 
         let leftIcon = UIImage(named: "Add")!.withRenderingMode(.alwaysTemplate)
 
         self.leftButton = OneRoundBorderButton()
         self.leftButton.translatesAutoresizingMaskIntoConstraints = false
-        self.leftButton.setImage(leftIcon, for: .normal)
+        self.leftButton.setIconImage(leftIcon)
         self.leftButton.tintColor = Constants.borderButtonIconColor
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -94,13 +98,15 @@ class PomodoroVC: UIViewController {
         self.tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 
         // leftButton constraints
-        self.leftButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.leftButtonHorizontalConstraint = self.leftButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -Constants.borderButtonWidth)
+        self.leftButtonHorizontalConstraint.isActive = true
         self.leftButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.leftButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
         self.leftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.leftButtonMarginBottom).isActive = true
 
         // rightButton constraints
-        self.rightButton.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.rightButtonHorizontalConstraint = self.rightButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: Constants.borderButtonWidth)
+        self.rightButtonHorizontalConstraint.isActive = true
         self.rightButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.rightButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
         self.rightButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.rightButtonMarginBottom).isActive = true
@@ -169,6 +175,16 @@ class PomodoroVC: UIViewController {
                 && verticalTranslation < Constants.verticalThresholdMode) {
             animateResetPosition()
         }
+    }
+
+    private func displaySideButtons() {
+        self.leftButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
+        self.rightButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
+        UIView.animate(withDuration: Constants.animationDisplaySideButtonsDuration, animations: {
+            self.leftButtonHorizontalConstraint.constant = 0
+            self.rightButtonHorizontalConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
     }
 
     private func animateResetPosition() {
