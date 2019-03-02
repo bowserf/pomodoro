@@ -148,7 +148,9 @@ class PomodoroVC: UIViewController {
     }
 
     @IBAction private func onClickTopBarAbout() {
-        print("onClickTopBarAbout")
+        let alert = UIAlertController(title: "Pomodoro", message: "Application developed by bowserf.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
     }
 
     @IBAction private func onClickStartStopBtn() {
