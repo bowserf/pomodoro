@@ -1,6 +1,6 @@
 import UIKit
 
-class PomodoroVC: UIViewController {
+class PomodoroVC: UIViewController, PomodoroView {
 
     private struct Constants {
         static let startStopBtnSize: CGFloat = 100
@@ -14,6 +14,8 @@ class PomodoroVC: UIViewController {
         static let animationDisplaySideButtonsDuration: TimeInterval = 0.6
     }
 
+    public var presenter: PomodoroPresenter!
+
     private let startStopBtn: TextAndImageAnimatedButton
     private let tomatoBackground: TomatoBackground
     private let leafView: LeafView
@@ -26,8 +28,6 @@ class PomodoroVC: UIViewController {
     private var tomatoBackgroundTopConstraint: NSLayoutConstraint!
     private var startStopBtnVerticalConstraint: NSLayoutConstraint!
     private var leavesHeightConstraints: NSLayoutConstraint!
-
-    private var isStatusBarHidden: Bool = false
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.startStopBtn = TextAndImageAnimatedButton()
@@ -65,6 +65,8 @@ class PomodoroVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.presenter.attachView(view: self)
 
         initTopBar()
 
@@ -117,7 +119,7 @@ class PomodoroVC: UIViewController {
     }
 
     override var prefersStatusBarHidden: Bool {
-        return self.isStatusBarHidden
+        return self.presenter.isNavigationAndStatusBarDisplayed()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -126,6 +128,42 @@ class PomodoroVC: UIViewController {
 
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .fade
+    }
+
+    public func showAboutDialog() {
+        let alert = UIAlertController(title: "Pomodoro", message: "Application developed by bowserf.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+
+    public func showNavigationAndStatusBar() {
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+
+    public func hideNavigationAndStatusBar() {
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+
+    public func showSideButtons() {
+        self.leftButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
+        self.rightButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
+        UIView.animate(withDuration: Constants.animationDisplaySideButtonsDuration, animations: {
+            self.leftButtonHorizontalConstraint.constant = 0
+            self.rightButtonHorizontalConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
+    }
+
+    public func hideSideButtons() {
+        self.leftButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
+        self.rightButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
+        UIView.animate(withDuration: Constants.animationDisplaySideButtonsDuration, animations: {
+            self.leftButtonHorizontalConstraint.constant = -Constants.borderButtonWidth
+            self.rightButtonHorizontalConstraint.constant = Constants.borderButtonWidth
+            self.view.layoutIfNeeded()
+        })
     }
 
     private func initTopBar() {
@@ -143,28 +181,29 @@ class PomodoroVC: UIViewController {
         navigationBar.topItem!.setRightBarButton(aboutBtn, animated: false)
     }
 
-    private func updateNavBarAndStatusBarDisplay() {
-        self.isStatusBarHidden = !self.isStatusBarHidden
-        self.setNeedsStatusBarAppearanceUpdate()
-        self.navigationController?.setNavigationBarHidden(self.isStatusBarHidden, animated: true)
-    }
-
     @IBAction private func onClickTopBarCalendar() {
-        print("onClickTopBarCalendar")
+        self.presenter.onClickTopBarCalendar()
     }
 
     @IBAction private func onClickTopBarAbout() {
-        let alert = UIAlertController(title: "Pomodoro", message: "Application developed by bowserf.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-        self.present(alert, animated: true)
+        self.presenter.onClickTopBarAbout()
     }
 
     @IBAction private func onClickStartStopBtn() {
-        self.startStopBtn.updateState()
+        self.presenter.onClickStartStopButton()
     }
 
     @IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
-        let verticalTranslation = max(0, recognizer.translation(in: self.view).y)
+        let verticalTranslation = recognizer.translation(in: self.view).y * 0.7
+
+        if (verticalTranslation <= 0) {
+            return
+        }
+
+        if verticalTranslation >= Constants.verticalThresholdMode {
+            //TODO standByMode
+        }
+
         if (recognizer.state == UIPanGestureRecognizer.State.changed) {
             self.startStopBtnVerticalConstraint.constant = verticalTranslation
             self.tomatoBackgroundTopConstraint.constant = verticalTranslation
@@ -175,16 +214,6 @@ class PomodoroVC: UIViewController {
                 && verticalTranslation < Constants.verticalThresholdMode) {
             animateResetPosition()
         }
-    }
-
-    private func displaySideButtons() {
-        self.leftButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
-        self.rightButton.rotationIcon(duration: Constants.animationDisplaySideButtonsDuration)
-        UIView.animate(withDuration: Constants.animationDisplaySideButtonsDuration, animations: {
-            self.leftButtonHorizontalConstraint.constant = 0
-            self.rightButtonHorizontalConstraint.constant = 0
-            self.view.layoutIfNeeded()
-        })
     }
 
     private func animateResetPosition() {
