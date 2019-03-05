@@ -10,25 +10,105 @@ class LeafView: UIView {
         static let shadowColor = UIColor.init(white: 0, alpha: 0.5)
 
         static let verticalHighSectionHeight: CGFloat = 0.2 * defaultViewHeight
-        static let verticalLowSectionHeight: CGFloat = 0.4 * defaultViewHeight
+        static let verticalLowSectionHeight: CGFloat = 0.5 * defaultViewHeight
 
         static let horizontalRatioLowLevel: CGFloat = 1 / 17
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
+
+        static let timerTextColor = UIColor.white
+        static let timerTextSize = UIFont.systemFont(ofSize: 55, weight: .bold)
+
+        static let timerNameTextColor = UIColor.white
+        static let timerNameTextSize = UIFont.systemFont(ofSize: 30, weight: .bold)
+
+        static let underlineColor = UIColor.white
+        static let underlineStrokeWidth: CGFloat = 5
+
+        static let unityColor = UIColor.white
+        static let unityTextSize = UIFont.systemFont(ofSize: 12, weight: .bold)
+
     }
 
-    public static let defaultViewHeight: CGFloat = 200
+    public static let defaultViewHeight: CGFloat = 300
 
     @IBInspectable private var borderColor: UIColor = UIColor.white
     @IBInspectable private var leafColor: UIColor = UIColor.green
 
+    private let timer: UILabel
+    private let timerNameBtn: UIButton
+    private let underline: UIView
+    private let minute: UILabel
+
+    private var timerNameTopConstraint: NSLayoutConstraint!
+    private var timerTopConstraint: NSLayoutConstraint!
+
     override init(frame: CGRect) {
+        self.underline = UIView()
+        self.underline.translatesAutoresizingMaskIntoConstraints = false
+        self.underline.backgroundColor = Constants.underlineColor
+
+        self.minute = UILabel()
+        self.minute.translatesAutoresizingMaskIntoConstraints = false
+        //self.unity.isHidden = true
+        self.minute.textColor = Constants.unityColor
+        self.minute.text = "MIN"
+        self.minute.font = Constants.unityTextSize
+        self.minute.sizeToFit()
+
+        self.timer = UILabel()
+        self.timer.translatesAutoresizingMaskIntoConstraints = false
+        self.timer.textColor = Constants.timerTextColor
+        self.timer.font = Constants.timerTextSize
+        self.timer.text = "25:00"
+
+        self.timerNameBtn = UIButton()
+        self.timerNameBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.timerNameBtn.setTitle("Study", for: .normal)
+        self.timerNameBtn.setTitleColor(Constants.timerNameTextColor, for: .normal)
+        self.timerNameBtn.titleLabel?.font = Constants.timerNameTextSize
+        self.timerNameBtn.setImage(UIImage(named: "Edit"), for: .normal)
+        self.timerNameBtn.semanticContentAttribute = UIApplication.shared
+                .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+
         super.init(frame: frame)
 
+        self.addSubview(self.timer)
+        self.addSubview(self.timerNameBtn)
+        self.addSubview(self.underline)
+        self.addSubview(self.minute)
+
         backgroundColor = UIColor.clear
+
+        self.timerTopConstraint = self.timer.topAnchor.constraint(equalTo: self.topAnchor)
+        self.timerTopConstraint.isActive = true
+        self.timer.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+
+        self.minute.topAnchor.constraint(equalTo: self.timer.bottomAnchor, constant: CGFloat(-10)).isActive = true
+        self.minute.rightAnchor.constraint(equalTo: self.timer.rightAnchor).isActive = true
+
+        self.underline.topAnchor.constraint(equalTo: self.minute.bottomAnchor).isActive = true
+        self.underline.heightAnchor.constraint(equalToConstant: Constants.underlineStrokeWidth).isActive = true
+        self.underline.leftAnchor.constraint(equalTo: self.timer.leftAnchor).isActive = true
+        self.underline.rightAnchor.constraint(equalTo: self.timer.rightAnchor).isActive = true
+
+        self.timerNameTopConstraint = self.timerNameBtn.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        self.timerNameTopConstraint.isActive = true
+        self.timerNameBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("You should use Storyboard")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // timer constraints
+        self.timerTopConstraint.constant = Constants.verticalLowSectionHeight / 2
+
+        // timerNameBtn constraints
+        let val = Constants.verticalHighSectionHeight + (self.bounds.height - Constants.verticalHighSectionHeight - Constants.verticalLowSectionHeight) / 2
+        self.timerNameTopConstraint.constant = -val
     }
 
     override func draw(_ rect: CGRect) {
