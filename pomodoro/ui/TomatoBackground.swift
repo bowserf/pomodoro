@@ -54,10 +54,10 @@ class TomatoBackground: UIView {
         var currentRadius: CGFloat = arcWidth / 2
         for i in 0..<nbCircle {
             let path = UIBezierPath(arcCenter: center,
-                                    radius: currentRadius,
-                                    startAngle: Constants.startAngle,
-                                    endAngle: endAngle,
-                                    clockwise: true)
+                    radius: currentRadius,
+                    startAngle: Constants.startAngle,
+                    endAngle: endAngle,
+                    clockwise: true)
             path.lineWidth = arcWidth
             colors[i].setStroke()
             path.stroke()
@@ -75,7 +75,7 @@ class TomatoBackground: UIView {
 
             let endAngleDegree = radianToDegree(radian: endAngle)
             let angleForSeedDegree = radianToDegree(radian: angleForSeed)
-            if(endAngleDegree < angleForSeedDegree) {
+            if (endAngleDegree < angleForSeedDegree) {
                 break
             }
 

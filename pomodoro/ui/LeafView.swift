@@ -127,7 +127,7 @@ class LeafView: UIView {
         let height = self.bounds.height
 
         let middleOffsetX = width * Constants.horizontalRatioMiddleLevel
-        let lowOfffsetX = width * Constants.horizontalRatioLowLevel
+        let lowOffsetX = width * Constants.horizontalRatioLowLevel
 
         let verticalLowSectionHeight = Constants.verticalLowSectionHeight
         let verticalMiddleSectionHeight = height - Constants.verticalHighSectionHeight
@@ -137,19 +137,19 @@ class LeafView: UIView {
         path.move(to: CGPoint(x: 0, y: verticalHighSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX, y: verticalMiddleSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX, y: verticalLowSectionHeight - inset))
-        path.addArc(withCenter: CGPoint(x: middleOffsetX + lowOfffsetX / 2, y: verticalLowSectionHeight - inset), radius: lowOfffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
-        path.addLine(to: CGPoint(x: middleOffsetX + lowOfffsetX, y: verticalMiddleSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX * 2 + lowOfffsetX, y: verticalHighSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX * 3 + lowOfffsetX, y: verticalHighSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOfffsetX, y: verticalMiddleSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOfffsetX, y: verticalLowSectionHeight - inset))
-        path.addArc(withCenter: CGPoint(x: middleOffsetX * 4 + lowOfffsetX * 1.5, y: verticalLowSectionHeight - inset), radius: lowOfffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
-        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOfffsetX * 2, y: verticalMiddleSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX * 5 + lowOfffsetX * 2, y: verticalHighSectionHeight - inset))
+        path.addArc(withCenter: CGPoint(x: middleOffsetX + lowOffsetX / 2, y: verticalLowSectionHeight - inset), radius: lowOffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
+        path.addLine(to: CGPoint(x: middleOffsetX + lowOffsetX, y: verticalMiddleSectionHeight - inset))
+        path.addLine(to: CGPoint(x: middleOffsetX * 2 + lowOffsetX, y: verticalHighSectionHeight - inset))
+        path.addLine(to: CGPoint(x: middleOffsetX * 3 + lowOffsetX, y: verticalHighSectionHeight - inset))
+        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX, y: verticalMiddleSectionHeight - inset))
+        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX, y: verticalLowSectionHeight - inset))
+        path.addArc(withCenter: CGPoint(x: middleOffsetX * 4 + lowOffsetX * 1.5, y: verticalLowSectionHeight - inset), radius: lowOffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
+        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX * 2, y: verticalMiddleSectionHeight - inset))
+        path.addLine(to: CGPoint(x: middleOffsetX * 5 + lowOffsetX * 2, y: verticalHighSectionHeight - inset))
 
         let context = UIGraphicsGetCurrentContext()
         context?.saveGState()
-        var clippingPath = path.copy() as! UIBezierPath
+        let clippingPath = path.copy() as! UIBezierPath
         clippingPath.addLine(to: CGPoint(x: width, y: 0))
         clippingPath.addLine(to: CGPoint(x: 0, y: 0))
         clippingPath.close()

@@ -5,7 +5,7 @@ class PomodoroVC: UIViewController {
     private struct Constants {
         static let startStopBtnSize: CGFloat = 100
         static let verticalThresholdMode: CGFloat = 200
-        static let resetPositionAnimationDuration: CGFloat = 1
+        static let resetPositionAnimationDuration: TimeInterval = 1
         static let borderButtonWidth: CGFloat = 100
         static let borderButtonHeight: CGFloat = 60
         static let leftButtonMarginBottom: CGFloat = 100
@@ -188,7 +188,7 @@ class PomodoroVC: UIViewController {
     }
 
     private func animateResetPosition() {
-        UIView.animate(withDuration: TimeInterval(Constants.resetPositionAnimationDuration),
+        UIView.animate(withDuration: Constants.resetPositionAnimationDuration,
                 delay: 0,
                 options: .curveEaseOut,
                 animations: {

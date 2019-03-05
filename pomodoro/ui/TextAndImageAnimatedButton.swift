@@ -73,18 +73,6 @@ class TextAndImageAnimatedButton: UIControl {
     }
 
     private func rotateView() {
-        // rotation animation clockwise
-        //UIView.animate(withDuration: Constants.rotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
-        //    self.transform = CGAffineTransform(rotationAngle: .pi)
-        //}, completion: { success in
-        //    UIView.animate(withDuration: Constants.rotationAnimDuration, delay: 0, options: .curveLinear, animations: { () -> Void in
-        //        self.transform = CGAffineTransform(rotationAngle: .pi * 2)
-        //    }, completion: { (success) in
-        //        self.updateContent()
-        //    })
-        //})
-
-        // rotation animation clockwise
         UIView.animateKeyframes(withDuration: Constants.rotationAnimDuration, delay: 0, options: [.calculationModeLinear], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0 / 4.0, animations: {
                 self.transform = CGAffineTransform(rotationAngle: .pi / 2)
@@ -101,22 +89,10 @@ class TextAndImageAnimatedButton: UIControl {
         }, completion: { (success) in
             self.updateContent()
         })
-
-        // rotation animation counterclockwise
-        //UIView.animateKeyframes(withDuration: Constants.rotationAnimDuration, delay: 0, options: [.calculationModeLinear], animations: {
-        //    UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0 / 2.0, animations: {
-        //        self.transform = CGAffineTransform(rotationAngle: .pi)
-        //    })
-        //    UIView.addKeyframe(withRelativeStartTime: 1.0 / 2.0, relativeDuration: 1.0 / 2.0, animations: {
-        //        self.transform = CGAffineTransform(rotationAngle: -.pi * 2)
-        //    })
-        //}, completion: { (success) in
-        //    self.updateContent()
-        //})
     }
 
     private func updateContent() {
-        if(self.stateOn) {
+        if (self.stateOn) {
             text.text = textOn
             icon.image = imageOn
         } else {
