@@ -32,7 +32,7 @@ class LeafView: UIView {
     public static let defaultViewHeight: CGFloat = 300
 
     @IBInspectable private var borderColor: UIColor = UIColor.white
-    @IBInspectable private var leafColor: UIColor = UIColor.green
+    @IBInspectable private var leafColor: UIColor = UIColor.init(red:0.36, green:0.78, blue:0.53, alpha:1.0)
 
     private let timer: UILabel
     private let timerNameBtn: UIButton

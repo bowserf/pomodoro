@@ -17,7 +17,7 @@ class TomatoBackground: UIView {
     }
 
     @IBInspectable private var nbCircle = 5
-    @IBInspectable private var defaultColor: UIColor = UIColor.red
+    @IBInspectable private var defaultColor: UIColor = UIColor.init(red:0.99, green:0.34, blue:0.31, alpha:1.0)
     @IBInspectable private var lineColor: UIColor = UIColor.white
 
     private var colors: [UIColor]
