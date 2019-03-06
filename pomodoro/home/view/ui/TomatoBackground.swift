@@ -5,10 +5,15 @@ class TomatoBackground: UIView {
 
     private struct Constants {
         static let startAngle: CGFloat = -.pi / 2
+        static let endAngle: CGFloat = .pi * 3 / 2
+
         static let nbSeeds = 12
         static let anglePerSeed: CGFloat = .pi * 2 / CGFloat(nbSeeds)
         static let lineWidth: CGFloat = 2
         static let linePadding: CGFloat = 10
+
+        static let startAlphaValueForAnimation: CGFloat = 0.5
+        static let endAlphaValueForAnimation: CGFloat = 0.2
     }
 
     @IBInspectable private var nbCircle = 5
@@ -49,14 +54,12 @@ class TomatoBackground: UIView {
     }
 
     private func drawBackground(center: CGPoint, arcWidth: CGFloat) {
-        //TODO use class member
-        let endAngle: CGFloat = .pi * 3 / 2
         var currentRadius: CGFloat = arcWidth / 2
         for i in 0..<nbCircle {
             let path = UIBezierPath(arcCenter: center,
                     radius: currentRadius,
                     startAngle: Constants.startAngle,
-                    endAngle: endAngle,
+                    endAngle: Constants.endAngle,
                     clockwise: true)
             path.lineWidth = arcWidth
             colors[i].setStroke()
@@ -100,11 +103,12 @@ class TomatoBackground: UIView {
     }
 
     private func computeColorsVariation() {
-        let startAlphaValue: CGFloat = 0.2
-        let alphaRange = CGFloat(1.0 - startAlphaValue) / CGFloat(nbCircle)
+        let startAlphaValue = Constants.startAlphaValueForAnimation
+        let endAlphaValue = Constants.endAlphaValueForAnimation
+        let stepAlphaValue = (startAlphaValue - endAlphaValue) / CGFloat(nbCircle)
         for i in 0..<nbCircle {
-            let alpha: CGFloat = CGFloat((nbCircle - 1) - i) * alphaRange + startAlphaValue
-            colors.append(UIColor(red: 0, green: 0, blue: 0, alpha: alpha))
+            let alpha: CGFloat = startAlphaValue - stepAlphaValue * CGFloat(i)
+            colors.append(UIColor.init(white: 0, alpha: alpha))
         }
     }
 
