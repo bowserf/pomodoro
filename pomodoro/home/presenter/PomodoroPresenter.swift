@@ -42,7 +42,12 @@ class PomodoroPresenter {
 
 extension PomodoroPresenter: ManageTimeInteractorListener {
     func onTimerTimeChanged() {
-        print("\(self.timeInteractor.getCurrentTime())")
+        let currentTime = self.timeInteractor.getCurrentTime()
+        let minutes = currentTime / 60
+        let seconds = currentTime % 60
+        let time = String.localizedStringWithFormat("%02d:%02d", minutes, seconds)
+        let progress = 1 - Float(currentTime) / Float(ManageTimeInteractor.startTime)
+        self.view.showCurrentTime(time: time, progress: progress)
     }
 
     func onTimerEnded() {

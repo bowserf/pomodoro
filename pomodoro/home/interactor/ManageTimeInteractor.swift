@@ -2,9 +2,7 @@ import Foundation
 
 class ManageTimeInteractor: ManageTimeInteractorInput {
 
-    private struct Constants {
-        static let startTime = 25 * 60
-    }
+    public static let startTime = 25 * 60
 
     private let timeManager: TimeManager
 
@@ -17,7 +15,7 @@ class ManageTimeInteractor: ManageTimeInteractorInput {
     }
 
     func startTimer() {
-        self.currentTimer = Constants.startTime
+        self.currentTimer = ManageTimeInteractor.startTime
         self.timeManager.startTimer()
     }
 

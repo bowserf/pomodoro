@@ -47,8 +47,8 @@ class TomatoBackground: UIView {
         drawSeeds(center: center, arcWidth: arcWidth)
     }
 
-    public func updateView(angle: Float) {
-        let radian: CGFloat = CGFloat(2 * .pi * angle / 360)
+    public func updateView(progress: Float) {
+        let radian: CGFloat = CGFloat(2 * .pi * progress)
         endAngle = Constants.startAngle + radian
         setNeedsDisplay()
     }
@@ -59,7 +59,7 @@ class TomatoBackground: UIView {
             let path = UIBezierPath(arcCenter: center,
                     radius: currentRadius,
                     startAngle: Constants.startAngle,
-                    endAngle: Constants.endAngle,
+                    endAngle: endAngle,
                     clockwise: true)
             path.lineWidth = arcWidth
             colors[i].setStroke()

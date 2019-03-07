@@ -10,4 +10,5 @@ protocol PomodoroView {
 
     func hideSideButtons()
 
+    func showCurrentTime(time: String, progress: Float)
 }

@@ -160,4 +160,7 @@ class LeafView: UIView {
         return path
     }
 
+    func showCurrentTime(time: String) {
+        self.timer.text = time
+    }
 }

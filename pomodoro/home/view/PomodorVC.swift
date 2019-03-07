@@ -166,6 +166,11 @@ class PomodoroVC: UIViewController, PomodoroView {
         })
     }
 
+    func showCurrentTime(time: String, progress: Float) {
+        self.leafView.showCurrentTime(time: time)
+        self.tomatoBackground.updateView(progress: progress)
+    }
+
     private func initTopBar() {
         let navigationBar = self.navigationController!.navigationBar
         let calendarBtn = UIBarButtonItem(
