@@ -100,14 +100,14 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.tomatoBackground.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 
         // leftButton constraints
-        self.leftButtonHorizontalConstraint = self.leftButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: -Constants.borderButtonWidth)
+        self.leftButtonHorizontalConstraint = self.leftButton.leftAnchor.constraint(equalTo: self.view.leftAnchor)
         self.leftButtonHorizontalConstraint.isActive = true
         self.leftButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.leftButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
         self.leftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.leftButtonMarginBottom).isActive = true
 
         // rightButton constraints
-        self.rightButtonHorizontalConstraint = self.rightButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: Constants.borderButtonWidth)
+        self.rightButtonHorizontalConstraint = self.rightButton.rightAnchor.constraint(equalTo: self.view.rightAnchor)
         self.rightButtonHorizontalConstraint.isActive = true
         self.rightButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.rightButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
