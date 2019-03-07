@@ -12,11 +12,15 @@
 		941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */; };
 		D50F50A1952FFC0F21ED1507 /* AppWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5C0F3E90C2CB5F117C27 /* AppWireframe.swift */; };
 		D50F51FB0622E6121786860C /* PomodorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F553799F0F7FA551A38A8 /* PomodorVC.swift */; };
+		D50F52B0F48F153DCA0F6E9B /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F50FDB5EAD62A0D69B975 /* TimeManager.swift */; };
 		D50F55BB990F90AA33AD51EE /* OneRoundBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F568CA47F1DFDC6647F53 /* OneRoundBorderButton.swift */; };
 		D50F564EB39C239CB52DDE0B /* TransparentNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F54456A75B5BAE9398D30 /* TransparentNavigationController.swift */; };
 		D50F56DC52A388DEBB9269E4 /* LeafView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5ADDDBA11C04E640915B /* LeafView.swift */; };
 		D50F57601C9EF2EF1C1DC84D /* TomatoBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F53492E34CB37DF112CCB /* TomatoBackground.swift */; };
+		D50F57B7BF24BB4E73559408 /* TimeManagerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5063B2692643DF31BF84 /* TimeManagerImpl.swift */; };
+		D50F57C295E7A49693F1F1AF /* ManageTimeInteractorIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5638769E60FB2E1C5DF5 /* ManageTimeInteractorIO.swift */; };
 		D50F59D6B0FAD58AC58BF06E /* TextAndImageAnimatedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F58F3878C93213CE851EF /* TextAndImageAnimatedButton.swift */; };
+		D50F5AC992D5F720F26F93FD /* ManageTimeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F56491A5DDF02D05ACEC9 /* ManageTimeInteractor.swift */; };
 		D50F5CFDD21A9F0D3034DC27 /* PomodoWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F55A13D37E68C6055A57D /* PomodoWireframe.swift */; };
 		D50F5F6E1B4F635BC6094B36 /* PomodoroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F50E7276AD4887E543FCC /* PomodoroView.swift */; };
 		D50F5FE66CD0877222880DAF /* PomodoroPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5A00A2C6076BF8196E44 /* PomodoroPresenter.swift */; };
@@ -28,11 +32,15 @@
 		941CECD92211E8C400316FDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		941CECDC2211E8C400316FDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		941CECDE2211E8C400316FDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D50F5063B2692643DF31BF84 /* TimeManagerImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeManagerImpl.swift; sourceTree = "<group>"; };
 		D50F50E7276AD4887E543FCC /* PomodoroView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PomodoroView.swift; sourceTree = "<group>"; };
+		D50F50FDB5EAD62A0D69B975 /* TimeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeManager.swift; sourceTree = "<group>"; };
 		D50F53492E34CB37DF112CCB /* TomatoBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TomatoBackground.swift; sourceTree = "<group>"; };
 		D50F54456A75B5BAE9398D30 /* TransparentNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentNavigationController.swift; sourceTree = "<group>"; };
 		D50F553799F0F7FA551A38A8 /* PomodorVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PomodorVC.swift; sourceTree = "<group>"; };
 		D50F55A13D37E68C6055A57D /* PomodoWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PomodoWireframe.swift; sourceTree = "<group>"; };
+		D50F5638769E60FB2E1C5DF5 /* ManageTimeInteractorIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageTimeInteractorIO.swift; sourceTree = "<group>"; };
+		D50F56491A5DDF02D05ACEC9 /* ManageTimeInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageTimeInteractor.swift; sourceTree = "<group>"; };
 		D50F568CA47F1DFDC6647F53 /* OneRoundBorderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoundBorderButton.swift; sourceTree = "<group>"; };
 		D50F58F3878C93213CE851EF /* TextAndImageAnimatedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextAndImageAnimatedButton.swift; sourceTree = "<group>"; };
 		D50F5A00A2C6076BF8196E44 /* PomodoroPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PomodoroPresenter.swift; sourceTree = "<group>"; };
@@ -77,6 +85,7 @@
 				D50F54456A75B5BAE9398D30 /* TransparentNavigationController.swift */,
 				D50F5337E178614365BF2D0B /* home */,
 				D50F5C0F3E90C2CB5F117C27 /* AppWireframe.swift */,
+				D50F59E5377311BDFE1A7F3D /* domain */,
 			);
 			path = pomodoro;
 			sourceTree = "<group>";
@@ -111,6 +120,15 @@
 			path = home;
 			sourceTree = "<group>";
 		};
+		D50F53A1A32753C63885EABC /* time */ = {
+			isa = PBXGroup;
+			children = (
+				D50F5063B2692643DF31BF84 /* TimeManagerImpl.swift */,
+				D50F50FDB5EAD62A0D69B975 /* TimeManager.swift */,
+			);
+			path = time;
+			sourceTree = "<group>";
+		};
 		D50F57BBD66A75794C12E5B5 /* presenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +147,14 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		D50F59E5377311BDFE1A7F3D /* domain */ = {
+			isa = PBXGroup;
+			children = (
+				D50F53A1A32753C63885EABC /* time */,
+			);
+			path = domain;
+			sourceTree = "<group>";
+		};
 		D50F5AC73E2DB2EF1F6454F2 /* routing */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +166,8 @@
 		D50F5B9909A42B419D657FD3 /* interactor */ = {
 			isa = PBXGroup;
 			children = (
+				D50F56491A5DDF02D05ACEC9 /* ManageTimeInteractor.swift */,
+				D50F5638769E60FB2E1C5DF5 /* ManageTimeInteractorIO.swift */,
 			);
 			path = interactor;
 			sourceTree = "<group>";
@@ -225,6 +253,10 @@
 				D50F50A1952FFC0F21ED1507 /* AppWireframe.swift in Sources */,
 				D50F5F6E1B4F635BC6094B36 /* PomodoroView.swift in Sources */,
 				D50F5FE66CD0877222880DAF /* PomodoroPresenter.swift in Sources */,
+				D50F57B7BF24BB4E73559408 /* TimeManagerImpl.swift in Sources */,
+				D50F52B0F48F153DCA0F6E9B /* TimeManager.swift in Sources */,
+				D50F5AC992D5F720F26F93FD /* ManageTimeInteractor.swift in Sources */,
+				D50F57C295E7A49693F1F1AF /* ManageTimeInteractorIO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
