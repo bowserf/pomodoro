@@ -67,9 +67,18 @@ class TextAndImageAnimatedButton: UIControl {
         fatalError("You shouldn't use a storyboard!")
     }
 
-    public func updateState() {
-        stateOn = !stateOn
-        rotateView()
+    public func setStartMode() {
+        if !self.stateOn {
+            self.stateOn = true
+            rotateView()
+        }
+    }
+
+    public func setStopMode() {
+        if self.stateOn {
+            self.stateOn = false
+            rotateView()
+        }
     }
 
     private func rotateView() {
