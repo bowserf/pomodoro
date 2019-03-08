@@ -13,4 +13,6 @@ protocol PomodoroView {
     func showCurrentTime(time: String, progress: Float)
 
     func setTimerList(timerList: [String])
+
+    func displayCreateTimerDialog()
 }

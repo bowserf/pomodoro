@@ -58,7 +58,12 @@ class PomodoroVC: UIViewController, PomodoroView {
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
+        self.leafView.listener = self
+
         self.startStopBtn.addTarget(self, action: #selector(onClickStartStopBtn), for: .touchDown)
+
+        self.leftButton.addTarget(self, action: #selector(onClickDisplayTimers), for: .touchUpInside)
+        self.rightButton.addTarget(self, action: #selector(onClickCreateTimer), for: .touchUpInside)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -174,7 +179,42 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     func setTimerList(timerList: [String]) {
+        self.leafView.setTimer(timer: timerList[0])
+    }
 
+    func displayCreateTimerDialog() {
+        let alertController = UIAlertController(title: "Timer name?", message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Create", style: .default) { (_) in
+            let optionalName = alertController.textFields?[0].text
+            if let name = optionalName {
+                self.presenter.createTimer(name: name)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Enter Name"
+        }
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    func displayUpdateTimerDialog(timer: String) {
+        let alertController = UIAlertController(title: "Timer name?", message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Update", style: .default) { (_) in
+            let optionalName = alertController.textFields?[0].text
+            if let name = optionalName {
+                self.presenter.createTimer(name: name)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Enter Name"
+            textField.text = timer
+        }
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
     }
 
     private func initTopBar() {
@@ -202,6 +242,14 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     @IBAction private func onClickStartStopBtn() {
         self.presenter.onClickStartStopButton()
+    }
+
+    @IBAction private func onClickDisplayTimers() {
+        self.presenter.onClickDisplayTimers()
+    }
+
+    @IBAction private func onClickCreateTimer() {
+        self.presenter.onClickCreateTimer()
     }
 
     @IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
@@ -240,5 +288,11 @@ class PomodoroVC: UIViewController, PomodoroView {
                 }, completion: nil)
     }
 
+}
+
+extension PomodoroVC: LeafViewListener {
+    func onClickEditTimer(timer: String) {
+        self.displayUpdateTimerDialog(timer: timer)
+    }
 }
 

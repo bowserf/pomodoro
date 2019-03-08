@@ -42,6 +42,18 @@ class PomodoroPresenter {
     func onClickTopBarCalendar() {
 
     }
+
+    func onClickDisplayTimers() {
+
+    }
+
+    func onClickCreateTimer() {
+        self.view.displayCreateTimerDialog()
+    }
+
+    func createTimer(name: String) {
+        self.getTimerListInteractor.addTimer(name: name)
+    }
 }
 
 extension PomodoroPresenter: ManageTimeInteractorListener {

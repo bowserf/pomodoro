@@ -1,5 +1,11 @@
 import UIKit
 
+protocol LeafViewListener {
+
+    func onClickEditTimer(timer: String)
+
+}
+
 @IBDesignable
 class LeafView: UIView {
 
@@ -26,21 +32,24 @@ class LeafView: UIView {
 
         static let unityColor = UIColor.white
         static let unityTextSize = UIFont.systemFont(ofSize: 12, weight: .bold)
-
     }
 
     public static let defaultViewHeight: CGFloat = 300
 
+    public var listener: LeafViewListener?
+
     @IBInspectable private var borderColor: UIColor = UIColor.white
     @IBInspectable private var leafColor: UIColor = UIColor.init(red:0.36, green:0.78, blue:0.53, alpha:1.0)
 
-    private let timer: UILabel
+    private let time: UILabel
     private let timerNameBtn: UIButton
     private let underline: UIView
     private let minute: UILabel
 
     private var timerNameTopConstraint: NSLayoutConstraint!
     private var timerTopConstraint: NSLayoutConstraint!
+
+    private var timer: String?
 
     override init(frame: CGRect) {
         self.underline = UIView()
@@ -55,15 +64,15 @@ class LeafView: UIView {
         self.minute.font = Constants.unityTextSize
         self.minute.sizeToFit()
 
-        self.timer = UILabel()
-        self.timer.translatesAutoresizingMaskIntoConstraints = false
-        self.timer.textColor = Constants.timerTextColor
-        self.timer.font = Constants.timerTextSize
-        self.timer.text = "25:00"
+        self.time = UILabel()
+        self.time.translatesAutoresizingMaskIntoConstraints = false
+        self.time.textColor = Constants.timerTextColor
+        self.time.font = Constants.timerTextSize
+        self.time.text = "25:00"
 
         self.timerNameBtn = UIButton()
         self.timerNameBtn.translatesAutoresizingMaskIntoConstraints = false
-        self.timerNameBtn.setTitle("Study", for: .normal)
+        self.timerNameBtn.setTitle(self.timer, for: .normal)
         self.timerNameBtn.setTitleColor(Constants.timerNameTextColor, for: .normal)
         self.timerNameBtn.titleLabel?.font = Constants.timerNameTextSize
         self.timerNameBtn.setImage(UIImage(named: "Edit"), for: .normal)
@@ -72,24 +81,26 @@ class LeafView: UIView {
 
         super.init(frame: frame)
 
-        self.addSubview(self.timer)
+        self.timerNameBtn.addTarget(self, action: #selector(onClickEditTimer), for: .touchUpInside)
+
+        self.addSubview(self.time)
         self.addSubview(self.timerNameBtn)
         self.addSubview(self.underline)
         self.addSubview(self.minute)
 
         backgroundColor = UIColor.clear
 
-        self.timerTopConstraint = self.timer.topAnchor.constraint(equalTo: self.topAnchor)
+        self.timerTopConstraint = self.time.topAnchor.constraint(equalTo: self.topAnchor)
         self.timerTopConstraint.isActive = true
-        self.timer.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.time.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 
-        self.minute.topAnchor.constraint(equalTo: self.timer.bottomAnchor, constant: CGFloat(-10)).isActive = true
-        self.minute.rightAnchor.constraint(equalTo: self.timer.rightAnchor).isActive = true
+        self.minute.topAnchor.constraint(equalTo: self.time.bottomAnchor, constant: CGFloat(-10)).isActive = true
+        self.minute.rightAnchor.constraint(equalTo: self.time.rightAnchor).isActive = true
 
         self.underline.topAnchor.constraint(equalTo: self.minute.bottomAnchor).isActive = true
         self.underline.heightAnchor.constraint(equalToConstant: Constants.underlineStrokeWidth).isActive = true
-        self.underline.leftAnchor.constraint(equalTo: self.timer.leftAnchor).isActive = true
-        self.underline.rightAnchor.constraint(equalTo: self.timer.rightAnchor).isActive = true
+        self.underline.leftAnchor.constraint(equalTo: self.time.leftAnchor).isActive = true
+        self.underline.rightAnchor.constraint(equalTo: self.time.rightAnchor).isActive = true
 
         self.timerNameTopConstraint = self.timerNameBtn.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         self.timerNameTopConstraint.isActive = true
@@ -120,6 +131,15 @@ class LeafView: UIView {
         path.lineWidth = Constants.lineWidth
         UIColor.white.setStroke()
         path.stroke()
+    }
+
+    public func setTimer(timer: String) {
+        self.timer = timer
+        self.timerNameBtn.setTitle(timer, for: .normal)
+    }
+
+    public func showCurrentTime(time: String) {
+        self.time.text = time
     }
 
     private func drawLeavesPath(inset: CGFloat, color: UIColor) -> UIBezierPath {
@@ -160,7 +180,8 @@ class LeafView: UIView {
         return path
     }
 
-    func showCurrentTime(time: String) {
-        self.timer.text = time
+    @IBAction private func onClickEditTimer() {
+        self.listener?.onClickEditTimer(timer: self.timer!)
     }
+
 }

@@ -1,5 +1,9 @@
 class GetTimerListInteractor: GetTimerListInteractorInput {
 
+    private struct Constants {
+        static let defaultTimer = "Default"
+    }
+
     private let timerStorage: TimerStorage
 
     private var timerList: [String]
@@ -17,6 +21,9 @@ class GetTimerListInteractor: GetTimerListInteractorInput {
     }
 
     func getTimerList() -> [String] {
+        if self.timerList.isEmpty {
+            return [Constants.defaultTimer]
+        }
         return self.timerList
     }
 
