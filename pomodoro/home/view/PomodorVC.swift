@@ -171,6 +171,10 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.tomatoBackground.updateView(progress: progress)
     }
 
+    func setTimerList(timerList: [String]) {
+
+    }
+
     private func initTopBar() {
         let navigationBar = self.navigationController!.navigationBar
         let calendarBtn = UIBarButtonItem(

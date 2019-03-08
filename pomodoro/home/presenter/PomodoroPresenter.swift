@@ -3,14 +3,18 @@ class PomodoroPresenter {
     private var view: PomodoroView!
 
     private let timeInteractor: ManageTimeInteractor
+    private let getTimerListInteractor: GetTimerListInteractorInput
 
-    init(timeInteractor: ManageTimeInteractor) {
+    init(timeInteractor: ManageTimeInteractor,
+         getTimerListInteractor: GetTimerListInteractorInput) {
         self.timeInteractor = timeInteractor
+        self.getTimerListInteractor = getTimerListInteractor
     }
 
     public func attachView(view: PomodoroView) {
         self.view = view
         self.timeInteractor.add(listener: self)
+        self.view.setTimerList(timerList: self.getTimerListInteractor.getTimerList())
     }
 
     public func detachView() {
