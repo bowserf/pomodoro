@@ -12,6 +12,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let rightButtonMarginBottom: CGFloat = 200
         static let borderButtonIconColor = UIColor.red
         static let animationDisplaySideButtonsDuration: TimeInterval = 0.6
+        static let verticalOffsetStandByMode: CGFloat = 200
     }
 
     public var presenter: PomodoroPresenter!
@@ -35,6 +36,7 @@ class PomodoroVC: UIViewController, PomodoroView {
 
         self.tomatoBackground = TomatoBackground()
         self.tomatoBackground.translatesAutoresizingMaskIntoConstraints = false
+        self.tomatoBackground.verticalOffset = Constants.verticalOffsetStandByMode
 
         self.leafView = LeafView()
         self.leafView.translatesAutoresizingMaskIntoConstraints = false
@@ -87,7 +89,7 @@ class PomodoroVC: UIViewController, PomodoroView {
 
         // startStopBtn constraints
         self.startStopBtn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.startStopBtnVerticalConstraint = self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        self.startStopBtnVerticalConstraint = self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: Constants.verticalOffsetStandByMode)
         self.startStopBtnVerticalConstraint.isActive = true
         self.startStopBtn.widthAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
         self.startStopBtn.heightAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true

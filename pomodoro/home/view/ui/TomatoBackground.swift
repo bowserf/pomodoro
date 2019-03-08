@@ -15,13 +15,19 @@ class TomatoBackground: UIView {
         static let endAlphaValueForAnimation: CGFloat = 0.2
     }
 
+    public var verticalOffset: CGFloat = 0 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
     @IBInspectable private var nbCircle = 5
     @IBInspectable private var defaultColor: UIColor = UIColor.init(red:0.99, green:0.34, blue:0.31, alpha:1.0)
     @IBInspectable private var lineColor: UIColor = UIColor.white
 
     private var colors: [UIColor]
 
-    private var endAngle: CGFloat = Constants.startAngle
+    private var endAngle: CGFloat = -.pi * 3 / 2
 
     override init(frame: CGRect) {
         colors = []
@@ -38,8 +44,8 @@ class TomatoBackground: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-        let center = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
-        let radius: CGFloat = max(bounds.width, bounds.height) / 2
+        let center = CGPoint(x: bounds.width / 2, y: bounds.height / 2 + verticalOffset)
+        let radius: CGFloat = max(bounds.width / 2, bounds.height / 2 + verticalOffset)
         let arcWidth = radius / CGFloat(nbCircle)
 
         drawBackground(center: center, arcWidth: arcWidth)
