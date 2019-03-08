@@ -5,7 +5,6 @@ class TomatoBackground: UIView {
 
     private struct Constants {
         static let startAngle: CGFloat = -.pi / 2
-        static let endAngle: CGFloat = .pi * 3 / 2
 
         static let nbSeeds = 12
         static let anglePerSeed: CGFloat = .pi * 2 / CGFloat(nbSeeds)
@@ -22,7 +21,7 @@ class TomatoBackground: UIView {
 
     private var colors: [UIColor]
 
-    private var endAngle: CGFloat = -.pi / 2
+    private var endAngle: CGFloat = Constants.startAngle
 
     override init(frame: CGRect) {
         colors = []
@@ -73,7 +72,7 @@ class TomatoBackground: UIView {
         context.setStrokeColor(lineColor.cgColor);
         context.setLineWidth(Constants.lineWidth);
 
-        for i in 0..<Constants.nbSeeds {
+        for i in 1...Constants.nbSeeds {
             let angleForSeed = CGFloat(i) * Constants.anglePerSeed - .pi / 2
 
             let endAngleDegree = radianToDegree(radian: endAngle)
