@@ -6,13 +6,16 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let startStopBtnSize: CGFloat = 100
         static let verticalThresholdMode: CGFloat = 200
         static let resetPositionAnimationDuration: TimeInterval = 1
+        static let transitionModeAnimationDuration: TimeInterval = 1
         static let borderButtonWidth: CGFloat = 100
         static let borderButtonHeight: CGFloat = 60
-        static let leftButtonMarginBottom: CGFloat = 100
-        static let rightButtonMarginBottom: CGFloat = 200
         static let borderButtonIconColor = UIColor.red
         static let animationDisplaySideButtonsDuration: TimeInterval = 0.6
-        static let verticalOffsetStandByMode: CGFloat = 200
+        static let verticalProportionalStandByModeOffset: CGFloat = 0.3
+        static let verticalProportionalTimerModeOffset: CGFloat = 0.15
+        static let verticalProportionalTimerListOffset: CGFloat = 0.05
+        static let leafViewProportionalHeightStandByMode: CGFloat = 0.4
+        static let leafViewProportionalHeightTimerMode: CGFloat = 0.3
     }
 
     public var presenter: PomodoroPresenter!
@@ -30,13 +33,16 @@ class PomodoroVC: UIViewController, PomodoroView {
     private var startStopBtnVerticalConstraint: NSLayoutConstraint!
     private var leavesHeightConstraints: NSLayoutConstraint!
 
+    private var verticalStandByModeOffset: CGFloat!
+    private var verticalTimerModeOffset: CGFloat!
+    private var verticalTimerListOffset: CGFloat!
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.startStopBtn = TextAndImageAnimatedButton()
         self.startStopBtn.translatesAutoresizingMaskIntoConstraints = false
 
         self.tomatoBackground = TomatoBackground()
         self.tomatoBackground.translatesAutoresizingMaskIntoConstraints = false
-        self.tomatoBackground.verticalOffset = Constants.verticalOffsetStandByMode
 
         self.leafView = LeafView()
         self.leafView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,9 +79,15 @@ class PomodoroVC: UIViewController, PomodoroView {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.verticalStandByModeOffset = self.view.bounds.height * Constants.verticalProportionalStandByModeOffset
+        self.verticalTimerModeOffset = self.view.bounds.height * Constants.verticalProportionalTimerModeOffset
+        self.verticalTimerListOffset = self.view.bounds.height * Constants.verticalProportionalTimerListOffset
+
         self.presenter.attachView(view: self)
 
         initTopBar()
+
+        self.tomatoBackground.verticalOffset = verticalStandByModeOffset
 
         self.view.addSubview(self.tomatoBackground)
         self.view.addSubview(self.leafView)
@@ -86,7 +98,8 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.view.backgroundColor = UIColor.white
 
         // leafView constraints
-        self.leavesHeightConstraints = self.leafView.heightAnchor.constraint(equalToConstant: LeafView.defaultViewHeight)
+        let leafViewHeightStandByMode = self.view.bounds.height * Constants.leafViewProportionalHeightStandByMode
+        self.leavesHeightConstraints = self.leafView.heightAnchor.constraint(equalToConstant: leafViewHeightStandByMode)
         self.leavesHeightConstraints.isActive = true
         self.leafView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.leafView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
@@ -94,7 +107,7 @@ class PomodoroVC: UIViewController, PomodoroView {
 
         // startStopBtn constraints
         self.startStopBtn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.startStopBtnVerticalConstraint = self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: Constants.verticalOffsetStandByMode)
+        self.startStopBtnVerticalConstraint = self.startStopBtn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: verticalStandByModeOffset)
         self.startStopBtnVerticalConstraint.isActive = true
         self.startStopBtn.widthAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
         self.startStopBtn.heightAnchor.constraint(equalToConstant: Constants.startStopBtnSize).isActive = true
@@ -111,18 +124,18 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.leftButtonHorizontalConstraint.isActive = true
         self.leftButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.leftButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
-        self.leftButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.leftButtonMarginBottom).isActive = true
+        self.leftButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalStandByModeOffset).isActive = true
 
         // rightButton constraints
         self.rightButtonHorizontalConstraint = self.rightButton.rightAnchor.constraint(equalTo: self.view.rightAnchor)
         self.rightButtonHorizontalConstraint.isActive = true
         self.rightButton.widthAnchor.constraint(equalToConstant: Constants.borderButtonWidth).isActive = true
         self.rightButton.heightAnchor.constraint(equalToConstant: Constants.borderButtonHeight).isActive = true
-        self.rightButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Constants.rightButtonMarginBottom).isActive = true
+        self.rightButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalTimerListOffset).isActive = true
 
         // pull down gesture
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        self.view.addGestureRecognizer(panGesture)
+        //let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        //self.view.addGestureRecognizer(panGesture)
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -150,7 +163,7 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     public func hideNavigationAndStatusBar() {
         self.setNeedsStatusBarAppearanceUpdate()
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     public func showSideButtons() {
@@ -175,7 +188,11 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     func showCurrentTime(time: String, progress: Float) {
         self.leafView.showCurrentTime(time: time)
-        self.tomatoBackground.updateView(progress: progress)
+        self.tomatoBackground.progress = CGFloat(progress)
+    }
+
+    func resetCurrentTime(time: String) {
+        self.leafView.resetCurrentTime(time: time)
     }
 
     func setTimerList(timerList: [String]) {
@@ -217,6 +234,39 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.present(alertController, animated: true, completion: nil)
     }
 
+    func setStandByMode() {
+        self.leafView.setToStandByMode()
+        self.startStopBtn.setStartMode()
+        let leafViewHeightStandByMode = self.view.bounds.height * Constants.leafViewProportionalHeightStandByMode
+        UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
+            self.tomatoBackground.verticalOffset = self.verticalStandByModeOffset
+            self.startStopBtnVerticalConstraint.constant = self.verticalStandByModeOffset
+            self.tomatoBackground.progress = 0
+            self.leavesHeightConstraints.constant = leafViewHeightStandByMode
+            self.view.layoutIfNeeded()
+        }, completion: { _ in
+            UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
+                self.leftButtonHorizontalConstraint.constant = 0
+                self.rightButtonHorizontalConstraint.constant = 0
+                self.view.layoutIfNeeded()
+            })
+        })
+    }
+
+    func setTimerMode() {
+        self.leafView.setToTimerMode()
+        self.startStopBtn.setStopMode()
+        let leafViewHeightTimerMode = self.view.bounds.height * Constants.leafViewProportionalHeightTimerMode
+        UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
+            self.tomatoBackground.verticalOffset = self.verticalTimerModeOffset
+            self.startStopBtnVerticalConstraint.constant = self.verticalTimerModeOffset
+            self.leftButtonHorizontalConstraint.constant = -Constants.borderButtonWidth
+            self.rightButtonHorizontalConstraint.constant = Constants.borderButtonWidth
+            self.leavesHeightConstraints.constant = leafViewHeightTimerMode
+            self.view.layoutIfNeeded()
+        })
+    }
+
     private func initTopBar() {
         let navigationBar = self.navigationController!.navigationBar
         let calendarBtn = UIBarButtonItem(
@@ -252,7 +302,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.presenter.onClickCreateTimer()
     }
 
-    @IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+    /*@IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let verticalTranslation = recognizer.translation(in: self.view).y * 0.7
 
         if (verticalTranslation <= 0) {
@@ -286,13 +336,13 @@ class PomodoroVC: UIViewController, PomodoroView {
                     self.view.layoutIfNeeded()
                     self.leafView.setNeedsDisplay()
                 }, completion: nil)
-    }
+    }*/
 
 }
 
 extension PomodoroVC: LeafViewListener {
     func onClickEditTimer(timer: String) {
-        self.displayUpdateTimerDialog(timer: timer)
+        self.presenter.onClickEditTimer(timer: timer)
     }
 }
 

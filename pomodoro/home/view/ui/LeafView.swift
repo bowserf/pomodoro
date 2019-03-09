@@ -1,9 +1,7 @@
 import UIKit
 
 protocol LeafViewListener {
-
     func onClickEditTimer(timer: String)
-
 }
 
 @IBDesignable
@@ -22,7 +20,8 @@ class LeafView: UIView {
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
 
         static let timerTextColor = UIColor.white
-        static let timerTextSize = UIFont.systemFont(ofSize: 55, weight: .bold)
+        static let timerTextSizeTimerMode = UIFont.systemFont(ofSize: 55, weight: .bold)
+        static let timerTextSizeStandByMode = UIFont.systemFont(ofSize: 115, weight: .bold)
 
         static let timerNameTextColor = UIColor.white
         static let timerNameTextSize = UIFont.systemFont(ofSize: 30, weight: .bold)
@@ -32,6 +31,8 @@ class LeafView: UIView {
 
         static let unityColor = UIColor.white
         static let unityTextSize = UIFont.systemFont(ofSize: 12, weight: .bold)
+
+        static let animationDuration = 0.6
     }
 
     public static let defaultViewHeight: CGFloat = 300
@@ -39,71 +40,107 @@ class LeafView: UIView {
     public var listener: LeafViewListener?
 
     @IBInspectable private var borderColor: UIColor = UIColor.white
-    @IBInspectable private var leafColor: UIColor = UIColor.init(red:0.36, green:0.78, blue:0.53, alpha:1.0)
+    @IBInspectable private var leafColor: UIColor = UIColor.init(red: 0.36, green: 0.78, blue: 0.53, alpha: 1.0)
 
-    private let time: UILabel
+    private let timeTimerMode: UILabel
+    private let underlineTimerMode: UIView
+
+    private let timeStandByMode: UILabel
+    private let underlineStandByMode: UIView
+
     private let timerNameBtn: UIButton
-    private let underline: UIView
     private let minute: UILabel
 
-    private var timerNameTopConstraint: NSLayoutConstraint!
-    private var timerTopConstraint: NSLayoutConstraint!
+    private var timeTimerModeTopConstraint: NSLayoutConstraint!
+    private var timeStandByModeTopConstraint: NSLayoutConstraint!
 
     private var timer: String?
 
     override init(frame: CGRect) {
-        self.underline = UIView()
-        self.underline.translatesAutoresizingMaskIntoConstraints = false
-        self.underline.backgroundColor = Constants.underlineColor
+        self.timeTimerMode = UILabel()
+        self.timeTimerMode.translatesAutoresizingMaskIntoConstraints = false
+        self.timeTimerMode.textColor = Constants.timerTextColor
+        self.timeTimerMode.font = Constants.timerTextSizeTimerMode
+
+        self.underlineTimerMode = UIView()
+        self.underlineTimerMode.translatesAutoresizingMaskIntoConstraints = false
+        self.underlineTimerMode.backgroundColor = Constants.underlineColor
+
+        self.timeStandByMode = UILabel()
+        self.timeStandByMode.translatesAutoresizingMaskIntoConstraints = false
+        self.timeStandByMode.textColor = Constants.timerTextColor
+        self.timeStandByMode.font = Constants.timerTextSizeStandByMode
+
+        self.underlineStandByMode = UIView()
+        self.underlineStandByMode.translatesAutoresizingMaskIntoConstraints = false
+        self.underlineStandByMode.backgroundColor = Constants.underlineColor
 
         self.minute = UILabel()
         self.minute.translatesAutoresizingMaskIntoConstraints = false
-        //self.unity.isHidden = true
         self.minute.textColor = Constants.unityColor
         self.minute.text = "MIN"
         self.minute.font = Constants.unityTextSize
-        self.minute.sizeToFit()
-
-        self.time = UILabel()
-        self.time.translatesAutoresizingMaskIntoConstraints = false
-        self.time.textColor = Constants.timerTextColor
-        self.time.font = Constants.timerTextSize
-        self.time.text = "25:00"
 
         self.timerNameBtn = UIButton()
         self.timerNameBtn.translatesAutoresizingMaskIntoConstraints = false
+        self.timerNameBtn.isHidden = true
         self.timerNameBtn.setTitle(self.timer, for: .normal)
         self.timerNameBtn.setTitleColor(Constants.timerNameTextColor, for: .normal)
         self.timerNameBtn.titleLabel?.font = Constants.timerNameTextSize
         self.timerNameBtn.setImage(UIImage(named: "Edit"), for: .normal)
-        self.timerNameBtn.semanticContentAttribute = UIApplication.shared
-                .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+        self.timerNameBtn.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft
+                ? .forceLeftToRight
+                : .forceRightToLeft
 
         super.init(frame: frame)
 
+        self.backgroundColor = UIColor.clear
+
         self.timerNameBtn.addTarget(self, action: #selector(onClickEditTimer), for: .touchUpInside)
 
-        self.addSubview(self.time)
+        self.addSubview(self.timeTimerMode)
+        self.addSubview(self.timeStandByMode)
+        self.addSubview(self.underlineTimerMode)
+        self.addSubview(self.underlineStandByMode)
         self.addSubview(self.timerNameBtn)
-        self.addSubview(self.underline)
         self.addSubview(self.minute)
 
-        backgroundColor = UIColor.clear
+        //--------------
+        // STAND BY MODE
+        //--------------
 
-        self.timerTopConstraint = self.time.topAnchor.constraint(equalTo: self.topAnchor)
-        self.timerTopConstraint.isActive = true
-        self.time.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        // time stand by mode constraints
+        self.timeStandByMode.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.timeStandByModeTopConstraint = self.timeStandByMode.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        self.timeStandByModeTopConstraint.isActive = true
 
-        self.minute.topAnchor.constraint(equalTo: self.time.bottomAnchor, constant: CGFloat(-10)).isActive = true
-        self.minute.rightAnchor.constraint(equalTo: self.time.rightAnchor).isActive = true
+        // underline stand by mode constraints
+        self.underlineStandByMode.topAnchor.constraint(equalTo: self.minute.bottomAnchor).isActive = true
+        self.underlineStandByMode.heightAnchor.constraint(equalToConstant: Constants.underlineStrokeWidth).isActive = true
+        self.underlineStandByMode.leftAnchor.constraint(equalTo: self.timeStandByMode.leftAnchor).isActive = true
+        self.underlineStandByMode.rightAnchor.constraint(equalTo: self.timeStandByMode.rightAnchor).isActive = true
 
-        self.underline.topAnchor.constraint(equalTo: self.minute.bottomAnchor).isActive = true
-        self.underline.heightAnchor.constraint(equalToConstant: Constants.underlineStrokeWidth).isActive = true
-        self.underline.leftAnchor.constraint(equalTo: self.time.leftAnchor).isActive = true
-        self.underline.rightAnchor.constraint(equalTo: self.time.rightAnchor).isActive = true
+        // minute constraints
+        self.minute.topAnchor.constraint(equalTo: self.timeStandByMode.bottomAnchor, constant: CGFloat(-10)).isActive = true
+        self.minute.rightAnchor.constraint(equalTo: self.timeStandByMode.rightAnchor).isActive = true
 
-        self.timerNameTopConstraint = self.timerNameBtn.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        self.timerNameTopConstraint.isActive = true
+        //-----------
+        // TIMER MODE
+        //-----------
+
+        // time timer mode constraints
+        self.timeTimerMode.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.timeTimerModeTopConstraint = self.timeTimerMode.topAnchor.constraint(equalTo: self.topAnchor)
+        self.timeTimerModeTopConstraint.isActive = true
+
+        // underline timer mode constraints
+        self.underlineTimerMode.topAnchor.constraint(equalTo: self.timeTimerMode.bottomAnchor).isActive = true
+        self.underlineTimerMode.heightAnchor.constraint(equalToConstant: Constants.underlineStrokeWidth).isActive = true
+        self.underlineTimerMode.leftAnchor.constraint(equalTo: self.timeTimerMode.leftAnchor).isActive = true
+        self.underlineTimerMode.rightAnchor.constraint(equalTo: self.timeTimerMode.rightAnchor).isActive = true
+
+        // timerName constraints
+        self.timerNameBtn.bottomAnchor.constraint(equalTo: self.underlineTimerMode.bottomAnchor).isActive = true
         self.timerNameBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     }
 
@@ -111,16 +148,6 @@ class LeafView: UIView {
         fatalError("You should use Storyboard")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        // timer constraints
-        self.timerTopConstraint.constant = Constants.verticalLowSectionHeight / 2
-
-        // timerNameBtn constraints
-        let val = Constants.verticalHighSectionHeight + (self.bounds.height - Constants.verticalHighSectionHeight - Constants.verticalLowSectionHeight) / 2
-        self.timerNameTopConstraint.constant = -val
-    }
 
     override func draw(_ rect: CGRect) {
         // draw shadow
@@ -133,13 +160,74 @@ class LeafView: UIView {
         path.stroke()
     }
 
+    public func setToTimerMode() {
+        self.minute.isHidden = true
+        self.underlineTimerMode.isHidden = false
+        self.underlineTimerMode.alpha = 0
+        self.timerNameBtn.isHidden = false
+        self.timerNameBtn.alpha = 0
+        self.timeStandByMode.alpha = 1
+        self.timeTimerMode.alpha = 0
+        self.timeTimerMode.isHidden = false
+        self.timeStandByModeTopConstraint.constant = 0
+        self.timeTimerModeTopConstraint.constant = CGFloat(100)
+        self.layoutIfNeeded()
+        UIView.animate(withDuration: Constants.animationDuration,
+                animations: {
+                    self.timeStandByModeTopConstraint.constant = -CGFloat(100)
+                    self.timeTimerModeTopConstraint.constant = 0
+                    self.timeStandByMode.alpha = 0
+                    self.timeTimerMode.alpha = 1
+                    self.timerNameBtn.alpha = 1
+                    self.underlineStandByMode.alpha = 0
+                    self.underlineTimerMode.alpha = 1
+                    self.layoutIfNeeded()
+                }, completion: { _ in
+            self.timeStandByMode.isHidden = true
+            self.underlineStandByMode.isHidden = true
+
+        })
+    }
+
+    public func setToStandByMode() {
+        self.minute.isHidden = false
+        self.underlineStandByMode.isHidden = false
+        self.underlineStandByMode.alpha = 0
+        self.timeStandByMode.isHidden = false
+        self.timeStandByMode.alpha = 0
+        self.timeStandByModeTopConstraint.constant = -CGFloat(100)
+        self.timerNameBtn.alpha = 1
+        self.timeTimerMode.alpha = 1
+        self.timeTimerModeTopConstraint.constant = 0
+        self.layoutIfNeeded()
+        UIView.animate(withDuration: Constants.animationDuration,
+                animations: {
+                    self.timeStandByModeTopConstraint.constant = 0
+                    self.timeTimerModeTopConstraint.constant = CGFloat(100)
+                    self.timeStandByMode.alpha = 1
+                    self.timeTimerMode.alpha = 0
+                    self.timerNameBtn.alpha = 0
+                    self.underlineStandByMode.alpha = 1
+                    self.underlineTimerMode.alpha = 0
+                    self.layoutIfNeeded()
+                }, completion: { _ in
+            self.timerNameBtn.isHidden = true
+            self.timeTimerMode.isHidden = true
+            self.underlineTimerMode.isHidden = true
+        })
+    }
+
     public func setTimer(timer: String) {
         self.timer = timer
         self.timerNameBtn.setTitle(timer, for: .normal)
     }
 
     public func showCurrentTime(time: String) {
-        self.time.text = time
+        self.timeTimerMode.text = time
+    }
+
+    func resetCurrentTime(time: String) {
+        self.timeStandByMode.text = time
     }
 
     private func drawLeavesPath(inset: CGFloat, color: UIColor) -> UIBezierPath {

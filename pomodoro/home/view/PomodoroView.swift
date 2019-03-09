@@ -15,4 +15,13 @@ protocol PomodoroView {
     func setTimerList(timerList: [String])
 
     func displayCreateTimerDialog()
+
+    func displayUpdateTimerDialog(timer: String)
+
+    func setStandByMode()
+
+    func setTimerMode()
+
+    func resetCurrentTime(time: String)
 }
+

@@ -21,6 +21,14 @@ class TomatoBackground: UIView {
         }
     }
 
+    public var progress: CGFloat = 0 {
+        didSet {
+            let radian: CGFloat = CGFloat(2 * .pi * progress)
+            endAngle = Constants.startAngle + radian
+            setNeedsDisplay()
+        }
+    }
+
     @IBInspectable private var nbCircle = 5
     @IBInspectable private var defaultColor: UIColor = UIColor.init(red:0.99, green:0.34, blue:0.31, alpha:1.0)
     @IBInspectable private var lineColor: UIColor = UIColor.white
@@ -50,12 +58,6 @@ class TomatoBackground: UIView {
 
         drawBackground(center: center, arcWidth: arcWidth)
         drawSeeds(center: center, arcWidth: arcWidth)
-    }
-
-    public func updateView(progress: Float) {
-        let radian: CGFloat = CGFloat(2 * .pi * progress)
-        endAngle = Constants.startAngle + radian
-        setNeedsDisplay()
     }
 
     private func drawBackground(center: CGPoint, arcWidth: CGFloat) {
