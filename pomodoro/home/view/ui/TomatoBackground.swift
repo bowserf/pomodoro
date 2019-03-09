@@ -35,7 +35,7 @@ class TomatoBackground: UIView {
 
     private var colors: [UIColor]
 
-    private var endAngle: CGFloat = -.pi * 3 / 2
+    private var endAngle: CGFloat = Constants.startAngle
 
     override init(frame: CGRect) {
         colors = []
