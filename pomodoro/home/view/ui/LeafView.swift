@@ -22,7 +22,7 @@ class LeafView: UIView {
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
 
         static let timerTextColor = UIColor.white
-        static let timerTextSizeTimerMode = UIFont.systemFont(ofSize: 55, weight: .bold)
+        static let timerTextSizeTimerMode = UIFont.systemFont(ofSize: 65, weight: .bold)
         static let timerTextSizeStandByMode = UIFont.systemFont(ofSize: 115, weight: .bold)
 
         static let timerNameTextColor = UIColor.white
@@ -35,6 +35,8 @@ class LeafView: UIView {
         static let unityTextSize = UIFont.systemFont(ofSize: 12, weight: .bold)
 
         static let animationDuration = 0.6
+
+        static let offsetTransitionAnimation: CGFloat = CGFloat(40)
     }
 
     public var listener: LeafViewListener?
@@ -124,7 +126,7 @@ class LeafView: UIView {
         self.underlineStandByMode.rightAnchor.constraint(equalTo: self.timeStandByMode.rightAnchor).isActive = true
 
         // minute constraints
-        self.minute.topAnchor.constraint(equalTo: self.timeStandByMode.bottomAnchor, constant: CGFloat(-10)).isActive = true
+        self.minute.topAnchor.constraint(equalTo: self.timeStandByMode.firstBaselineAnchor).isActive = true
         self.minute.rightAnchor.constraint(equalTo: self.timeStandByMode.rightAnchor).isActive = true
 
         //-----------
@@ -133,17 +135,17 @@ class LeafView: UIView {
 
         // time timer mode constraints
         self.timeTimerMode.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        self.timeTimerModeTopConstraint = self.timeTimerMode.topAnchor.constraint(equalTo: self.topAnchor)
+        self.timeTimerModeTopConstraint = self.timeTimerMode.firstBaselineAnchor.constraint(equalTo: self.topAnchor)
         self.timeTimerModeTopConstraint.isActive = true
 
         // underline timer mode constraints
-        self.underlineTimerMode.topAnchor.constraint(equalTo: self.timeTimerMode.bottomAnchor).isActive = true
+        self.underlineTimerMode.topAnchor.constraint(equalTo: self.timeTimerMode.firstBaselineAnchor, constant: CGFloat(5)).isActive = true
         self.underlineTimerMode.heightAnchor.constraint(equalToConstant: Constants.underlineStrokeWidth).isActive = true
         self.underlineTimerMode.leftAnchor.constraint(equalTo: self.timeTimerMode.leftAnchor).isActive = true
         self.underlineTimerMode.rightAnchor.constraint(equalTo: self.timeTimerMode.rightAnchor).isActive = true
 
         // timerName constraints
-        self.timerNameBtn.bottomAnchor.constraint(equalTo: self.underlineTimerMode.bottomAnchor).isActive = true
+        self.timerNameBtn.topAnchor.constraint(equalTo: self.underlineTimerMode.bottomAnchor).isActive = true
         self.timerNameBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     }
 
@@ -178,12 +180,12 @@ class LeafView: UIView {
         self.timeTimerMode.alpha = 0
         self.timeTimerMode.isHidden = false
         self.timeStandByModeTopConstraint.constant = 0
-        self.timeTimerModeTopConstraint.constant = CGFloat(100)
+        self.timeTimerModeTopConstraint.constant = self.verticalLowSectionHeight + Constants.offsetTransitionAnimation
         self.layoutIfNeeded()
         UIView.animate(withDuration: Constants.animationDuration,
                 animations: {
-                    self.timeStandByModeTopConstraint.constant = -CGFloat(100)
-                    self.timeTimerModeTopConstraint.constant = 0
+                    self.timeStandByModeTopConstraint.constant = -Constants.offsetTransitionAnimation
+                    self.timeTimerModeTopConstraint.constant = self.verticalLowSectionHeight
                     self.timeStandByMode.alpha = 0
                     self.timeTimerMode.alpha = 1
                     self.timerNameBtn.alpha = 1
@@ -203,15 +205,15 @@ class LeafView: UIView {
         self.underlineStandByMode.alpha = 0
         self.timeStandByMode.isHidden = false
         self.timeStandByMode.alpha = 0
-        self.timeStandByModeTopConstraint.constant = -CGFloat(100)
+        self.timeStandByModeTopConstraint.constant = -Constants.offsetTransitionAnimation
         self.timerNameBtn.alpha = 1
         self.timeTimerMode.alpha = 1
-        self.timeTimerModeTopConstraint.constant = 0
+        self.timeTimerModeTopConstraint.constant = self.verticalLowSectionHeight
         self.layoutIfNeeded()
         UIView.animate(withDuration: Constants.animationDuration,
                 animations: {
                     self.timeStandByModeTopConstraint.constant = 0
-                    self.timeTimerModeTopConstraint.constant = CGFloat(100)
+                    self.timeTimerModeTopConstraint.constant = self.verticalLowSectionHeight + Constants.offsetTransitionAnimation
                     self.timeStandByMode.alpha = 1
                     self.timeTimerMode.alpha = 0
                     self.timerNameBtn.alpha = 0
