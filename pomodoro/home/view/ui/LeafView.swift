@@ -13,8 +13,10 @@ class LeafView: UIView {
         static let shadowOffset: CGFloat = 10
         static let shadowColor = UIColor.init(white: 0, alpha: 0.5)
 
-        static let verticalHighSectionHeight: CGFloat = 0.2 * defaultViewHeight
-        static let verticalLowSectionHeight: CGFloat = 0.5 * defaultViewHeight
+        static let verticalProportionalHighSectionHeight: CGFloat = 0.2
+        static let verticalProportionalLowSectionHeight: CGFloat = 0.5
+
+        static let verticalProportionalMiddleSectionHeight: CGFloat = 0.3
 
         static let horizontalRatioLowLevel: CGFloat = 1 / 17
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
@@ -35,8 +37,6 @@ class LeafView: UIView {
         static let animationDuration = 0.6
     }
 
-    public static let defaultViewHeight: CGFloat = 300
-
     public var listener: LeafViewListener?
 
     @IBInspectable private var borderColor: UIColor = UIColor.white
@@ -53,6 +53,9 @@ class LeafView: UIView {
 
     private var timeTimerModeTopConstraint: NSLayoutConstraint!
     private var timeStandByModeTopConstraint: NSLayoutConstraint!
+
+    private var verticalHighSectionHeight: CGFloat!
+    private var verticalLowSectionHeight: CGFloat!
 
     private var timer: String?
 
@@ -142,6 +145,11 @@ class LeafView: UIView {
         // timerName constraints
         self.timerNameBtn.bottomAnchor.constraint(equalTo: self.underlineTimerMode.bottomAnchor).isActive = true
         self.timerNameBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    }
+
+    func setTimerModeHeight(height: CGFloat) {
+        self.verticalLowSectionHeight = height * Constants.verticalProportionalLowSectionHeight
+        self.verticalHighSectionHeight = height * Constants.verticalProportionalHighSectionHeight
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -237,21 +245,20 @@ class LeafView: UIView {
         let middleOffsetX = width * Constants.horizontalRatioMiddleLevel
         let lowOffsetX = width * Constants.horizontalRatioLowLevel
 
-        let verticalLowSectionHeight = Constants.verticalLowSectionHeight
-        let verticalMiddleSectionHeight = height - Constants.verticalHighSectionHeight
+        let verticalMiddleSectionHeight = height - self.verticalHighSectionHeight
         let verticalHighSectionHeight = height
 
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 0, y: verticalHighSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX, y: verticalMiddleSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX, y: verticalLowSectionHeight - inset))
-        path.addArc(withCenter: CGPoint(x: middleOffsetX + lowOffsetX / 2, y: verticalLowSectionHeight - inset), radius: lowOffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
+        path.addLine(to: CGPoint(x: middleOffsetX, y: self.verticalLowSectionHeight - inset))
+        path.addArc(withCenter: CGPoint(x: middleOffsetX + lowOffsetX / 2, y: self.verticalLowSectionHeight - inset), radius: lowOffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
         path.addLine(to: CGPoint(x: middleOffsetX + lowOffsetX, y: verticalMiddleSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX * 2 + lowOffsetX, y: verticalHighSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX * 3 + lowOffsetX, y: verticalHighSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX, y: verticalMiddleSectionHeight - inset))
-        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX, y: verticalLowSectionHeight - inset))
-        path.addArc(withCenter: CGPoint(x: middleOffsetX * 4 + lowOffsetX * 1.5, y: verticalLowSectionHeight - inset), radius: lowOffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
+        path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX, y: self.verticalLowSectionHeight - inset))
+        path.addArc(withCenter: CGPoint(x: middleOffsetX * 4 + lowOffsetX * 1.5, y: self.verticalLowSectionHeight - inset), radius: lowOffsetX / 2, startAngle: -.pi, endAngle: 0, clockwise: true)
         path.addLine(to: CGPoint(x: middleOffsetX * 4 + lowOffsetX * 2, y: verticalMiddleSectionHeight - inset))
         path.addLine(to: CGPoint(x: middleOffsetX * 5 + lowOffsetX * 2, y: verticalHighSectionHeight - inset))
 
