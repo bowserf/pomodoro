@@ -8,10 +8,11 @@ class ManageTimeInteractor: ManageTimeInteractorInput {
 
     private var listeners: NSHashTable<AnyObject> = NSHashTable(options: .weakMemory)
 
-    private var currentTimer: Int!
+    private var currentTimer: Int
 
     init(timeManager: TimeManager) {
         self.timeManager = timeManager
+        self.currentTimer = ManageTimeInteractor.startTime
     }
 
     func startTimer() {
