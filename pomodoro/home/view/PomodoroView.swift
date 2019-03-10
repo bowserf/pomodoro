@@ -16,7 +16,7 @@ protocol PomodoroView {
 
     func displayCreatePomodoroDialog()
 
-    func displayUpdatePomodoroDialog(pomodoro: Pomodoro)
+    func displayUpdatePomodoroDialog(pomodoroStatus: PomodoroStatus)
 
     func setStandByMode()
 

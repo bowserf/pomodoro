@@ -233,7 +233,8 @@ class PomodoroVC: UIViewController, PomodoroView {
     func setPomodoroStatusList(pomodoroStatusList: [PomodoroStatus]) {
         self.pomodoroStatusList = pomodoroStatusList
         self.pomodoroTableView.reloadData()
-        self.leafView.setPomodoro(pomodoro: pomodoroStatusList[0].pomodoro)
+        let selectedPomodoroStatus = pomodoroStatusList.first(where: { $0.isSelected })!
+        self.leafView.setPomodoro(pomodoroStatus: selectedPomodoroStatus)
     }
 
     func displayCreatePomodoroDialog() {
@@ -253,18 +254,18 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func displayUpdatePomodoroDialog(pomodoro: Pomodoro) {
+    func displayUpdatePomodoroDialog(pomodoroStatus: PomodoroStatus) {
         let alertController = UIAlertController(title: "Pomodoro name?", message: nil, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Update", style: .default) { (_) in
             let optionalName = alertController.textFields?[0].text
             if let name = optionalName {
-                self.presenter.updatePomodoro(oldPomodoro: pomodoro, newName: name)
+                self.presenter.updatePomodoro(oldPomodoroStatus: pomodoroStatus, newName: name)
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addTextField { (textField) in
             textField.placeholder = "Enter Name"
-            textField.text = pomodoro.name
+            textField.text = pomodoroStatus.pomodoro.name
         }
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
@@ -385,8 +386,8 @@ class PomodoroVC: UIViewController, PomodoroView {
 }
 
 extension PomodoroVC: LeafViewListener {
-    func onClickEditTimer(pomodoro: Pomodoro) {
-        self.presenter.onClickEditPomodoro(pomodoro: pomodoro)
+    func onClickEditTimer(pomodoroStatus: PomodoroStatus) {
+        self.presenter.onClickEditPomodoro(pomodoroStatus: pomodoroStatus)
     }
 }
 

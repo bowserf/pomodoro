@@ -66,6 +66,9 @@ class PomodoroPresenter {
 
     func createPomodoro(name: String) {
         self.getPomodoroListInteractor.addPomodoro(name: name)
+
+        let pomodoroStatusList = createPomodoroStatusList()
+        self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
     }
 
     private func showStandByTime() {
@@ -83,12 +86,19 @@ class PomodoroPresenter {
         self.view.showCurrentTime(time: time, progress: progress)
     }
 
-    func onClickEditPomodoro(pomodoro: Pomodoro) {
-        self.view.displayUpdatePomodoroDialog(pomodoro: pomodoro)
+    func onClickEditPomodoro(pomodoroStatus: PomodoroStatus) {
+        self.view.displayUpdatePomodoroDialog(pomodoroStatus: pomodoroStatus)
     }
 
-    func updatePomodoro(oldPomodoro: Pomodoro, newName: String) {
-        self.getPomodoroListInteractor.updatePomodoro(oldPomodoro: oldPomodoro, newName: newName)
+    func updatePomodoro(oldPomodoroStatus: PomodoroStatus, newName: String) {
+        self.getPomodoroListInteractor.updatePomodoro(oldPomodoro: oldPomodoroStatus.pomodoro, newName: newName)
+
+        if oldPomodoroStatus.isSelected {
+            self.selectPomodoroInteractor.setSelectedPomodoro(pomodoro: Pomodoro(name: newName))
+        }
+
+        let pomodoroStatusList = createPomodoroStatusList()
+        self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
     }
 
     func onClickSelect(pomodoro selectedPomodoro: Pomodoro) {

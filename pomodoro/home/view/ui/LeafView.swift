@@ -1,7 +1,7 @@
 import UIKit
 
 protocol LeafViewListener {
-    func onClickEditTimer(pomodoro: Pomodoro)
+    func onClickEditTimer(pomodoroStatus: PomodoroStatus)
 }
 
 @IBDesignable
@@ -60,7 +60,7 @@ class LeafView: UIView {
     private var verticalHighSectionHeight: CGFloat!
     private var verticalLowSectionHeight: CGFloat!
 
-    private var pomodoro: Pomodoro?
+    private var pomodoroStatus: PomodoroStatus?
 
     override init(frame: CGRect) {
         self.timeTimerMode = UILabel()
@@ -227,9 +227,9 @@ class LeafView: UIView {
         })
     }
 
-    public func setPomodoro(pomodoro: Pomodoro) {
-        self.pomodoro = pomodoro
-        self.timerNameBtn.setTitle(pomodoro.name, for: .normal)
+    public func setPomodoro(pomodoroStatus: PomodoroStatus) {
+        self.pomodoroStatus = pomodoroStatus
+        self.timerNameBtn.setTitle(pomodoroStatus.pomodoro.name, for: .normal)
     }
 
     public func showCurrentTime(time: String) {
@@ -278,7 +278,7 @@ class LeafView: UIView {
     }
 
     @IBAction private func onClickEditTimer() {
-        self.listener?.onClickEditTimer(pomodoro: self.pomodoro!)
+        self.listener?.onClickEditTimer(pomodoroStatus: self.pomodoroStatus!)
     }
 
 }
