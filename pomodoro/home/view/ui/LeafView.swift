@@ -27,6 +27,7 @@ class LeafView: UIView {
 
         static let timerNameTextColor = UIColor.white
         static let timerNameTextSize = UIFont.systemFont(ofSize: 30, weight: .bold)
+        static let timerNameTopMargin: CGFloat = 10
 
         static let underlineColor = UIColor.white
         static let underlineStrokeWidth: CGFloat = 5
@@ -145,7 +146,7 @@ class LeafView: UIView {
         self.underlineTimerMode.rightAnchor.constraint(equalTo: self.timeTimerMode.rightAnchor).isActive = true
 
         // timerName constraints
-        self.timerNameBtn.topAnchor.constraint(equalTo: self.underlineTimerMode.bottomAnchor).isActive = true
+        self.timerNameBtn.topAnchor.constraint(equalTo: self.underlineTimerMode.bottomAnchor, constant: Constants.timerNameTopMargin).isActive = true
         self.timerNameBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     }
 
