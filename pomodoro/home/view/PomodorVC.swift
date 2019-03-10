@@ -22,7 +22,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let timerTableViewHeight: CGFloat = 3 * Constants.timerCellHeight
         static let timerTableViewTranslation: CGFloat = 200
         static let timerCellFontSize: CGFloat = 25
-        static let selectedCheck = UIImage(named: "Add")
+        static let selectedCheck = UIImage(named: "SelectedTimer")
         static let noSelectedTimerNameColor = UIColor.init(white: 1, alpha: 0.6)
         static let selectedTimerNameColor = UIColor.white
     }
@@ -55,7 +55,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.pomodoroTableView = UITableView(frame: CGRect.zero, style: .plain)
         self.pomodoroTableView.translatesAutoresizingMaskIntoConstraints = false
-        self.pomodoroTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
+        self.pomodoroTableView.register(PomodoroCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         self.pomodoroTableView.tableFooterView = UIView()
         self.pomodoroTableView.backgroundColor = .clear
         self.pomodoroTableView.showsVerticalScrollIndicator = false
@@ -403,22 +403,54 @@ extension PomodoroVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
-        cell.backgroundColor = .clear
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath) as! PomodoroCell
 
-        cell.textLabel?.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
-        cell.textLabel?.textAlignment = .center
+        cell.backgroundColor = .clear
+        cell.selectionStyle = .none
+
         let pomodoroStatus = self.pomodoroStatusList[indexPath.row]
-        cell.textLabel?.text = pomodoroStatus.pomodoro.name
+        cell.pomodoroName.text = pomodoroStatus.pomodoro.name
         if pomodoroStatus.isSelected {
-            cell.textLabel?.textColor = Constants.selectedTimerNameColor
-            cell.imageView?.image = Constants.selectedCheck
+            cell.pomodoroName.textColor = Constants.selectedTimerNameColor
+            cell.icon.image = Constants.selectedCheck
         } else {
-            cell.textLabel?.textColor = Constants.noSelectedTimerNameColor
-            cell.imageView?.image = nil
+            cell.pomodoroName.textColor = Constants.noSelectedTimerNameColor
+            cell.icon.image = nil
         }
 
         return cell
+    }
+
+    class PomodoroCell: UITableViewCell {
+
+        var pomodoroName: UILabel
+        var icon: UIImageView
+
+        override init(style: CellStyle, reuseIdentifier: String?) {
+            self.pomodoroName = UILabel()
+            self.pomodoroName.translatesAutoresizingMaskIntoConstraints = false
+            self.pomodoroName.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
+            self.pomodoroName.textAlignment = .center
+
+            self.icon = UIImageView()
+            self.icon.translatesAutoresizingMaskIntoConstraints = false
+            self.icon.image = Constants.selectedCheck
+
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+            self.contentView.addSubview(self.pomodoroName)
+            self.contentView.addSubview(self.icon)
+
+            self.pomodoroName.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
+            self.pomodoroName.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
+
+            self.icon.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
+            self.icon.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
+        }
+
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
     }
 
 }
