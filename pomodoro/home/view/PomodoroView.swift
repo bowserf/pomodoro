@@ -12,11 +12,11 @@ protocol PomodoroView {
 
     func showCurrentTime(time: String, progress: Float)
 
-    func setTimerList(timerList: [String])
+    func setPomodoroList(pomodoroList: [Pomodoro])
 
-    func displayCreateTimerDialog()
+    func displayCreatePomodoroDialog()
 
-    func displayUpdateTimerDialog(timer: String)
+    func displayUpdatePomodoroDialog(pomodoro: Pomodoro)
 
     func setStandByMode()
 

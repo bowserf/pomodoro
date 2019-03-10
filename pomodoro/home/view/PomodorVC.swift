@@ -31,7 +31,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     private let leafView: LeafView
     private let leftButton: OneRoundBorderButton
     private let rightButton: OneRoundBorderButton
-    private let timerTableView: UITableView
+    private let pomodoroTableView: UITableView
 
     private var leftButtonHorizontalConstraint: NSLayoutConstraint!
     private var rightButtonHorizontalConstraint: NSLayoutConstraint!
@@ -47,16 +47,16 @@ class PomodoroVC: UIViewController, PomodoroView {
     private var leafViewHeightTimerMode: CGFloat!
     private var leafViewHeightStandByMode: CGFloat!
 
-    private var timerList: [String]!
+    private var pomodoroList: [Pomodoro]!
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        self.timerTableView = UITableView(frame: CGRect.zero, style: .plain)
-        self.timerTableView.translatesAutoresizingMaskIntoConstraints = false
-        self.timerTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
-        self.timerTableView.tableFooterView = UIView()
-        self.timerTableView.backgroundColor = .clear
-        self.timerTableView.showsVerticalScrollIndicator = false
-        self.timerTableView.separatorStyle = .none
+        self.pomodoroTableView = UITableView(frame: CGRect.zero, style: .plain)
+        self.pomodoroTableView.translatesAutoresizingMaskIntoConstraints = false
+        self.pomodoroTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
+        self.pomodoroTableView.tableFooterView = UIView()
+        self.pomodoroTableView.backgroundColor = .clear
+        self.pomodoroTableView.showsVerticalScrollIndicator = false
+        self.pomodoroTableView.separatorStyle = .none
 
         self.startStopBtn = TextAndImageAnimatedButton()
         self.startStopBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -86,8 +86,8 @@ class PomodoroVC: UIViewController, PomodoroView {
 
         self.leafView.listener = self
 
-        self.timerTableView.dataSource = self
-        self.timerTableView.delegate = self
+        self.pomodoroTableView.dataSource = self
+        self.pomodoroTableView.delegate = self
 
         self.startStopBtn.addTarget(self, action: #selector(onClickStartStopBtn), for: .touchDown)
 
@@ -120,16 +120,16 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.view.addSubview(self.startStopBtn)
         self.view.addSubview(self.leftButton)
         self.view.addSubview(self.rightButton)
-        self.view.addSubview(self.timerTableView)
+        self.view.addSubview(self.pomodoroTableView)
 
         self.view.backgroundColor = UIColor.white
 
         // timer list constraints
-        self.timerTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.timerListVerticalConstraint = self.timerTableView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalTimerListOffset)
+        self.pomodoroTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.timerListVerticalConstraint = self.pomodoroTableView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalTimerListOffset)
         self.timerListVerticalConstraint.isActive = true
-        self.timerTableView.widthAnchor.constraint(equalToConstant: Constants.timerTableViewWidth).isActive = true
-        self.timerTableView.heightAnchor.constraint(equalToConstant: Constants.timerTableViewHeight).isActive = true
+        self.pomodoroTableView.widthAnchor.constraint(equalToConstant: Constants.timerTableViewWidth).isActive = true
+        self.pomodoroTableView.heightAnchor.constraint(equalToConstant: Constants.timerTableViewHeight).isActive = true
 
         // leafView constraints
         let leafViewHeightStandByMode = self.view.bounds.height * Constants.leafViewProportionalHeightStandByMode
@@ -229,18 +229,18 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.leafView.resetCurrentTime(time: time)
     }
 
-    func setTimerList(timerList: [String]) {
-        self.timerList = timerList
-        self.timerTableView.reloadData()
-        self.leafView.setTimer(timer: timerList[0])
+    func setPomodoroList(pomodoroList: [Pomodoro]) {
+        self.pomodoroList = pomodoroList
+        self.pomodoroTableView.reloadData()
+        self.leafView.setPomodoro(pomodoro: pomodoroList[0])
     }
 
-    func displayCreateTimerDialog() {
-        let alertController = UIAlertController(title: "Timer name?", message: nil, preferredStyle: .alert)
+    func displayCreatePomodoroDialog() {
+        let alertController = UIAlertController(title: "Pomodoro name?", message: nil, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Create", style: .default) { (_) in
             let optionalName = alertController.textFields?[0].text
             if let name = optionalName {
-                self.presenter.createTimer(name: name)
+                self.presenter.createPomodoro(name: name)
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -252,18 +252,18 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func displayUpdateTimerDialog(timer: String) {
-        let alertController = UIAlertController(title: "Timer name?", message: nil, preferredStyle: .alert)
+    func displayUpdatePomodoroDialog(pomodoro: Pomodoro) {
+        let alertController = UIAlertController(title: "Pomodoro name?", message: nil, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Update", style: .default) { (_) in
             let optionalName = alertController.textFields?[0].text
             if let name = optionalName {
-                self.presenter.createTimer(name: name)
+                self.presenter.updatePomodoro(oldPomodoro: pomodoro, newName: name)
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addTextField { (textField) in
             textField.placeholder = "Enter Name"
-            textField.text = timer
+            textField.text = pomodoro.name
         }
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
@@ -273,14 +273,14 @@ class PomodoroVC: UIViewController, PomodoroView {
     func setStandByMode() {
         self.leafView.setToStandByMode()
         self.startStopBtn.setStartMode()
-        self.timerTableView.isHidden = false
+        self.pomodoroTableView.isHidden = false
         UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
             self.tomatoBackground.verticalOffset = self.verticalStandByModeOffset
             self.startStopBtnVerticalConstraint.constant = self.verticalStandByModeOffset
             self.tomatoBackground.progress = 0
             self.leavesHeightConstraints.constant = self.leafViewHeightStandByMode
             self.timerListVerticalConstraint.constant = self.verticalTimerListOffset
-            self.timerTableView.alpha = 1
+            self.pomodoroTableView.alpha = 1
             self.leafView.setNeedsDisplay()
             self.view.layoutIfNeeded()
         }, completion: { _ in
@@ -302,11 +302,11 @@ class PomodoroVC: UIViewController, PomodoroView {
             self.rightButtonHorizontalConstraint.constant = Constants.borderButtonWidth
             self.leavesHeightConstraints.constant = self.leafViewHeightTimerMode
             self.timerListVerticalConstraint.constant = self.verticalTimerListOffset - Constants.timerTableViewTranslation
-            self.timerTableView.alpha = 0
+            self.pomodoroTableView.alpha = 0
             self.leafView.setNeedsDisplay()
             self.view.layoutIfNeeded()
         }, completion: { _ in
-            self.timerTableView.isHidden = true
+            self.pomodoroTableView.isHidden = true
         })
     }
 
@@ -342,7 +342,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     @IBAction private func onClickCreateTimer() {
-        self.presenter.onClickCreateTimer()
+        self.presenter.onClickCreatePomodoro()
     }
 
     /*@IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
@@ -384,8 +384,8 @@ class PomodoroVC: UIViewController, PomodoroView {
 }
 
 extension PomodoroVC: LeafViewListener {
-    func onClickEditTimer(timer: String) {
-        self.presenter.onClickEditTimer(timer: timer)
+    func onClickEditTimer(pomodoro: Pomodoro) {
+        self.presenter.onClickEditPomodoro(pomodoro: pomodoro)
     }
 }
 
@@ -395,7 +395,7 @@ extension PomodoroVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.timerList.count
+        return self.pomodoroList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -405,8 +405,8 @@ extension PomodoroVC: UITableViewDataSource {
         cell.textLabel?.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
         cell.textLabel?.textAlignment = .center
         cell.textLabel?.textColor = UIColor.white
-        let timer = self.timerList[indexPath.row]
-        cell.textLabel?.text = timer
+        let pomodoro = self.pomodoroList[indexPath.row]
+        cell.textLabel?.text = pomodoro.name
 
         return cell
     }

@@ -6,9 +6,9 @@ class PomodoWireframe {
     static func createViewController() -> UIViewController {
         let timeInteractor = ManageTimeInteractor(timeManager: TimeManagerImpl())
         let pomodoroVC = PomodoroVC()
-        let timerStorage = TimerStorageDisk()
-        let getTimerListInteractor = GetTimerListInteractor(timerStorage: timerStorage)
-        let presenter = PomodoroPresenter(timeInteractor: timeInteractor, getTimerListInteractor: getTimerListInteractor)
+        let pomodoroStorage = PomodoroStorageDisk()
+        let getTimerListInteractor = GetPomodoroListInteractor(pomodoroStorage: pomodoroStorage)
+        let presenter = PomodoroPresenter(pomodoroInteractor: timeInteractor, getPomodoroListInteractor: getTimerListInteractor)
         pomodoroVC.presenter = presenter
         return pomodoroVC
     }

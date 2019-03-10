@@ -1,7 +1,7 @@
 import UIKit
 
 protocol LeafViewListener {
-    func onClickEditTimer(timer: String)
+    func onClickEditTimer(pomodoro: Pomodoro)
 }
 
 @IBDesignable
@@ -60,7 +60,7 @@ class LeafView: UIView {
     private var verticalHighSectionHeight: CGFloat!
     private var verticalLowSectionHeight: CGFloat!
 
-    private var timer: String?
+    private var pomodoro: Pomodoro?
 
     override init(frame: CGRect) {
         self.timeTimerMode = UILabel()
@@ -90,7 +90,6 @@ class LeafView: UIView {
         self.timerNameBtn = UIButton()
         self.timerNameBtn.translatesAutoresizingMaskIntoConstraints = false
         self.timerNameBtn.isHidden = true
-        self.timerNameBtn.setTitle(self.timer, for: .normal)
         self.timerNameBtn.setTitleColor(Constants.timerNameTextColor, for: .normal)
         self.timerNameBtn.titleLabel?.font = Constants.timerNameTextSize
         self.timerNameBtn.setImage(UIImage(named: "Edit"), for: .normal)
@@ -228,9 +227,9 @@ class LeafView: UIView {
         })
     }
 
-    public func setTimer(timer: String) {
-        self.timer = timer
-        self.timerNameBtn.setTitle(timer, for: .normal)
+    public func setPomodoro(pomodoro: Pomodoro) {
+        self.pomodoro = pomodoro
+        self.timerNameBtn.setTitle(pomodoro.name, for: .normal)
     }
 
     public func showCurrentTime(time: String) {
@@ -279,7 +278,7 @@ class LeafView: UIView {
     }
 
     @IBAction private func onClickEditTimer() {
-        self.listener?.onClickEditTimer(timer: self.timer!)
+        self.listener?.onClickEditTimer(pomodoro: self.pomodoro!)
     }
 
 }
