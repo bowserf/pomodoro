@@ -21,6 +21,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let timerCellHeight: CGFloat = 44
         static let timerTableViewHeight: CGFloat = 3 * Constants.timerCellHeight
         static let timerTableViewTranslation: CGFloat = 200
+        static let timerCellFontSize: CGFloat = 25
     }
 
     public var presenter: PomodoroPresenter!
@@ -401,6 +402,7 @@ extension PomodoroVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
         cell.backgroundColor = .clear
 
+        cell.textLabel?.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
         cell.textLabel?.textAlignment = .center
         cell.textLabel?.textColor = UIColor.white
         let timer = self.timerList[indexPath.row]
