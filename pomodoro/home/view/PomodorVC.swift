@@ -23,6 +23,8 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let timerTableViewTranslation: CGFloat = 200
         static let timerCellFontSize: CGFloat = 25
         static let selectedCheck = UIImage(named: "Add")
+        static let noSelectedTimerNameColor = UIColor.init(white: 1, alpha: 0.6)
+        static let selectedTimerNameColor = UIColor.white
     }
 
     public var presenter: PomodoroPresenter!
@@ -406,12 +408,13 @@ extension PomodoroVC: UITableViewDataSource {
 
         cell.textLabel?.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
         cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = UIColor.white
         let pomodoroStatus = self.pomodoroStatusList[indexPath.row]
         cell.textLabel?.text = pomodoroStatus.pomodoro.name
         if pomodoroStatus.isSelected {
+            cell.textLabel?.textColor = Constants.selectedTimerNameColor
             cell.imageView?.image = Constants.selectedCheck
         } else {
+            cell.textLabel?.textColor = Constants.noSelectedTimerNameColor
             cell.imageView?.image = nil
         }
 
