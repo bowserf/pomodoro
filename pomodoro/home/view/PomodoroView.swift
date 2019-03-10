@@ -12,7 +12,7 @@ protocol PomodoroView {
 
     func showCurrentTime(time: String, progress: Float)
 
-    func setPomodoroList(pomodoroList: [Pomodoro])
+    func setPomodoroStatusList(pomodoroStatusList: [PomodoroStatus])
 
     func displayCreatePomodoroDialog()
 

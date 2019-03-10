@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9403CCD22235199400C04662 /* SelectPomodoroInteractorIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9403CCD02235199400C04662 /* SelectPomodoroInteractorIO.swift */; };
+		9403CCD32235199400C04662 /* SelectPomodoroInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9403CCD12235199400C04662 /* SelectPomodoroInteractor.swift */; };
 		941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECD22211E8C300316FDC /* AppDelegate.swift */; };
 		941CECDA2211E8C400316FDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941CECD92211E8C400316FDC /* Assets.xcassets */; };
 		941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */; };
@@ -32,6 +34,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9403CCD02235199400C04662 /* SelectPomodoroInteractorIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPomodoroInteractorIO.swift; sourceTree = "<group>"; };
+		9403CCD12235199400C04662 /* SelectPomodoroInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPomodoroInteractor.swift; sourceTree = "<group>"; };
 		941CECCF2211E8C300316FDC /* pomodoro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pomodoro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		941CECD22211E8C300316FDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		941CECD92211E8C400316FDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 		D50F5B9909A42B419D657FD3 /* interactor */ = {
 			isa = PBXGroup;
 			children = (
+				9403CCD12235199400C04662 /* SelectPomodoroInteractor.swift */,
+				9403CCD02235199400C04662 /* SelectPomodoroInteractorIO.swift */,
 				D50F56491A5DDF02D05ACEC9 /* ManageTimeInteractor.swift */,
 				D50F5638769E60FB2E1C5DF5 /* ManageTimeInteractorIO.swift */,
 				D50F5A43EE962423AFF61E3E /* GetPomodoroListInteractorIO.swift */,
@@ -257,6 +263,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9403CCD22235199400C04662 /* SelectPomodoroInteractorIO.swift in Sources */,
+				9403CCD32235199400C04662 /* SelectPomodoroInteractor.swift in Sources */,
 				941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */,
 				D50F564EB39C239CB52DDE0B /* TransparentNavigationController.swift in Sources */,
 				D50F51FB0622E6121786860C /* PomodorVC.swift in Sources */,

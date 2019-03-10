@@ -4,11 +4,14 @@ class PomodoroPresenter {
 
     private let pomodoroInteractor: ManageTimeInteractor
     private let getPomodoroListInteractor: GetPomodoroListInteractorInput
+    private let selectPomodoroInteractor: SelectPomodoroInteractorInput
 
-    init(pomodoroInteractor: ManageTimeInteractor,
-         getPomodoroListInteractor: GetPomodoroListInteractorInput) {
-        self.pomodoroInteractor = pomodoroInteractor
+    init(timeInteractor: ManageTimeInteractor,
+         getPomodoroListInteractor: GetPomodoroListInteractorInput,
+         selectPomodoroInteractor: SelectPomodoroInteractorInput) {
+        self.pomodoroInteractor = timeInteractor
         self.getPomodoroListInteractor = getPomodoroListInteractor
+        self.selectPomodoroInteractor = selectPomodoroInteractor
     }
 
     public func attachView(view: PomodoroView) {
@@ -16,7 +19,9 @@ class PomodoroPresenter {
         self.pomodoroInteractor.add(listener: self)
 
         self.showStandByTime()
-        self.view.setPomodoroList(pomodoroList: self.getPomodoroListInteractor.getPomodoroList())
+
+        let pomodoroStatusList = createPomodoroStatusList()
+        self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
     }
 
     public func detachView() {
@@ -85,6 +90,32 @@ class PomodoroPresenter {
     func updatePomodoro(oldPomodoro: Pomodoro, newName: String) {
         self.getPomodoroListInteractor.updatePomodoro(oldPomodoro: oldPomodoro, newName: newName)
     }
+
+    func onClickSelect(pomodoro selectedPomodoro: Pomodoro) {
+        self.selectPomodoroInteractor.setSelectedPomodoro(pomodoro: selectedPomodoro)
+
+        let pomodoroStatusList = createPomodoroStatusList()
+        self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
+    }
+
+    private func createPomodoroStatusList() -> [PomodoroStatus]{
+        let selectedPomodoro = self.selectPomodoroInteractor.getSelectedPomodoro()
+        let pomodoroList = self.getPomodoroListInteractor.getPomodoroList()
+        var pomodoroStatusList = [PomodoroStatus]()
+        pomodoroList.forEach{ pomodoro in
+            let isSelected = selectedPomodoro.name == pomodoro.name
+            pomodoroStatusList.append(PomodoroStatus(pomodoro: pomodoro, isSelected: isSelected))
+        }
+        return pomodoroStatusList
+    }
+
+}
+
+struct PomodoroStatus {
+
+    let pomodoro: Pomodoro
+    var isSelected: Bool
+
 }
 
 extension PomodoroPresenter: ManageTimeInteractorListener {

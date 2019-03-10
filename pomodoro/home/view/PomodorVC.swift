@@ -22,6 +22,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let timerTableViewHeight: CGFloat = 3 * Constants.timerCellHeight
         static let timerTableViewTranslation: CGFloat = 200
         static let timerCellFontSize: CGFloat = 25
+        static let selectedCheck = UIImage(named: "Add")
     }
 
     public var presenter: PomodoroPresenter!
@@ -47,7 +48,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     private var leafViewHeightTimerMode: CGFloat!
     private var leafViewHeightStandByMode: CGFloat!
 
-    private var pomodoroList: [Pomodoro]!
+    private var pomodoroStatusList: [PomodoroStatus]!
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.pomodoroTableView = UITableView(frame: CGRect.zero, style: .plain)
@@ -229,10 +230,10 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.leafView.resetCurrentTime(time: time)
     }
 
-    func setPomodoroList(pomodoroList: [Pomodoro]) {
-        self.pomodoroList = pomodoroList
+    func setPomodoroStatusList(pomodoroStatusList: [PomodoroStatus]) {
+        self.pomodoroStatusList = pomodoroStatusList
         self.pomodoroTableView.reloadData()
-        self.leafView.setPomodoro(pomodoro: pomodoroList[0])
+        self.leafView.setPomodoro(pomodoro: pomodoroStatusList[0].pomodoro)
     }
 
     func displayCreatePomodoroDialog() {
@@ -395,7 +396,7 @@ extension PomodoroVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.pomodoroList.count
+        return self.pomodoroStatusList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -405,8 +406,13 @@ extension PomodoroVC: UITableViewDataSource {
         cell.textLabel?.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
         cell.textLabel?.textAlignment = .center
         cell.textLabel?.textColor = UIColor.white
-        let pomodoro = self.pomodoroList[indexPath.row]
-        cell.textLabel?.text = pomodoro.name
+        let pomodoroStatus = self.pomodoroStatusList[indexPath.row]
+        cell.textLabel?.text = pomodoroStatus.pomodoro.name
+        if pomodoroStatus.isSelected {
+            cell.imageView?.image = Constants.selectedCheck
+        } else {
+            cell.imageView?.image = nil
+        }
 
         return cell
     }
@@ -416,7 +422,8 @@ extension PomodoroVC: UITableViewDataSource {
 extension PomodoroVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //TODO
+        let selectedPomodoro = self.pomodoroStatusList[indexPath.row]
+        self.presenter.onClickSelect(pomodoro: selectedPomodoro.pomodoro)
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
