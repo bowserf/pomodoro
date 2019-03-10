@@ -6,12 +6,12 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let cellIdentifier = "settings-reuseId"
         static let startStopBtnSize: CGFloat = 100
         static let verticalThresholdMode: CGFloat = 200
-        static let resetPositionAnimationDuration: TimeInterval = 1
-        static let transitionModeAnimationDuration: TimeInterval = 1
+        static let resetPositionAnimationDuration: TimeInterval = 0.5
+        static let transitionModeAnimationDuration: TimeInterval = 0.5
         static let borderButtonWidth: CGFloat = 100
         static let borderButtonHeight: CGFloat = 60
         static let borderButtonIconColor = UIColor.red
-        static let animationDisplaySideButtonsDuration: TimeInterval = 0.6
+        static let animationDisplaySideButtonsDuration: TimeInterval = 0.1
         static let verticalProportionalStandByModeOffset: CGFloat = 0.3
         static let verticalProportionalTimerModeOffset: CGFloat = 0.15
         static let verticalProportionalTimerListOffset: CGFloat = 0.05

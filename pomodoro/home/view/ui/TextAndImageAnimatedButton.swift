@@ -6,7 +6,7 @@ class TextAndImageAnimatedButton: UIControl {
     private struct Constants {
         static let iconSize: CGFloat = 20
 
-        static let rotationAnimDuration = 2.4
+        static let rotationAnimDuration = 0.5
 
         static let shadowOffset = CGSize(width: 2, height: 2)
         static let shadowOpacity: Float = 2.0
