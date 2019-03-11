@@ -22,11 +22,29 @@ class LeafView: UIView {
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
 
         static let timerTextColor = UIColor.white
-        static let timerTextSizeTimerMode = UIFont.systemFont(ofSize: 65, weight: .bold)
-        static let timerTextSizeStandByMode = UIFont.systemFont(ofSize: 115, weight: .bold)
+        static var timerTextSizeTimerMode: UIFont {
+            let modelScreen = DeviceConstants.deviceModelScreen()
+            switch modelScreen {
+            case .iPhoneX, .iPhoneXR: return UIFont.systemFont(ofSize: 65, weight: .bold)
+            default: return UIFont.systemFont(ofSize: 45, weight: .bold)
+            }
+        }
+        static var timerTextSizeStandByMode: UIFont {
+            let modelScreen = DeviceConstants.deviceModelScreen()
+            switch modelScreen {
+            case .iPhoneX, .iPhoneXR: return UIFont.systemFont(ofSize: 115, weight: .bold)
+            default: return UIFont.systemFont(ofSize: 85, weight: .bold)
+            }
+        }
 
         static let timerNameTextColor = UIColor.white
-        static let timerNameTextSize = UIFont.systemFont(ofSize: 30, weight: .bold)
+        static var timerNameTextSize: UIFont {
+            let modelScreen = DeviceConstants.deviceModelScreen()
+            switch modelScreen {
+            case .iPhoneX, .iPhoneXR: return UIFont.systemFont(ofSize: 30, weight: .bold)
+            default: return UIFont.systemFont(ofSize: 20, weight: .bold)
+            }
+        }
         static let timerNameTopMargin: CGFloat = 10
 
         static let underlineColor = UIColor.white

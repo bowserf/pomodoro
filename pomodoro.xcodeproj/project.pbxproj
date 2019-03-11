@@ -12,6 +12,7 @@
 		941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECD22211E8C300316FDC /* AppDelegate.swift */; };
 		941CECDA2211E8C400316FDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941CECD92211E8C400316FDC /* Assets.xcassets */; };
 		941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */; };
+		D50F5062A3E4E032A58FCADE /* DeviceConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5FBA0C8ACD2E6456B47B /* DeviceConstants.swift */; };
 		D50F50A1952FFC0F21ED1507 /* AppWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5C0F3E90C2CB5F117C27 /* AppWireframe.swift */; };
 		D50F51FB0622E6121786860C /* PomodorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F553799F0F7FA551A38A8 /* PomodorVC.swift */; };
 		D50F52B0F48F153DCA0F6E9B /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F50FDB5EAD62A0D69B975 /* TimeManager.swift */; };
@@ -60,6 +61,7 @@
 		D50F5ADDDBA11C04E640915B /* LeafView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeafView.swift; sourceTree = "<group>"; };
 		D50F5C0F3E90C2CB5F117C27 /* AppWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppWireframe.swift; sourceTree = "<group>"; };
 		D50F5F7B5945FD8333F0E791 /* GetPomodoroListInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPomodoroListInteractor.swift; sourceTree = "<group>"; };
+		D50F5FBA0C8ACD2E6456B47B /* DeviceConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				D50F5337E178614365BF2D0B /* home */,
 				D50F5C0F3E90C2CB5F117C27 /* AppWireframe.swift */,
 				D50F59E5377311BDFE1A7F3D /* domain */,
+				D50F54BC9D66FBF4A0373BEA /* utils */,
 			);
 			path = pomodoro;
 			sourceTree = "<group>";
@@ -144,6 +147,14 @@
 				D50F50FDB5EAD62A0D69B975 /* TimeManager.swift */,
 			);
 			path = time;
+			sourceTree = "<group>";
+		};
+		D50F54BC9D66FBF4A0373BEA /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				D50F5FBA0C8ACD2E6456B47B /* DeviceConstants.swift */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		D50F57BBD66A75794C12E5B5 /* presenter */ = {
@@ -285,6 +296,7 @@
 				D50F5E6C9DAD79FE9EA9665B /* GetPomodoroListInteractorIO.swift in Sources */,
 				D50F5775649453C6A95731B3 /* GetPomodoroListInteractor.swift in Sources */,
 				D50F5B73CE3694E2268CB25A /* Pomodoro.swift in Sources */,
+				D50F5062A3E4E032A58FCADE /* DeviceConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
