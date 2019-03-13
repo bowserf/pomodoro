@@ -8,6 +8,8 @@ class TextAndImageAnimatedButton: UIControl {
 
         static let rotationAnimDuration = 0.5
 
+        static let textFont = UIFont(name: "FantasqueSansMono-Bold", size: 20)!
+
         static let shadowOffset = CGSize(width: 2, height: 2)
         static let shadowOpacity: Float = 2.0
         static let shadowColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.5)
@@ -26,7 +28,9 @@ class TextAndImageAnimatedButton: UIControl {
     @IBInspectable private var stateOn: Bool = true
 
     override init(frame: CGRect) {
-        text = UILabel()
+        self.text = UILabel()
+        self.text.font = Constants.textFont
+
         icon = UIImageView()
         container = UIStackView()
 

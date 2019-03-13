@@ -25,15 +25,15 @@ class LeafView: UIView {
         static var timerTextSizeTimerMode: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
             switch modelScreen {
-            case .iPhoneX, .iPhoneXR: return UIFont.systemFont(ofSize: 65, weight: .bold)
-            default: return UIFont.systemFont(ofSize: 45, weight: .bold)
+            case .iPhoneX, .iPhoneXR: return UIFont(name: "FantasqueSansMono-Bold", size: 60)!
+            default: return UIFont(name: "FantasqueSansMono-Bold", size: 40)!
             }
         }
         static var timerTextSizeStandByMode: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
             switch modelScreen {
-            case .iPhoneX, .iPhoneXR: return UIFont.systemFont(ofSize: 115, weight: .bold)
-            default: return UIFont.systemFont(ofSize: 85, weight: .bold)
+            case .iPhoneX, .iPhoneXR: return UIFont(name: "FantasqueSansMono-Bold", size: 115)!
+            default: return UIFont(name: "FantasqueSansMono-Bold", size: 85)!
             }
         }
 
@@ -41,8 +41,8 @@ class LeafView: UIView {
         static var timerNameTextSize: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
             switch modelScreen {
-            case .iPhoneX, .iPhoneXR: return UIFont.systemFont(ofSize: 30, weight: .bold)
-            default: return UIFont.systemFont(ofSize: 20, weight: .bold)
+            case .iPhoneX, .iPhoneXR: return UIFont(name: "FantasqueSansMono-Bold", size: 30)!
+            default: return UIFont(name: "FantasqueSansMono-Bold", size: 20)!
             }
         }
         static let timerNameTopMargin: CGFloat = 10
@@ -51,7 +51,7 @@ class LeafView: UIView {
         static let underlineStrokeWidth: CGFloat = 5
 
         static let unityColor = UIColor.white
-        static let unityTextSize = UIFont.systemFont(ofSize: 12, weight: .bold)
+        static let unityTextSize = UIFont(name: "FantasqueSansMono-Bold", size: 12)!
 
         static let animationDuration = 0.6
 

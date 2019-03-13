@@ -22,6 +22,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let timerTableViewHeight: CGFloat = 3 * Constants.timerCellHeight
         static let timerTableViewTranslation: CGFloat = 200
         static let timerCellFontSize: CGFloat = 25
+        static let timerCellFont = UIFont(name: "FantasqueSansMono-Bold", size: 25)!
         static let selectedCheck = UIImage(named: "SelectedTimer")
         static let noSelectedTimerNameColor = UIColor.init(white: 1, alpha: 0.6)
         static let selectedTimerNameColor = UIColor.white
@@ -428,7 +429,7 @@ extension PomodoroVC: UITableViewDataSource {
         override init(style: CellStyle, reuseIdentifier: String?) {
             self.pomodoroName = UILabel()
             self.pomodoroName.translatesAutoresizingMaskIntoConstraints = false
-            self.pomodoroName.font = .boldSystemFont(ofSize: Constants.timerCellFontSize)
+            self.pomodoroName.font = Constants.timerCellFont
             self.pomodoroName.textAlignment = .center
 
             self.icon = UIImageView()
