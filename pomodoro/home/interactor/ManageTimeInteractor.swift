@@ -21,6 +21,7 @@ class ManageTimeInteractor: ManageTimeInteractorInput {
     }
 
     func stopTimer() {
+        self.currentTimer = ManageTimeInteractor.startTime
         self.timeManager.stopTimer()
     }
 
