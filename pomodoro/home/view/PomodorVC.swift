@@ -5,7 +5,6 @@ class PomodoroVC: UIViewController, PomodoroView {
     private struct Constants {
         static let cellIdentifier = "settings-reuseId"
         static let startStopBtnSize: CGFloat = 100
-        static let verticalThresholdMode: CGFloat = 200
         static let resetPositionAnimationDuration: TimeInterval = 0.5
         static let transitionModeAnimationDuration: TimeInterval = 0.5
         static let borderButtonWidth: CGFloat = 100
@@ -50,6 +49,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     private var verticalTimerListOffset: CGFloat!
     private var leafViewHeightTimerMode: CGFloat!
     private var leafViewHeightStandByMode: CGFloat!
+    private var verticalAcceptedTranslationRangeForAnimation: CGFloat!
 
     private var pomodoroStatusList: [PomodoroStatus]!
 
@@ -111,6 +111,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.verticalTimerListOffset = self.view.bounds.height * Constants.verticalProportionalTimerListOffset
         self.leafViewHeightTimerMode = self.view.bounds.height * Constants.leafViewProportionalHeightTimerMode
         self.leafViewHeightStandByMode = self.view.bounds.height * Constants.leafViewProportionalHeightStandByMode
+        self.verticalAcceptedTranslationRangeForAnimation = (self.verticalStandByModeOffset - self.verticalTimerModeOffset) * 1.1
 
         self.presenter.attachView(view: self)
 
@@ -172,8 +173,8 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.rightButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalTimerListOffset).isActive = true
 
         // pull down gesture
-        //let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        //self.view.addGestureRecognizer(panGesture)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        self.view.addGestureRecognizer(panGesture)
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -283,6 +284,7 @@ class PomodoroVC: UIViewController, PomodoroView {
             self.tomatoBackground.progress = 0
             self.view.layoutIfNeeded()
         }, completion: { _ in
+            self.showNavigationAndStatusBar()
             UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
                 self.tomatoBackground.verticalOffset = self.verticalStandByModeOffset
                 self.startStopBtnVerticalConstraint.constant = self.verticalStandByModeOffset
@@ -302,6 +304,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     func setTimerMode() {
+        self.hideNavigationAndStatusBar()
         self.leafView.setToTimerMode()
         self.startStopBtn.setStopMode()
         UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
@@ -354,41 +357,32 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.presenter.onClickCreatePomodoro()
     }
 
-    /*@IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
-        let verticalTranslation = recognizer.translation(in: self.view).y * 0.7
-
-        if (verticalTranslation <= 0) {
+    @IBAction private func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+        if !self.presenter.isTimerRunning() {
             return
         }
 
-        if verticalTranslation >= Constants.verticalThresholdMode {
-            //TODO standByMode
+        let verticalTranslation = recognizer.translation(in: self.view).y * 0.7
+        let effectiveTranslation = min(verticalAcceptedTranslationRangeForAnimation, verticalTranslation)
+
+        if effectiveTranslation <= 0 {
+            return
         }
 
-        if (recognizer.state == UIPanGestureRecognizer.State.changed) {
-            self.startStopBtnVerticalConstraint.constant = verticalTranslation
-            self.tomatoBackgroundTopConstraint.constant = verticalTranslation
-            self.leavesHeightConstraints.constant = LeafView.defaultViewHeight + verticalTranslation
+        if recognizer.state == UIPanGestureRecognizer.State.changed {
+            self.startStopBtnVerticalConstraint.constant = self.verticalTimerModeOffset + effectiveTranslation
+            self.tomatoBackground.verticalOffset = self.verticalTimerModeOffset + effectiveTranslation
+            self.leavesHeightConstraints.constant = self.leafViewHeightTimerMode + effectiveTranslation
             self.view.layoutIfNeeded()
             self.leafView.setNeedsDisplay()
-        } else if (recognizer.state == UIPanGestureRecognizer.State.ended
-                && verticalTranslation < Constants.verticalThresholdMode) {
-            animateResetPosition()
+        } else if recognizer.state == UIPanGestureRecognizer.State.ended {
+            if self.leafViewHeightTimerMode + effectiveTranslation >= self.leafViewHeightStandByMode {
+                self.presenter.pullDownChangeMode()
+            } else {
+                self.presenter.keepCurrentMode()
+            }
         }
     }
-
-    private func animateResetPosition() {
-        UIView.animate(withDuration: Constants.resetPositionAnimationDuration,
-                delay: 0,
-                options: .curveEaseOut,
-                animations: {
-                    self.startStopBtnVerticalConstraint.constant = 0.0
-                    self.tomatoBackgroundTopConstraint.constant = 0.0
-                    self.leavesHeightConstraints.constant = LeafView.defaultViewHeight
-                    self.view.layoutIfNeeded()
-                    self.leafView.setNeedsDisplay()
-                }, completion: nil)
-    }*/
 
 }
 

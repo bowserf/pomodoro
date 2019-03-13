@@ -2,21 +2,21 @@ class PomodoroPresenter {
 
     private var view: PomodoroView!
 
-    private let pomodoroInteractor: ManageTimeInteractor
+    private let timeInteractor: ManageTimeInteractor
     private let getPomodoroListInteractor: GetPomodoroListInteractorInput
     private let selectPomodoroInteractor: SelectPomodoroInteractorInput
 
     init(timeInteractor: ManageTimeInteractor,
          getPomodoroListInteractor: GetPomodoroListInteractorInput,
          selectPomodoroInteractor: SelectPomodoroInteractorInput) {
-        self.pomodoroInteractor = timeInteractor
+        self.timeInteractor = timeInteractor
         self.getPomodoroListInteractor = getPomodoroListInteractor
         self.selectPomodoroInteractor = selectPomodoroInteractor
     }
 
     public func attachView(view: PomodoroView) {
         self.view = view
-        self.pomodoroInteractor.add(listener: self)
+        self.timeInteractor.add(listener: self)
 
         self.showStandByTime()
 
@@ -26,7 +26,7 @@ class PomodoroPresenter {
 
     public func detachView() {
         self.view = nil
-        self.pomodoroInteractor.remove(listener: self)
+        self.timeInteractor.remove(listener: self)
     }
 
     func isNavigationAndStatusBarDisplayed() -> Bool {
@@ -35,17 +35,19 @@ class PomodoroPresenter {
     }
 
     func onClickStartStopButton() {
-        if self.pomodoroInteractor.getState() == .Running {
+        if self.timeInteractor.getState() == .Running {
             self.showStandByTime()
-            self.view.showNavigationAndStatusBar()
-            self.pomodoroInteractor.stopTimer()
+            self.timeInteractor.stopTimer()
             self.view.setStandByMode()
         } else {
-            self.view.hideNavigationAndStatusBar()
             self.showCurrentTime()
-            self.pomodoroInteractor.startTimer()
+            self.timeInteractor.startTimer()
             self.view.setTimerMode()
         }
+    }
+
+    func isTimerRunning() -> Bool {
+        return self.timeInteractor.getState() == .Running
     }
 
     func onClickTopBarAbout() {
@@ -72,13 +74,13 @@ class PomodoroPresenter {
     }
 
     private func showStandByTime() {
-        let currentTime = self.pomodoroInteractor.getCurrentTime()
+        let currentTime = self.timeInteractor.getCurrentTime()
         let minutes = currentTime / 60
         self.view.resetCurrentTime(time: String(minutes))
     }
 
     private func showCurrentTime() {
-        let currentTime = self.pomodoroInteractor.getCurrentTime()
+        let currentTime = self.timeInteractor.getCurrentTime()
         let minutes = currentTime / 60
         let seconds = currentTime % 60
         let time = String.localizedStringWithFormat("%02d:%02d", minutes, seconds)
@@ -119,6 +121,18 @@ class PomodoroPresenter {
         return pomodoroStatusList
     }
 
+    func pullDownChangeMode() {
+        self.view.setStandByMode()
+        self.timeInteractor.stopTimer()
+    }
+
+    func keepCurrentMode() {
+        if self.timeInteractor.getState() == .Running {
+            self.view.setTimerMode()
+        } else {
+            self.view.setStandByMode()
+        }
+    }
 }
 
 struct PomodoroStatus {
