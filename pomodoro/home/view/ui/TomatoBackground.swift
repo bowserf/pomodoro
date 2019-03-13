@@ -21,12 +21,23 @@ class TomatoBackground: UIView {
         }
     }
 
-    public var progress: CGFloat = 0 {
-        didSet {
-            let radian: CGFloat = CGFloat(2 * .pi * progress)
-            endAngle = Constants.startAngle + radian
-            setNeedsDisplay()
+    public var progress: CGFloat {
+        set {
+            if let layer = layer as? SWLayer {
+                let radian: CGFloat = CGFloat(2 * .pi * newValue)
+                layer.endAngle = Constants.startAngle + radian
+            }
         }
+        get {
+            if let layer = layer as? SWLayer {
+                return layer.endAngle
+            }
+            return 0.0
+        }
+    }
+
+    override class var layerClass: AnyClass {
+        return SWLayer.self
     }
 
     @IBInspectable private var nbCircle = 5
@@ -34,8 +45,6 @@ class TomatoBackground: UIView {
     @IBInspectable private var lineColor: UIColor = UIColor.white
 
     private var colors: [UIColor]
-
-    private var endAngle: CGFloat = Constants.startAngle
 
     override init(frame: CGRect) {
         colors = []
@@ -61,12 +70,16 @@ class TomatoBackground: UIView {
     }
 
     private func drawBackground(center: CGPoint, arcWidth: CGFloat) {
+        guard let swlayer = self.layer.presentation() as? SWLayer else {
+            return
+        }
+
         var currentRadius: CGFloat = arcWidth / 2
         for i in 0..<nbCircle {
             let path = UIBezierPath(arcCenter: center,
                     radius: currentRadius,
                     startAngle: Constants.startAngle,
-                    endAngle: endAngle,
+                    endAngle: swlayer.endAngle,
                     clockwise: true)
             path.lineWidth = arcWidth
             colors[i].setStroke()
@@ -76,6 +89,10 @@ class TomatoBackground: UIView {
     }
 
     private func drawSeeds(center: CGPoint, arcWidth: CGFloat) {
+        guard let swlayer = self.layer.presentation() as? SWLayer else {
+            return
+        }
+
         let context = UIGraphicsGetCurrentContext()!;
         context.setStrokeColor(lineColor.cgColor);
         context.setLineWidth(Constants.lineWidth);
@@ -83,7 +100,7 @@ class TomatoBackground: UIView {
         for i in 1...Constants.nbSeeds {
             let angleForSeed = CGFloat(i) * Constants.anglePerSeed - .pi / 2
 
-            let endAngleDegree = radianToDegree(radian: endAngle)
+            let endAngleDegree = radianToDegree(radian: swlayer.endAngle)
             let angleForSeedDegree = radianToDegree(radian: angleForSeed)
             if (endAngleDegree < angleForSeedDegree) {
                 break
@@ -119,4 +136,51 @@ class TomatoBackground: UIView {
         }
     }
 
+}
+
+class SWLayer: CALayer {
+
+    @NSManaged var endAngle: CGFloat
+
+    override init() {
+        super.init()
+    }
+
+    override init(layer: Any) {
+        super.init(layer: layer)
+        if let layer = layer as? SWLayer {
+            endAngle = layer.endAngle
+        }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override class func needsDisplay(forKey key: String) -> Bool {
+        if self.isCustomAnimKey(key: key) {
+            return true
+        }
+        return super.needsDisplay(forKey: key)
+    }
+
+    override func action(forKey event: String) -> CAAction? {
+        if SWLayer.isCustomAnimKey(key: event) {
+            if let animation = super.action(forKey: "backgroundColor") as? CABasicAnimation {
+                animation.keyPath = event
+                if let pLayer = presentation() {
+                    animation.fromValue = pLayer.endAngle
+                }
+                animation.toValue = nil
+                return animation
+            }
+            setNeedsDisplay()
+            return nil
+        }
+        return super.action(forKey: event)
+    }
+
+    private class func isCustomAnimKey(key: String) -> Bool {
+        return key == "endAngle"
+    }
 }

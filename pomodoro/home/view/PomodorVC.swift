@@ -12,6 +12,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let borderButtonHeight: CGFloat = 60
         static let borderButtonIconColor = UIColor.red
         static let animationDisplaySideButtonsDuration: TimeInterval = 0.1
+        static let animationResetTomatoDuration: TimeInterval = 0.1
         static let verticalProportionalStandByModeOffset: CGFloat = 0.3
         static let verticalProportionalTimerModeOffset: CGFloat = 0.15
         static let verticalProportionalTimerListOffset: CGFloat = 0.05
@@ -278,20 +279,24 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.leafView.setToStandByMode()
         self.startStopBtn.setStartMode()
         self.pomodoroTableView.isHidden = false
-        UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
-            self.tomatoBackground.verticalOffset = self.verticalStandByModeOffset
-            self.startStopBtnVerticalConstraint.constant = self.verticalStandByModeOffset
+        UIView.animate(withDuration: Constants.animationResetTomatoDuration, animations: {
             self.tomatoBackground.progress = 0
-            self.leavesHeightConstraints.constant = self.leafViewHeightStandByMode
-            self.timerListVerticalConstraint.constant = self.verticalTimerListOffset
-            self.pomodoroTableView.alpha = 1
-            self.leafView.setNeedsDisplay()
             self.view.layoutIfNeeded()
         }, completion: { _ in
             UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
-                self.leftButtonHorizontalConstraint.constant = 0
-                self.rightButtonHorizontalConstraint.constant = 0
+                self.tomatoBackground.verticalOffset = self.verticalStandByModeOffset
+                self.startStopBtnVerticalConstraint.constant = self.verticalStandByModeOffset
+                self.leavesHeightConstraints.constant = self.leafViewHeightStandByMode
+                self.timerListVerticalConstraint.constant = self.verticalTimerListOffset
+                self.pomodoroTableView.alpha = 1
+                self.leafView.setNeedsDisplay()
                 self.view.layoutIfNeeded()
+            }, completion: { _ in
+                UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
+                    self.leftButtonHorizontalConstraint.constant = 0
+                    self.rightButtonHorizontalConstraint.constant = 0
+                    self.view.layoutIfNeeded()
+                })
             })
         })
     }
