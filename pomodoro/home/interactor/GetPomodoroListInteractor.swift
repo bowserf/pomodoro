@@ -1,7 +1,9 @@
+import Foundation
+
 class GetPomodoroListInteractor: GetPomodoroListInteractorInput {
 
     private struct Constants {
-        static let defaultTimer = Pomodoro(name: "Default")
+        static let defaultTimer = Pomodoro(id: "default", name: "Default")
     }
 
     private let pomodoroStorage: PomodoroStorage
@@ -19,7 +21,8 @@ class GetPomodoroListInteractor: GetPomodoroListInteractorInput {
     }
 
     func addPomodoro(name: String) {
-        let pomodoro = Pomodoro(name: name)
+        let id = NSUUID().uuidString
+        let pomodoro = Pomodoro(id: id, name: name)
         self.pomodoroList.append(pomodoro)
 
         self.pomodoroStorage.savePomodoroList(pomodoroList: self.pomodoroList)
@@ -30,8 +33,8 @@ class GetPomodoroListInteractor: GetPomodoroListInteractorInput {
     }
 
     func updatePomodoro(oldPomodoro: Pomodoro, newName: String) {
-        let oldIndex = self.pomodoroList.firstIndex(where: { $0 === oldPomodoro })!
-        self.pomodoroList[oldIndex] = Pomodoro(name: newName)
+        let oldIndex = self.pomodoroList.firstIndex(where: { $0.id == oldPomodoro.id })!
+        self.pomodoroList[oldIndex] = Pomodoro(id: oldPomodoro.id, name: newName)
 
         self.pomodoroStorage.savePomodoroList(pomodoroList: self.pomodoroList)
     }

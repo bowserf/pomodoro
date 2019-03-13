@@ -8,23 +8,14 @@ class PomodoroStorageDisk: PomodoroStorage {
     }
 
     func savePomodoroList(pomodoroList: [Pomodoro]) {
-        var list = [String]()
-        pomodoroList.forEach { pomodoro in
-            list.append(pomodoro.name)
-        }
-        NSKeyedArchiver.archiveRootObject(list, toFile: Constants.timerListArchiveFileUrl)
+        NSKeyedArchiver.archiveRootObject(pomodoroList, toFile: Constants.timerListArchiveFileUrl)
     }
 
     func loadPomodoroList() -> [Pomodoro] {
-        let optionalList = NSKeyedUnarchiver.unarchiveObject(withFile: Constants.timerListArchiveFileUrl) as? [String]
+        let optionalPomodoroList = NSKeyedUnarchiver.unarchiveObject(withFile: Constants.timerListArchiveFileUrl) as? [Pomodoro]
 
-        guard let list = optionalList else {
+        guard let pomodoroList = optionalPomodoroList else {
             return [Pomodoro]()
-        }
-
-        var pomodoroList = [Pomodoro]()
-        list.forEach { element in
-            pomodoroList.append(Pomodoro(name: element))
         }
 
         return pomodoroList

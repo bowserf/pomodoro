@@ -96,7 +96,7 @@ class PomodoroPresenter {
         self.getPomodoroListInteractor.updatePomodoro(oldPomodoro: oldPomodoroStatus.pomodoro, newName: newName)
 
         if oldPomodoroStatus.isSelected {
-            self.selectPomodoroInteractor.setSelectedPomodoro(pomodoro: Pomodoro(name: newName))
+            self.selectPomodoroInteractor.setSelectedPomodoro(pomodoro: Pomodoro(id: oldPomodoroStatus.pomodoro.id, name: newName))
         }
 
         let pomodoroStatusList = createPomodoroStatusList()
@@ -115,7 +115,7 @@ class PomodoroPresenter {
         let pomodoroList = self.getPomodoroListInteractor.getPomodoroList()
         var pomodoroStatusList = [PomodoroStatus]()
         pomodoroList.forEach{ pomodoro in
-            let isSelected = selectedPomodoro.name == pomodoro.name
+            let isSelected = selectedPomodoro.id == pomodoro.id
             pomodoroStatusList.append(PomodoroStatus(pomodoro: pomodoro, isSelected: isSelected))
         }
         return pomodoroStatusList
