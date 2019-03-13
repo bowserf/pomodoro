@@ -21,6 +21,8 @@ class LeafView: UIView {
         static let horizontalRatioLowLevel: CGFloat = 1 / 17
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
 
+        static let spaceBetweenEditIconAndText = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -16)
+
         static let timerTextColor = UIColor.white
         static var timerTextSizeTimerMode: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
@@ -111,6 +113,7 @@ class LeafView: UIView {
         self.timerNameBtn.setTitleColor(Constants.timerNameTextColor, for: .normal)
         self.timerNameBtn.titleLabel?.font = Constants.timerNameTextSize
         self.timerNameBtn.setImage(UIImage(named: "Edit"), for: .normal)
+        self.timerNameBtn.imageEdgeInsets = Constants.spaceBetweenEditIconAndText
         self.timerNameBtn.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft
                 ? .forceLeftToRight
                 : .forceRightToLeft
