@@ -2,7 +2,11 @@ import Foundation
 
 class ManageTimeInteractor: ManageTimeInteractorInput {
 
+    #if DEBUG
+    public static let startTime = 1 * 60
+    #else
     public static let startTime = 25 * 60
+    #endif
 
     private let timeManager: TimeManager
 
