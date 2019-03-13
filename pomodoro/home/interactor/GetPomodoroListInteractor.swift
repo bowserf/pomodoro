@@ -12,6 +12,10 @@ class GetPomodoroListInteractor: GetPomodoroListInteractorInput {
         self.pomodoroStorage = pomodoroStorage
 
         self.pomodoroList = self.pomodoroStorage.loadPomodoroList()
+        
+        if self.pomodoroList.isEmpty {
+            self.pomodoroList.append(Constants.defaultTimer)
+        }
     }
 
     func addPomodoro(name: String) {
@@ -22,9 +26,6 @@ class GetPomodoroListInteractor: GetPomodoroListInteractorInput {
     }
 
     func getPomodoroList() -> [Pomodoro] {
-        if self.pomodoroList.isEmpty {
-            return [Constants.defaultTimer]
-        }
         return self.pomodoroList
     }
 
