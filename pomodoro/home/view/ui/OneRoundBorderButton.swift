@@ -7,6 +7,10 @@ class OneRoundBorderButton: UIControl {
         static let defaultRoundBorder = RoundBorder.Right
         static let bgColor = UIColor.white
         static let horizontalMargin: CGFloat = 30
+
+        static let shadowOffset = CGSize(width: 0, height: 2)
+        static let shadowOpacity: Float = 2.0
+        static let shadowColor = UIColor(white: 0.2, alpha: 0.5)
     }
 
     public var roundBorder: RoundBorder = Constants.defaultRoundBorder
@@ -22,8 +26,6 @@ class OneRoundBorderButton: UIControl {
         self.addSubview(self.icon)
 
         self.icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-
-        self.backgroundColor = Constants.bgColor
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -71,9 +73,12 @@ class OneRoundBorderButton: UIControl {
                 byRoundingCorners: computeRoundedCorners(),
                 cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         let shapeLayer = CAShapeLayer()
-        shapeLayer.frame = bounds
         shapeLayer.path = maskPath.cgPath
-        layer.mask = shapeLayer
+        shapeLayer.fillColor = Constants.bgColor.cgColor
+        shapeLayer.shadowColor = Constants.shadowColor.cgColor
+        shapeLayer.shadowOffset = Constants.shadowOffset
+        shapeLayer.shadowOpacity = Constants.shadowOpacity
+        layer.insertSublayer(shapeLayer, at: 0)
     }
 
     private func computeRoundedCorners() -> UIRectCorner {

@@ -12,7 +12,7 @@ class TextAndImageAnimatedButton: UIControl {
 
         static let shadowOffset = CGSize(width: 2, height: 2)
         static let shadowOpacity: Float = 2.0
-        static let shadowColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.5)
+        static let shadowColor = UIColor(white: 0.2, alpha: 0.5)
     }
 
     private let text: UILabel
