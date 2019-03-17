@@ -80,7 +80,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.rightButton.setIconImage(rightIcon)
         self.rightButton.tintColor = Constants.borderButtonIconColor
 
-        let leftIcon = UIImage(named: "Add")!.withRenderingMode(.alwaysTemplate)
+        let leftIcon = UIImage(named: "Remove")!.withRenderingMode(.alwaysTemplate)
 
         self.leftButton = OneRoundBorderButton()
         self.leftButton.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +96,7 @@ class PomodoroVC: UIViewController, PomodoroView {
 
         self.startStopBtn.addTarget(self, action: #selector(onClickStartStopBtn), for: .touchDown)
 
-        self.leftButton.addTarget(self, action: #selector(onClickDisplayTimers), for: .touchUpInside)
+        self.leftButton.addTarget(self, action: #selector(onClickDeleteTimer), for: .touchUpInside)
         self.rightButton.addTarget(self, action: #selector(onClickCreateTimer), for: .touchUpInside)
     }
 
@@ -235,6 +235,12 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.leafView.resetCurrentTime(time: time)
     }
 
+    func cantRemoveLastTimer() {
+        let alertController = UIAlertController(title: "Deletion failed", message: "You can't remove this timer because it's the only one.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     func setPomodoroStatusList(pomodoroStatusList: [PomodoroStatus]) {
         self.pomodoroStatusList = pomodoroStatusList
         self.pomodoroTableView.reloadData()
@@ -340,8 +346,8 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.presenter.onClickStartStopButton()
     }
 
-    @IBAction private func onClickDisplayTimers() {
-        self.presenter.onClickDisplayTimers()
+    @IBAction private func onClickDeleteTimer() {
+        self.presenter.onClickDeleteTimer()
     }
 
     @IBAction private func onClickCreateTimer() {

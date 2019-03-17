@@ -7,8 +7,8 @@ class PomodoWireframe {
         let timeInteractor = ManageTimeInteractor(timeManager: TimeManagerImpl())
         let pomodoroVC = PomodoroVC()
         let pomodoroStorage = PomodoroStorageDisk()
-        let getPomodoroListInteractor = GetPomodoroListInteractor(pomodoroStorage: pomodoroStorage)
-        let selectPomodoroInteractor = SelectPomodoroInteractor(getPomodoroListInteractor: getPomodoroListInteractor)
+        let selectPomodoroInteractor = SelectPomodoroInteractor()
+        let getPomodoroListInteractor = GetPomodoroListInteractor(selectPomodoroInteractor: selectPomodoroInteractor, pomodoroStorage: pomodoroStorage)
         let presenter = PomodoroPresenter(timeInteractor: timeInteractor, getPomodoroListInteractor: getPomodoroListInteractor, selectPomodoroInteractor: selectPomodoroInteractor)
         pomodoroVC.presenter = presenter
         return pomodoroVC

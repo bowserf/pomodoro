@@ -54,8 +54,17 @@ class PomodoroPresenter {
         self.view.showAboutDialog()
     }
 
-    func onClickDisplayTimers() {
+    func onClickDeleteTimer() {
+        if self.getPomodoroListInteractor.getPomodoroList().count == 1 {
+            self.view.cantRemoveLastTimer()
+            return
+        }
 
+        let selectedPomodoro = self.selectPomodoroInteractor.getSelectedPomodoro()
+        self.getPomodoroListInteractor.removePomodoro(withId: selectedPomodoro.id)
+
+        let pomodoroStatusList = createPomodoroStatusList()
+        self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
     }
 
     func onClickCreatePomodoro() {

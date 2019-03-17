@@ -4,11 +4,7 @@ class SelectPomodoroInteractor: SelectPomodoroInteractorInput {
 
     private var listeners: NSHashTable<AnyObject> = NSHashTable(options: .weakMemory)
 
-    private var selectedPomodoro: Pomodoro
-
-    init(getPomodoroListInteractor: GetPomodoroListInteractor){
-        self.selectedPomodoro = getPomodoroListInteractor.getPomodoroList()[0]
-    }
+    private var selectedPomodoro: Pomodoro!
 
     func setSelectedPomodoro(pomodoro: Pomodoro) {
         self.selectedPomodoro = pomodoro
