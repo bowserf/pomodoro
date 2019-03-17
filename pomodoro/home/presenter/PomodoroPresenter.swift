@@ -54,10 +54,6 @@ class PomodoroPresenter {
         self.view.showAboutDialog()
     }
 
-    func onClickTopBarCalendar() {
-
-    }
-
     func onClickDisplayTimers() {
 
     }

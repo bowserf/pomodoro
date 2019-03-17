@@ -325,21 +325,11 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     private func initTopBar() {
         let navigationBar = self.navigationController!.navigationBar
-        let calendarBtn = UIBarButtonItem(
-                barButtonSystemItem: UIBarButtonItem.SystemItem.stop,
-                target: self,
-                action: #selector(onClickTopBarCalendar))
-        navigationBar.topItem!.setLeftBarButton(calendarBtn, animated: false)
-
         let aboutBtn = UIBarButtonItem(
                 barButtonSystemItem: UIBarButtonItem.SystemItem.stop,
                 target: self,
                 action: #selector(onClickTopBarAbout))
         navigationBar.topItem!.setRightBarButton(aboutBtn, animated: false)
-    }
-
-    @IBAction private func onClickTopBarCalendar() {
-        self.presenter.onClickTopBarCalendar()
     }
 
     @IBAction private func onClickTopBarAbout() {
