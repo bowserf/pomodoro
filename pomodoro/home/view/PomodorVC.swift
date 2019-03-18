@@ -26,6 +26,8 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let selectedCheck = UIImage(named: "SelectedTimer")
         static let noSelectedTimerNameColor = UIColor.init(white: 1, alpha: 0.6)
         static let selectedTimerNameColor = UIColor.white
+        static let pomodoroEndDialogTitleFormat = "\"%@\" timer is finished"
+        static let pomodoroEndDialogMessage = "You can take a break!"
     }
 
     public var presenter: PomodoroPresenter!
@@ -237,6 +239,13 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     func cantRemoveLastTimer() {
         let alertController = UIAlertController(title: "Deletion failed", message: "You can't remove this timer because it's the only one.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    func showPomodoroEndMessage(pomodoro: Pomodoro) {
+        let title = String(format: Constants.pomodoroEndDialogTitleFormat, pomodoro.name)
+        let alertController = UIAlertController(title: title, message: Constants.pomodoroEndDialogMessage, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }

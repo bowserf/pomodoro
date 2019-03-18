@@ -153,6 +153,11 @@ extension PomodoroPresenter: ManageTimeInteractorListener {
     }
 
     func onTimerEnded() {
-        print("Timer ended")
+        showCurrentTime()
+
+        self.view.setStandByMode()
+
+        let selectedPomodoro = self.selectPomodoroInteractor.getSelectedPomodoro()
+        self.view.showPomodoroEndMessage(pomodoro: selectedPomodoro)
     }
 }

@@ -25,5 +25,7 @@ protocol PomodoroView {
     func resetCurrentTime(time: String)
 
     func cantRemoveLastTimer()
+
+    func showPomodoroEndMessage(pomodoro: Pomodoro)
 }
 

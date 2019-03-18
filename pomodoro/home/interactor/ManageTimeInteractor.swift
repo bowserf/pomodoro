@@ -81,6 +81,7 @@ extension ManageTimeInteractor: TimeManagerListener {
         if self.currentTimer == 0 {
             self.timeManager.stopTimer()
             self.notifyTimerTimeEnded()
+            self.currentTimer = ManageTimeInteractor.startTime
         } else {
             self.notifyTimerTimeChanged()
         }
