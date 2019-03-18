@@ -344,7 +344,8 @@ class PomodoroVC: UIViewController, PomodoroView {
     private func initTopBar() {
         let navigationBar = self.navigationController!.navigationBar
         let aboutBtn = UIBarButtonItem(
-                barButtonSystemItem: UIBarButtonItem.SystemItem.stop,
+                image: UIImage(named: "About"),
+                style: .plain,
                 target: self,
                 action: #selector(onClickTopBarAbout))
         navigationBar.topItem!.setRightBarButton(aboutBtn, animated: false)
