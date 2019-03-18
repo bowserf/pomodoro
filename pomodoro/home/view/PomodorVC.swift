@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 class PomodoroVC: UIViewController, PomodoroView {
 
@@ -248,6 +249,8 @@ class PomodoroVC: UIViewController, PomodoroView {
         let alertController = UIAlertController(title: title, message: Constants.pomodoroEndDialogMessage, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+
+        AudioServicesPlaySystemSoundWithCompletion(kSystemSoundID_Vibrate, nil)
     }
 
     func setPomodoroStatusList(pomodoroStatusList: [PomodoroStatus]) {
