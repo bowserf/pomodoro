@@ -25,6 +25,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let timerCellFontSize: CGFloat = 25
         static let timerCellFont = UIFont(name: "FantasqueSansMono-Bold", size: 25)!
         static let selectedCheck = UIImage(named: "SelectedTimer")
+        static let selectedCheckSize: CGFloat = 40
         static let noSelectedTimerNameColor = UIColor.init(white: 1, alpha: 0.6)
         static let selectedTimerNameColor = UIColor.white
         static let pomodoroEndDialogTitleFormat = "\"%@\" timer is finished"
@@ -444,6 +445,7 @@ extension PomodoroVC: UITableViewDataSource {
             self.icon = UIImageView()
             self.icon.translatesAutoresizingMaskIntoConstraints = false
             self.icon.image = Constants.selectedCheck
+            self.icon.contentMode = .scaleToFill
 
             super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -453,6 +455,8 @@ extension PomodoroVC: UITableViewDataSource {
             self.pomodoroName.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
             self.pomodoroName.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
 
+            self.icon.widthAnchor.constraint(equalToConstant: Constants.selectedCheckSize).isActive = true
+            self.icon.heightAnchor.constraint(equalToConstant: Constants.selectedCheckSize).isActive = true
             self.icon.leftAnchor.constraint(equalTo: self.contentView.leftAnchor).isActive = true
             self.icon.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
         }

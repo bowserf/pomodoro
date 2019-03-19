@@ -4,7 +4,7 @@ import UIKit
 class TextAndImageAnimatedButton: UIControl {
 
     private struct Constants {
-        static let iconSize: CGFloat = 20
+        static let iconSize: CGFloat = 30
 
         static let rotationAnimDuration = 0.5
 
@@ -30,33 +30,31 @@ class TextAndImageAnimatedButton: UIControl {
     override init(frame: CGRect) {
         self.text = UILabel()
         self.text.font = Constants.textFont
+        self.text.textColor = contentColor
 
-        icon = UIImageView()
-        container = UIStackView()
+        self.icon = UIImageView()
+        self.icon.contentMode = .scaleToFill
+        self.icon.tintColor = contentColor
+
+        self.container = UIStackView()
+        self.container.translatesAutoresizingMaskIntoConstraints = false
+        self.container.alignment = .center
+        self.container.axis = .vertical
+        self.container.isUserInteractionEnabled = false
 
         super.init(frame: frame)
 
-        self.addSubview(container)
-        container.addArrangedSubview(text)
-        container.addArrangedSubview(icon)
+        self.addSubview(self.container)
+        self.container.addArrangedSubview(self.text)
+        self.container.addArrangedSubview(self.icon)
 
         // Container constraints
-        container.translatesAutoresizingMaskIntoConstraints = false
-        container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        // Container properties
-        container.alignment = .center
-        container.axis = .vertical
-        container.isUserInteractionEnabled = false
-
-        // Text properties
-        text.textColor = contentColor
+        self.container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 
         // Icon constraints
-        icon.widthAnchor.constraint(equalToConstant: Constants.iconSize).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: Constants.iconSize).isActive = true
-        // Icon properties
-        icon.tintColor = contentColor
+        self.icon.widthAnchor.constraint(equalToConstant: Constants.iconSize).isActive = true
+        self.icon.heightAnchor.constraint(equalToConstant: Constants.iconSize).isActive = true
 
         updateContent()
 
@@ -64,7 +62,7 @@ class TextAndImageAnimatedButton: UIControl {
     }
 
     override func layoutSubviews() {
-        layer.cornerRadius = bounds.width / 2
+        self.layer.cornerRadius = self.bounds.width / 2
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -106,20 +104,20 @@ class TextAndImageAnimatedButton: UIControl {
 
     private func updateContent() {
         if (self.stateOn) {
-            text.text = textOn
-            icon.image = imageOn
+            self.text.text = self.textOn
+            self.icon.image = self.imageOn
         } else {
-            text.text = textOff
-            icon.image = imageOff
+            self.text.text = self.textOff
+            self.icon.image = self.imageOff
         }
     }
 
     private func initShadow() {
-        layer.masksToBounds = false
-        layer.backgroundColor = circleColor.cgColor
-        layer.shadowColor = Constants.shadowColor.cgColor
-        layer.shadowOffset = Constants.shadowOffset
-        layer.shadowOpacity = Constants.shadowOpacity
+        self.layer.masksToBounds = false
+        self.layer.backgroundColor = self.circleColor.cgColor
+        self.layer.shadowColor = Constants.shadowColor.cgColor
+        self.layer.shadowOffset = Constants.shadowOffset
+        self.layer.shadowOpacity = Constants.shadowOpacity
     }
 
 }
