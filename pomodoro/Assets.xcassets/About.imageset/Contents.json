@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "baseline_help_outline_white_36dp.png",
+      "filename" : "baseline_help_outline_white_24dp.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "baseline_help_outline_white_36dp-1.png",
+      "filename" : "baseline_help_outline_white_24dp-1.png",
       "scale" : "2x"
     },
     {
