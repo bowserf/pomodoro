@@ -30,6 +30,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let selectedTimerNameColor = UIColor.white
         static let pomodoroEndDialogTitleFormat = "\"%@\" timer is finished"
         static let pomodoroEndDialogMessage = "You can take a break!"
+        static let maxCharactersNumberForPomodoName = 12
     }
 
     public var presenter: PomodoroPresenter!
@@ -272,6 +273,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addTextField { (textField) in
             textField.placeholder = "Enter Name"
+            textField.delegate = self
         }
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
@@ -477,6 +479,17 @@ extension PomodoroVC: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.timerCellHeight
+    }
+}
+
+extension PomodoroVC: UITextFieldDelegate {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let str = (textField.text! + string)
+        if str.count <= Constants.maxCharactersNumberForPomodoName {
+            return true
+        }
+        textField.text = str.substring(to: str.index(str.startIndex, offsetBy: Constants.maxCharactersNumberForPomodoName))
+        return false
     }
 }
 
