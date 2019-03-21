@@ -18,7 +18,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let verticalProportionalTimerListOffset: CGFloat = 0.05
         static let leafViewProportionalHeightStandByMode: CGFloat = 0.4
         static let leafViewProportionalHeightTimerMode: CGFloat = 0.3
-        static let timerTableViewWidth: CGFloat = 200
+        static let timerTableViewWidth: CGFloat = 220
         static let timerCellHeight: CGFloat = 44
         static let timerTableViewHeight: CGFloat = 3 * Constants.timerCellHeight
         static let timerTableViewTranslation: CGFloat = 200
@@ -41,6 +41,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     private let leftButton: OneRoundBorderButton
     private let rightButton: OneRoundBorderButton
     private let pomodoroTableView: UITableView
+    private let containerPomodoroList: UIView
 
     private var leftButtonHorizontalConstraint: NSLayoutConstraint!
     private var rightButtonHorizontalConstraint: NSLayoutConstraint!
@@ -67,6 +68,9 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.pomodoroTableView.backgroundColor = .clear
         self.pomodoroTableView.showsVerticalScrollIndicator = false
         self.pomodoroTableView.separatorStyle = .none
+
+        self.containerPomodoroList = UIView()
+        self.containerPomodoroList.translatesAutoresizingMaskIntoConstraints = false
 
         self.startStopBtn = TextAndImageAnimatedButton()
         self.startStopBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -131,16 +135,24 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.view.addSubview(self.startStopBtn)
         self.view.addSubview(self.leftButton)
         self.view.addSubview(self.rightButton)
-        self.view.addSubview(self.pomodoroTableView)
+        self.view.addSubview(self.containerPomodoroList)
+
+        self.containerPomodoroList.addSubview(self.pomodoroTableView)
 
         self.view.backgroundColor = UIColor.white
 
-        // timer list constraints
-        self.pomodoroTableView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.timerListVerticalConstraint = self.pomodoroTableView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalTimerListOffset)
+        // container timer list constraints
+        self.containerPomodoroList.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.timerListVerticalConstraint = self.containerPomodoroList.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: self.verticalTimerListOffset)
         self.timerListVerticalConstraint.isActive = true
-        self.pomodoroTableView.widthAnchor.constraint(equalToConstant: Constants.timerTableViewWidth).isActive = true
-        self.pomodoroTableView.heightAnchor.constraint(equalToConstant: Constants.timerTableViewHeight).isActive = true
+        self.containerPomodoroList.widthAnchor.constraint(equalToConstant: Constants.timerTableViewWidth).isActive = true
+        self.containerPomodoroList.heightAnchor.constraint(equalToConstant: Constants.timerTableViewHeight).isActive = true
+
+        // timer list constraints
+        self.pomodoroTableView.topAnchor.constraint(equalTo: self.containerPomodoroList.topAnchor).isActive = true
+        self.pomodoroTableView.leftAnchor.constraint(equalTo: self.containerPomodoroList.leftAnchor).isActive = true
+        self.pomodoroTableView.rightAnchor.constraint(equalTo: self.containerPomodoroList.rightAnchor).isActive = true
+        self.pomodoroTableView.bottomAnchor.constraint(equalTo: self.containerPomodoroList.bottomAnchor).isActive = true
 
         // leafView constraints
         let leafViewHeightStandByMode = self.view.bounds.height * Constants.leafViewProportionalHeightStandByMode
@@ -181,6 +193,22 @@ class PomodoroVC: UIViewController, PomodoroView {
         // pull down gesture
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         self.view.addGestureRecognizer(panGesture)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let gradient = CAGradientLayer()
+        gradient.frame = self.containerPomodoroList.bounds
+        gradient.colors = [UIColor.clear.cgColor,
+                           UIColor.white.cgColor,
+                           UIColor.white.cgColor,
+                           UIColor.clear.cgColor]
+        gradient.locations = [0 as NSNumber,
+                              2.0 / 16.0 as NSNumber,
+                              14.0 / 16.0 as NSNumber,
+                              1 as NSNumber]
+        self.containerPomodoroList.layer.mask = gradient
     }
 
     override var prefersStatusBarHidden: Bool {
