@@ -4,7 +4,7 @@ import UIKit
 class TextAndImageAnimatedButton: UIControl {
 
     private struct Constants {
-        static let iconSize: CGFloat = 30
+        static let iconSize: CGFloat = 20
 
         static let rotationAnimDuration = 0.5
 
