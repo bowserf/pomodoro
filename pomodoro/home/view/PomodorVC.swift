@@ -29,9 +29,18 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let selectedCheckSize: CGFloat = 40
         static let noSelectedTimerNameColor = UIColor.init(white: 1, alpha: 0.6)
         static let selectedTimerNameColor = UIColor.white
-        static let pomodoroEndDialogTitleFormat = "\"%@\" timer is finished"
-        static let pomodoroEndDialogMessage = "You can take a break!"
+        static let pomodoroEndDialogTitle = NSLocalizedString("pomodoroEndDialogTitle", comment: "")
+        static let pomodoroEndDialogMessageFormat = NSLocalizedString("pomodoroEndDialogMessageFormat", comment: "")
         static let maxCharactersNumberForPomodoName = 12
+        static let aboutDialogTitle = NSLocalizedString("aboutDialogTitle", comment: "")
+        static let aboutDialogMessage = NSLocalizedString("aboutDialogMessage", comment: "")
+        static let removeLastTimerDialogTitle = NSLocalizedString("removeLastTimerDialogTitle", comment: "")
+        static let removeLastTimerDialogMessage = NSLocalizedString("removeLastTimerDialogMessage", comment: "")
+        static let enterPomodoroName = NSLocalizedString("enterPomodoroName", comment: "")
+        static let pomodoroNameDialogTitle = NSLocalizedString("pomodoroNameDialogTitle", comment: "")
+        static let cancel = NSLocalizedString("cancel", comment: "")
+        static let update = NSLocalizedString("update", comment: "")
+        static let create = NSLocalizedString("create", comment: "")
     }
 
     public var presenter: PomodoroPresenter!
@@ -226,7 +235,7 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     public func showAboutDialog() {
-        let alert = UIAlertController(title: "Pomodoro", message: "Application developed by bowserf.", preferredStyle: .alert)
+        let alert = UIAlertController(title: Constants.aboutDialogTitle, message: Constants.aboutDialogMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         self.present(alert, animated: true)
     }
@@ -271,14 +280,14 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     func cantRemoveLastTimer() {
-        let alertController = UIAlertController(title: "Deletion failed", message: "You can't remove this timer because it's the only one.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: Constants.removeLastTimerDialogTitle, message: Constants.removeLastTimerDialogMessage, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
 
     func showPomodoroEndMessage(pomodoro: Pomodoro) {
-        let title = String(format: Constants.pomodoroEndDialogTitleFormat, pomodoro.name)
-        let alertController = UIAlertController(title: title, message: Constants.pomodoroEndDialogMessage, preferredStyle: .alert)
+        let message = String(format: Constants.pomodoroEndDialogMessageFormat, pomodoro.name)
+        let alertController = UIAlertController(title: Constants.pomodoroEndDialogTitle, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
 
@@ -298,16 +307,16 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     func displayCreatePomodoroDialog() {
-        let alertController = UIAlertController(title: "Pomodoro name?", message: nil, preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Create", style: .default) { (_) in
+        let alertController = UIAlertController(title: Constants.pomodoroNameDialogTitle, message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: Constants.create, style: .default) { (_) in
             let optionalName = alertController.textFields?[0].text
             if let name = optionalName {
                 self.presenter.createPomodoro(name: name)
             }
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Constants.cancel, style: .cancel, handler: nil)
         alertController.addTextField { (textField) in
-            textField.placeholder = "Enter Name"
+            textField.placeholder = Constants.enterPomodoroName
             textField.delegate = self
         }
         alertController.addAction(confirmAction)
@@ -316,16 +325,16 @@ class PomodoroVC: UIViewController, PomodoroView {
     }
 
     func displayUpdatePomodoroDialog(pomodoroStatus: PomodoroStatus) {
-        let alertController = UIAlertController(title: "Pomodoro name?", message: nil, preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Update", style: .default) { (_) in
+        let alertController = UIAlertController(title: Constants.pomodoroNameDialogTitle, message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: Constants.update, style: .default) { (_) in
             let optionalName = alertController.textFields?[0].text
             if let name = optionalName {
                 self.presenter.updatePomodoro(oldPomodoroStatus: pomodoroStatus, newName: name)
             }
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Constants.cancel, style: .cancel, handler: nil)
         alertController.addTextField { (textField) in
-            textField.placeholder = "Enter Name"
+            textField.placeholder = Constants.enterPomodoroName
             textField.text = pomodoroStatus.pomodoro.name
         }
         alertController.addAction(confirmAction)

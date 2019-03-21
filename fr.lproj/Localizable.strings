@@ -1,0 +1,11 @@
+"pomodoroEndDialogMessageFormat" = "Le pomodoro est terminé pour \"%@\"";
+"pomodoroEndDialogTitle" = "Vous pouvez faire une pause!";
+"aboutDialogTitle" = "Pomodoro";
+"aboutDialogMessage" = "Application développée par bowserf.";
+"removeLastTimerDialogTitle" = "La suppression a échoué";
+"removeLastTimerDialogMessage" = "Vous ne pouvez pas supprimer le dernier pomodoro.";
+"enterPomodoroName" = "Entrer un nom";
+"pomodoroNameDialogTitle" = "Nom du pomodoro?";
+"cancel" = "Annuler";
+"update" = "Modifier";
+"create" = "Créer";
