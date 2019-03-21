@@ -14,6 +14,8 @@ protocol PomodoroView {
 
     func setPomodoroStatusList(pomodoroStatusList: [PomodoroStatus])
 
+    func scrollTo(position: Int)
+
     func displayCreatePomodoroDialog()
 
     func displayUpdatePomodoroDialog(pomodoroStatus: PomodoroStatus)

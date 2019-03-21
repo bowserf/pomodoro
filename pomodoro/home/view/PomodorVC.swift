@@ -19,6 +19,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         static let leafViewProportionalHeightStandByMode: CGFloat = 0.4
         static let leafViewProportionalHeightTimerMode: CGFloat = 0.3
         static let timerTableViewWidth: CGFloat = 220
+        static let pomodoroListInset = UIEdgeInsets(top: Constants.timerCellHeight, left: 0, bottom: Constants.timerCellHeight, right: 0)
         static let timerCellHeight: CGFloat = 44
         static let timerTableViewHeight: CGFloat = 3 * Constants.timerCellHeight
         static let timerTableViewTranslation: CGFloat = 200
@@ -68,6 +69,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.pomodoroTableView.backgroundColor = .clear
         self.pomodoroTableView.showsVerticalScrollIndicator = false
         self.pomodoroTableView.separatorStyle = .none
+        self.pomodoroTableView.contentInset = Constants.pomodoroListInset
 
         self.containerPomodoroList = UIView()
         self.containerPomodoroList.translatesAutoresizingMaskIntoConstraints = false
@@ -288,6 +290,11 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.pomodoroTableView.reloadData()
         let selectedPomodoroStatus = pomodoroStatusList.first(where: { $0.isSelected })!
         self.leafView.setPomodoro(pomodoroStatus: selectedPomodoroStatus)
+    }
+
+    func scrollTo(position: Int) {
+        let indexPath = IndexPath(row: position, section: 0)
+        self.pomodoroTableView.scrollToRow(at: indexPath, at: .middle, animated: true)
     }
 
     func displayCreatePomodoroDialog() {

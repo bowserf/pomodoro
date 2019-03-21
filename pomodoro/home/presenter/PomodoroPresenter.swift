@@ -22,6 +22,8 @@ class PomodoroPresenter {
 
         let pomodoroStatusList = createPomodoroStatusList()
         self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
+
+        scrollToSelectedPomodoro()
     }
 
     public func detachView() {
@@ -65,6 +67,8 @@ class PomodoroPresenter {
 
         let pomodoroStatusList = createPomodoroStatusList()
         self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
+
+        scrollToSelectedPomodoro()
     }
 
     func onClickCreatePomodoro() {
@@ -74,23 +78,12 @@ class PomodoroPresenter {
     func createPomodoro(name: String) {
         self.getPomodoroListInteractor.addPomodoro(name: name)
 
+        self.selectPomodoroInteractor.setSelectedPomodoro(pomodoro: self.getPomodoroListInteractor.getPomodoroList().last!)
+
         let pomodoroStatusList = createPomodoroStatusList()
         self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
-    }
 
-    private func showStandByTime() {
-        let currentTime = self.timeInteractor.getCurrentTime()
-        let minutes = currentTime / 60
-        self.view.resetCurrentTime(time: String(minutes))
-    }
-
-    private func showCurrentTime() {
-        let currentTime = self.timeInteractor.getCurrentTime()
-        let minutes = currentTime / 60
-        let seconds = currentTime % 60
-        let time = String.localizedStringWithFormat("%02d:%02d", minutes, seconds)
-        let progress = 1 - Float(currentTime) / Float(ManageTimeInteractor.startTime)
-        self.view.showCurrentTime(time: time, progress: progress)
+        scrollToSelectedPomodoro()
     }
 
     func onClickEditPomodoro(pomodoroStatus: PomodoroStatus) {
@@ -113,17 +106,8 @@ class PomodoroPresenter {
 
         let pomodoroStatusList = createPomodoroStatusList()
         self.view.setPomodoroStatusList(pomodoroStatusList: pomodoroStatusList)
-    }
 
-    private func createPomodoroStatusList() -> [PomodoroStatus]{
-        let selectedPomodoro = self.selectPomodoroInteractor.getSelectedPomodoro()
-        let pomodoroList = self.getPomodoroListInteractor.getPomodoroList()
-        var pomodoroStatusList = [PomodoroStatus]()
-        pomodoroList.forEach{ pomodoro in
-            let isSelected = selectedPomodoro.id == pomodoro.id
-            pomodoroStatusList.append(PomodoroStatus(pomodoro: pomodoro, isSelected: isSelected))
-        }
-        return pomodoroStatusList
+        scrollToSelectedPomodoro()
     }
 
     func pullDownChangeMode() {
@@ -137,6 +121,38 @@ class PomodoroPresenter {
         } else {
             self.view.setStandByMode()
         }
+    }
+
+    private func showStandByTime() {
+        let currentTime = self.timeInteractor.getCurrentTime()
+        let minutes = currentTime / 60
+        self.view.resetCurrentTime(time: String(minutes))
+    }
+
+    private func showCurrentTime() {
+        let currentTime = self.timeInteractor.getCurrentTime()
+        let minutes = currentTime / 60
+        let seconds = currentTime % 60
+        let time = String.localizedStringWithFormat("%02d:%02d", minutes, seconds)
+        let progress = 1 - Float(currentTime) / Float(ManageTimeInteractor.startTime)
+        self.view.showCurrentTime(time: time, progress: progress)
+    }
+
+    private func createPomodoroStatusList() -> [PomodoroStatus]{
+        let selectedPomodoro = self.selectPomodoroInteractor.getSelectedPomodoro()
+        let pomodoroList = self.getPomodoroListInteractor.getPomodoroList()
+        var pomodoroStatusList = [PomodoroStatus]()
+        pomodoroList.forEach{ pomodoro in
+            let isSelected = selectedPomodoro.id == pomodoro.id
+            pomodoroStatusList.append(PomodoroStatus(pomodoro: pomodoro, isSelected: isSelected))
+        }
+        return pomodoroStatusList
+    }
+
+    private func scrollToSelectedPomodoro() {
+        let newSelectedPomodoro = self.selectPomodoroInteractor.getSelectedPomodoro()
+        let index = self.getPomodoroListInteractor.getPomodoroList().firstIndex(where: { $0.id == newSelectedPomodoro.id})!
+        self.view.scrollTo(position: index)
     }
 }
 
