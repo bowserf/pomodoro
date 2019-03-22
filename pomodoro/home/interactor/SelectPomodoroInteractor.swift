@@ -8,6 +8,7 @@ class SelectPomodoroInteractor: SelectPomodoroInteractorInput {
 
     func setSelectedPomodoro(pomodoro: Pomodoro) {
         self.selectedPomodoro = pomodoro
+        notifySelectedPomodoroChanged(pomodoro: pomodoro)
     }
 
     func getSelectedPomodoro() -> Pomodoro {
