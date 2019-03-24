@@ -86,16 +86,16 @@ class TextAndImageAnimatedButton: UIControl {
     private func rotateView() {
         UIView.animateKeyframes(withDuration: Constants.rotationAnimDuration, delay: 0, options: [.calculationModeLinear], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0 / 4.0, animations: {
-                self.transform = CGAffineTransform(rotationAngle: .pi / 2)
+                self.container.transform = CGAffineTransform(rotationAngle: .pi / 2)
             })
             UIView.addKeyframe(withRelativeStartTime: 1.0 / 4.0, relativeDuration: 1.0 / 4.0, animations: {
-                self.transform = CGAffineTransform(rotationAngle: .pi)
+                self.container.transform = CGAffineTransform(rotationAngle: .pi)
             })
             UIView.addKeyframe(withRelativeStartTime: 2.0 / 4.0, relativeDuration: 1.0 / 4.0, animations: {
-                self.transform = CGAffineTransform(rotationAngle: .pi * 3 / 2)
+                self.container.transform = CGAffineTransform(rotationAngle: .pi * 3 / 2)
             })
             UIView.addKeyframe(withRelativeStartTime: 3.0 / 4.0, relativeDuration: 1.0 / 4.0, animations: {
-                self.transform = CGAffineTransform(rotationAngle: .pi * 2)
+                self.container.transform = CGAffineTransform(rotationAngle: .pi * 2)
             })
         }, completion: { (success) in
             self.updateContent()
