@@ -5,13 +5,16 @@ class PomodoroPresenter {
     private let timeInteractor: ManageTimeInteractor
     private let getPomodoroListInteractor: GetPomodoroListInteractorInput
     private let selectPomodoroInteractor: SelectPomodoroInteractorInput
+    private let selectModeInteractor: SelectModeInteractorInput
 
     init(timeInteractor: ManageTimeInteractor,
          getPomodoroListInteractor: GetPomodoroListInteractorInput,
-         selectPomodoroInteractor: SelectPomodoroInteractorInput) {
+         selectPomodoroInteractor: SelectPomodoroInteractorInput,
+         selectModeInteractor: SelectModeInteractorInput) {
         self.timeInteractor = timeInteractor
         self.getPomodoroListInteractor = getPomodoroListInteractor
         self.selectPomodoroInteractor = selectPomodoroInteractor
+        self.selectModeInteractor = selectModeInteractor
     }
 
     public func attachView(view: PomodoroView) {
@@ -123,6 +126,14 @@ class PomodoroPresenter {
         }
     }
 
+    func changeMode() {
+        self.selectModeInteractor.changeMode()
+    }
+
+    func getMode() -> PomodoroMode {
+        return self.selectModeInteractor.getMode()
+    }
+
     private func showStandByTime() {
         let currentTime = self.timeInteractor.getCurrentTime()
         let minutes = currentTime / 60
@@ -154,6 +165,7 @@ class PomodoroPresenter {
         let index = self.getPomodoroListInteractor.getPomodoroList().firstIndex(where: { $0.id == newSelectedPomodoro.id})!
         self.view.scrollTo(position: index)
     }
+
 }
 
 struct PomodoroStatus {

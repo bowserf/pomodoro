@@ -9,7 +9,8 @@ class PomodoWireframe {
         let pomodoroStorage = PomodoroStorageDisk()
         let selectPomodoroInteractor = SelectPomodoroInteractor()
         let getPomodoroListInteractor = GetPomodoroListInteractor(selectPomodoroInteractor: selectPomodoroInteractor, pomodoroStorage: pomodoroStorage)
-        let presenter = PomodoroPresenter(timeInteractor: timeInteractor, getPomodoroListInteractor: getPomodoroListInteractor, selectPomodoroInteractor: selectPomodoroInteractor)
+        let selectModeInteractor = SelectModeInteractor()
+        let presenter = PomodoroPresenter(timeInteractor: timeInteractor, getPomodoroListInteractor: getPomodoroListInteractor, selectPomodoroInteractor: selectPomodoroInteractor, selectModeInteractor: selectModeInteractor)
         pomodoroVC.presenter = presenter
         return pomodoroVC
     }
