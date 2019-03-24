@@ -1,0 +1,29 @@
+{
+  "Mac" : [
+    {
+      "name" : "Cuckoo",
+      "hash" : "e0126bd2c032212448e25d3538216b55e739adcc0f4b3ec170dca5a91652e5e3"
+    },
+    {
+      "name" : "Cuckoo",
+      "hash" : "e0126bd2c032212448e25d3538216b55e739adcc0f4b3ec170dca5a91652e5e3"
+    }
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "0.12.1",
+  "iOS" : [
+    {
+      "name" : "Cuckoo",
+      "hash" : "0c88e8faf98a3f1218f1bcb7cfd7ea4e7925c45d33571a7f2950fad3af4e2830"
+    },
+    {
+      "name" : "Cuckoo",
+      "hash" : "0c88e8faf98a3f1218f1bcb7cfd7ea4e7925c45d33571a7f2950fad3af4e2830"
+    }
+  ]
+}

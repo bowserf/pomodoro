@@ -1,0 +1,4 @@
+framework module Cuckoo {
+  header "Cuckoo-Swift.h"
+  requires objc
+}

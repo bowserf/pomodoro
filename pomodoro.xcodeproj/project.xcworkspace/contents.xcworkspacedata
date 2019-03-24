@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:pomodoro.xcodeproj">
+      location = "group:../tools/cuckoo/Cuckoo.framework">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>
