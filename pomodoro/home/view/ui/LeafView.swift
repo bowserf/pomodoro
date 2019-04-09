@@ -10,8 +10,8 @@ class LeafView: UIView {
     private struct Constants {
         static let lineWidth: CGFloat = 2
 
-        static let shadowOffset: CGFloat = 10
-        static let shadowColor = UIColor.init(white: 0, alpha: 0.5)
+        static let shadowOffset: CGFloat = 15
+        static let shadowColor = UIColor.init(white: 0, alpha: 0.3)
 
         static let verticalProportionalHighSectionHeight: CGFloat = 0.2
         static let verticalProportionalLowSectionHeight: CGFloat = 0.5
