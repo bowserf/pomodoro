@@ -73,6 +73,7 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     private var leafSynchronizer: CADisplayLink!
     private var leafAnimationStartTimestamp: Double = 0.0
+    private var startAnimationLeafHeight: CGFloat = 0.0
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         self.pomodoroTableView = UITableView(frame: CGRect.zero, style: .plain)
@@ -356,6 +357,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.leafView.setToStandByMode()
         self.startStopBtn.setStartMode()
         self.pomodoroTableView.isHidden = false
+        self.startAnimationLeafHeight = self.leafView.bounds.height
         UIView.animate(withDuration: Constants.animationResetTomatoDuration, animations: {
             self.tomatoBackground.progress = 0
             self.view.layoutIfNeeded()
@@ -386,6 +388,7 @@ class PomodoroVC: UIViewController, PomodoroView {
         self.hideNavigationAndStatusBar()
         self.leafView.setToTimerMode()
         self.startStopBtn.setStopMode()
+        self.startAnimationLeafHeight = self.leafView.bounds.height
         UIView.animate(withDuration: Constants.transitionModeAnimationDuration, animations: {
             self.tomatoBackground.verticalOffset = self.verticalTimerModeOffset
             self.startStopBtnVerticalConstraint.constant = self.verticalTimerModeOffset
@@ -461,11 +464,24 @@ class PomodoroVC: UIViewController, PomodoroView {
 
     @IBAction private func updateLeafAnimation(displayLink: CADisplayLink) {
         let progress = CGFloat((displayLink.targetTimestamp - self.leafAnimationStartTimestamp) / Constants.transitionModeAnimationDuration)
+        var newHeight: CGFloat
         if self.presenter.getMode() == PomodoroMode.StandBy {
-            self.leavesHeightConstraints.constant = self.leafViewHeightTimerMode + self.leafViewHeightRange * progress
+            if self.startAnimationLeafHeight > self.leafViewHeightStandByMode { // pull down further the stand by position
+                newHeight = self.startAnimationLeafHeight - self.leafViewHeightRange * progress
+                if newHeight < self.leafViewHeightStandByMode {
+                    newHeight = self.leafViewHeightStandByMode
+                }
+            } else {
+                newHeight = self.startAnimationLeafHeight + self.leafViewHeightRange * progress
+                if newHeight > self.leafViewHeightStandByMode {
+                    newHeight = self.leafViewHeightStandByMode
+                }
+            }
         } else {
-            self.leavesHeightConstraints.constant = self.leafViewHeightStandByMode - self.leafViewHeightRange * progress
+            newHeight = self.startAnimationLeafHeight - self.leafViewHeightRange * progress
         }
+        self.leavesHeightConstraints.constant = newHeight
+
         self.leafView.setNeedsDisplay()
         self.view.layoutIfNeeded()
     }
