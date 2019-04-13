@@ -62,6 +62,8 @@ class LeafView: UIView {
         static let animationDuration = 0.6
 
         static let offsetTransitionAnimation: CGFloat = 40.0
+
+        static let strokeStartStandByMode: CGFloat = 0.35
     }
 
     public var listener: LeafViewListener?
@@ -87,7 +89,7 @@ class LeafView: UIView {
     private var leftAnimatedLineLayer: CAShapeLayer!
     private var rightAnimatedLineLayer: CAShapeLayer!
 
-    private var middleAnimationStroke: Float = 0
+    private var middleAnimationStroke: CGFloat = 0
 
     private var areAnimatedLinesSetup = false
 
@@ -209,13 +211,13 @@ class LeafView: UIView {
     func setToTimerMode() {
         startLineAnimation(
                 layer: leftAnimatedLineLayer,
-                strokeStartFromValue: middleAnimationStroke,
+                strokeStartFromValue: Constants.strokeStartStandByMode,
                 strokeStartToValue: 0.0,
                 strokeEndFromValue: 1.0,
                 strokeEndToValue: middleAnimationStroke)
         startLineAnimation(
                 layer: rightAnimatedLineLayer,
-                strokeStartFromValue: middleAnimationStroke,
+                strokeStartFromValue: Constants.strokeStartStandByMode,
                 strokeStartToValue: 0.0,
                 strokeEndFromValue: 1.0,
                 strokeEndToValue: middleAnimationStroke)
@@ -273,13 +275,13 @@ class LeafView: UIView {
             self.startLineAnimation(
                     layer: self.leftAnimatedLineLayer,
                     strokeStartFromValue: 0.0,
-                    strokeStartToValue: self.middleAnimationStroke,
+                    strokeStartToValue: Constants.strokeStartStandByMode,
                     strokeEndFromValue: self.middleAnimationStroke,
                     strokeEndToValue: 1.0)
             self.startLineAnimation(
                     layer: self.rightAnimatedLineLayer,
                     strokeStartFromValue: 0.0,
-                    strokeStartToValue: self.middleAnimationStroke,
+                    strokeStartToValue: Constants.strokeStartStandByMode,
                     strokeEndFromValue: self.middleAnimationStroke,
                     strokeEndToValue: 1.0)
 
@@ -347,7 +349,7 @@ class LeafView: UIView {
         let width = self.bounds.width
         let height = self.bounds.height
 
-        self.middleAnimationStroke = Float(0.5 + (Constants.shadowOffset - Constants.animatedLineThickness) / height)
+        self.middleAnimationStroke = 0.5 + (Constants.shadowOffset - Constants.animatedLineThickness) / height
 
         let horizontalMiddleLevelWidth = Constants.horizontalRatioMiddleLevel * width
         let spaceFromBorderScreen = Constants.animatedLineRatioHorizontalMiddleLevel * horizontalMiddleLevelWidth
@@ -388,7 +390,7 @@ class LeafView: UIView {
         animatedLineLayer.lineWidth = Constants.animatedLineThickness
         animatedLineLayer.lineJoin = .round
         animatedLineLayer.strokeColor = Constants.animateLineColor.cgColor
-        animatedLineLayer.strokeStart = 0.5
+        animatedLineLayer.strokeStart = Constants.strokeStartStandByMode
         animatedLineLayer.strokeEnd = 1
 
         self.layer.addSublayer(animatedLineLayer)
@@ -397,10 +399,10 @@ class LeafView: UIView {
     }
 
     private func startLineAnimation(layer: CAShapeLayer,
-                                    strokeStartFromValue: Float,
-                                    strokeStartToValue: Float,
-                                    strokeEndFromValue: Float,
-                                    strokeEndToValue: Float) {
+                                    strokeStartFromValue: CGFloat,
+                                    strokeStartToValue: CGFloat,
+                                    strokeEndFromValue: CGFloat,
+                                    strokeEndToValue: CGFloat) {
         let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
         strokeStartAnimation.fromValue = strokeStartFromValue
         strokeStartAnimation.toValue = strokeStartToValue
