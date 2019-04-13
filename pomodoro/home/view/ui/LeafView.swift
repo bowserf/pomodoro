@@ -8,7 +8,8 @@ protocol LeafViewListener {
 class LeafView: UIView {
 
     private struct Constants {
-        static let lineWidth: CGFloat = 2
+        static let fontName = "FantasqueSansMono-Bold"
+        static let borderLineThickness: CGFloat = 2
 
         static let shadowOffset: CGFloat = 15
         static let shadowColor = UIColor.init(white: 0, alpha: 0.3)
@@ -16,10 +17,13 @@ class LeafView: UIView {
         static let verticalProportionalHighSectionHeight: CGFloat = 0.2
         static let verticalProportionalLowSectionHeight: CGFloat = 0.5
 
-        static let verticalProportionalMiddleSectionHeight: CGFloat = 0.3
-
         static let horizontalRatioLowLevel: CGFloat = 1 / 17
         static let horizontalRatioMiddleLevel: CGFloat = 3 / 17
+
+        static let animatedLineRatioHorizontalMiddleLevel: CGFloat = 2 / 3
+        static let animatedLineThickness: CGFloat = 4
+        static let animateLineColor = UIColor.init(white: 1.0, alpha: 0.2)
+        static let animatedLineAnimationDuration = 0.3
 
         static let spaceBetweenEditIconAndText = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -16)
 
@@ -27,15 +31,15 @@ class LeafView: UIView {
         static var timerTextSizeTimerMode: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
             switch modelScreen {
-            case .iPhoneX, .iPhoneXR: return UIFont(name: "FantasqueSansMono-Bold", size: 60)!
-            default: return UIFont(name: "FantasqueSansMono-Bold", size: 40)!
+            case .iPhoneX, .iPhoneXR: return UIFont(name: fontName, size: 60)!
+            default: return UIFont(name: fontName, size: 40)!
             }
         }
         static var timerTextSizeStandByMode: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
             switch modelScreen {
-            case .iPhoneX, .iPhoneXR: return UIFont(name: "FantasqueSansMono-Bold", size: 115)!
-            default: return UIFont(name: "FantasqueSansMono-Bold", size: 85)!
+            case .iPhoneX, .iPhoneXR: return UIFont(name: fontName, size: 115)!
+            default: return UIFont(name: fontName, size: 85)!
             }
         }
 
@@ -43,8 +47,8 @@ class LeafView: UIView {
         static var timerNameTextSize: UIFont {
             let modelScreen = DeviceConstants.deviceModelScreen()
             switch modelScreen {
-            case .iPhoneX, .iPhoneXR: return UIFont(name: "FantasqueSansMono-Bold", size: 30)!
-            default: return UIFont(name: "FantasqueSansMono-Bold", size: 20)!
+            case .iPhoneX, .iPhoneXR: return UIFont(name: fontName, size: 30)!
+            default: return UIFont(name: fontName, size: 20)!
             }
         }
         static let timerNameTopMargin: CGFloat = 10
@@ -53,11 +57,11 @@ class LeafView: UIView {
         static let underlineStrokeWidth: CGFloat = 5
 
         static let unityColor = UIColor.white
-        static let unityTextSize = UIFont(name: "FantasqueSansMono-Bold", size: 12)!
+        static let unityTextSize = UIFont(name: fontName, size: 12)!
 
         static let animationDuration = 0.6
 
-        static let offsetTransitionAnimation: CGFloat = CGFloat(40)
+        static let offsetTransitionAnimation: CGFloat = 40.0
     }
 
     public var listener: LeafViewListener?
@@ -79,6 +83,13 @@ class LeafView: UIView {
 
     private var verticalHighSectionHeight: CGFloat!
     private var verticalLowSectionHeight: CGFloat!
+
+    private var leftAnimatedLineLayer: CAShapeLayer!
+    private var rightAnimatedLineLayer: CAShapeLayer!
+
+    private var middleAnimationStroke: Float = 0
+
+    private var areAnimatedLinesSetup = false
 
     private var pomodoroStatus: PomodoroStatus?
 
@@ -170,15 +181,14 @@ class LeafView: UIView {
         self.timerNameBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
     }
 
-    func setTimerModeHeight(height: CGFloat) {
-        self.verticalLowSectionHeight = height * Constants.verticalProportionalLowSectionHeight
-        self.verticalHighSectionHeight = height * Constants.verticalProportionalHighSectionHeight
-    }
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("You should use Storyboard")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        drawAnimatedLine()
+    }
 
     override func draw(_ rect: CGRect) {
         // draw shadow
@@ -186,12 +196,30 @@ class LeafView: UIView {
         // draw leaves
         let path = drawLeavesPath(inset: Constants.shadowOffset, color: leafColor)
         // Draw border
-        path.lineWidth = Constants.lineWidth
+        path.lineWidth = Constants.borderLineThickness
         UIColor.white.setStroke()
         path.stroke()
     }
 
-    public func setToTimerMode() {
+    func setTimerModeHeight(height: CGFloat) {
+        self.verticalLowSectionHeight = height * Constants.verticalProportionalLowSectionHeight
+        self.verticalHighSectionHeight = height * Constants.verticalProportionalHighSectionHeight
+    }
+
+    func setToTimerMode() {
+        startLineAnimation(
+                layer: leftAnimatedLineLayer,
+                strokeStartFromValue: middleAnimationStroke,
+                strokeStartToValue: 0.0,
+                strokeEndFromValue: 1.0,
+                strokeEndToValue: middleAnimationStroke)
+        startLineAnimation(
+                layer: rightAnimatedLineLayer,
+                strokeStartFromValue: middleAnimationStroke,
+                strokeStartToValue: 0.0,
+                strokeEndFromValue: 1.0,
+                strokeEndToValue: middleAnimationStroke)
+
         self.minute.isHidden = true
         self.underlineTimerMode.isHidden = false
         self.underlineTimerMode.alpha = 0
@@ -220,7 +248,7 @@ class LeafView: UIView {
         })
     }
 
-    public func setToStandByMode() {
+    func setToStandByMode() {
         self.minute.isHidden = false
         self.underlineStandByMode.isHidden = false
         self.underlineStandByMode.alpha = 0
@@ -242,18 +270,31 @@ class LeafView: UIView {
                     self.underlineTimerMode.alpha = 0
                     self.layoutIfNeeded()
                 }, completion: { _ in
+            self.startLineAnimation(
+                    layer: self.leftAnimatedLineLayer,
+                    strokeStartFromValue: 0.0,
+                    strokeStartToValue: self.middleAnimationStroke,
+                    strokeEndFromValue: self.middleAnimationStroke,
+                    strokeEndToValue: 1.0)
+            self.startLineAnimation(
+                    layer: self.rightAnimatedLineLayer,
+                    strokeStartFromValue: 0.0,
+                    strokeStartToValue: self.middleAnimationStroke,
+                    strokeEndFromValue: self.middleAnimationStroke,
+                    strokeEndToValue: 1.0)
+
             self.timerNameBtn.isHidden = true
             self.timeTimerMode.isHidden = true
             self.underlineTimerMode.isHidden = true
         })
     }
 
-    public func setPomodoro(pomodoroStatus: PomodoroStatus) {
+    func setPomodoro(pomodoroStatus: PomodoroStatus) {
         self.pomodoroStatus = pomodoroStatus
         self.timerNameBtn.setTitle(pomodoroStatus.pomodoro.name, for: .normal)
     }
 
-    public func showCurrentTime(time: String) {
+    func showCurrentTime(time: String) {
         self.timeTimerMode.text = time
     }
 
@@ -296,6 +337,86 @@ class LeafView: UIView {
         context?.restoreGState()
 
         return path
+    }
+
+    private func drawAnimatedLine() {
+        if areAnimatedLinesSetup {
+            return
+        }
+
+        let width = self.bounds.width
+        let height = self.bounds.height
+
+        self.middleAnimationStroke = Float(0.5 + (Constants.shadowOffset - Constants.animatedLineThickness) / height)
+
+        let horizontalMiddleLevelWidth = Constants.horizontalRatioMiddleLevel * width
+        let spaceFromBorderScreen = Constants.animatedLineRatioHorizontalMiddleLevel * horizontalMiddleLevelWidth
+        let spaceFromMiddleLevel = horizontalMiddleLevelWidth - spaceFromBorderScreen
+
+        let verticalBottomPosition = height - spaceFromMiddleLevel
+
+        let y0 = self.verticalLowSectionHeight - self.verticalHighSectionHeight
+        let y1 = self.verticalLowSectionHeight - Constants.shadowOffset
+        let y2 = verticalBottomPosition - self.verticalHighSectionHeight
+        let y3 = verticalBottomPosition - Constants.shadowOffset
+
+        // left line
+        let leftAnimatedLine = UIBezierPath()
+        leftAnimatedLine.move(to: CGPoint(x: 0, y: y0))
+        leftAnimatedLine.addLine(to: CGPoint(x: spaceFromBorderScreen, y: y1))
+        leftAnimatedLine.addLine(to: CGPoint(x: spaceFromBorderScreen, y: y2))
+        leftAnimatedLine.addLine(to: CGPoint(x: 0, y: y3))
+        leftAnimatedLineLayer = drawAnimatedLine(leftAnimatedLine.cgPath)
+
+        // right line
+        let rightHorizontalPosition = width - spaceFromBorderScreen
+        let rightAnimatedLine = UIBezierPath()
+        rightAnimatedLine.move(to: CGPoint(x: width, y: y0))
+        rightAnimatedLine.addLine(to: CGPoint(x: rightHorizontalPosition, y: y1))
+        rightAnimatedLine.addLine(to: CGPoint(x: rightHorizontalPosition, y: y2))
+        rightAnimatedLine.addLine(to: CGPoint(x: width, y: y3))
+        rightAnimatedLineLayer = drawAnimatedLine(rightAnimatedLine.cgPath)
+
+        areAnimatedLinesSetup = true
+    }
+
+    private func drawAnimatedLine(_ animatedLinePath: CGPath) -> CAShapeLayer {
+        let animatedLineLayer = CAShapeLayer()
+        animatedLineLayer.frame = self.bounds
+        animatedLineLayer.fillColor = nil
+        animatedLineLayer.path = animatedLinePath
+        animatedLineLayer.lineWidth = Constants.animatedLineThickness
+        animatedLineLayer.lineJoin = .round
+        animatedLineLayer.strokeColor = Constants.animateLineColor.cgColor
+        animatedLineLayer.strokeStart = 0.5
+        animatedLineLayer.strokeEnd = 1
+
+        self.layer.addSublayer(animatedLineLayer)
+
+        return animatedLineLayer
+    }
+
+    private func startLineAnimation(layer: CAShapeLayer,
+                                    strokeStartFromValue: Float,
+                                    strokeStartToValue: Float,
+                                    strokeEndFromValue: Float,
+                                    strokeEndToValue: Float) {
+        let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
+        strokeStartAnimation.fromValue = strokeStartFromValue
+        strokeStartAnimation.toValue = strokeStartToValue
+
+        let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        strokeEndAnimation.fromValue = strokeEndFromValue
+        strokeEndAnimation.toValue = strokeEndToValue
+
+        let animationGroup = CAAnimationGroup()
+        animationGroup.duration = Constants.animatedLineAnimationDuration
+        animationGroup.animations = [strokeStartAnimation, strokeEndAnimation]
+        // allow to keep values at the end of the animation
+        animationGroup.isRemovedOnCompletion = false
+        animationGroup.fillMode = .forwards
+
+        layer.add(animationGroup, forKey: "group_animation")
     }
 
     @IBAction private func onClickEditTimer() {
