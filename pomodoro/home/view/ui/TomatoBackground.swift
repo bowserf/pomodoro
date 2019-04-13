@@ -13,6 +13,9 @@ class TomatoBackground: UIView {
 
         static let startAlphaValueForAnimation: CGFloat = 0.5
         static let endAlphaValueForAnimation: CGFloat = 0.2
+
+        static let shadowColor = UIColor.init(white: 0.0, alpha: 0.15)
+        static let shadowThickness: CGFloat = 10
     }
 
     public var verticalOffset: CGFloat = 0 {
@@ -65,6 +68,7 @@ class TomatoBackground: UIView {
         let radius: CGFloat = max(bounds.width / 2, bounds.height / 2 + verticalOffset)
         let arcWidth = radius / CGFloat(nbCircle)
 
+        drawShadow(center: center, radius: radius)
         drawBackground(center: center, arcWidth: arcWidth)
         drawSeeds(center: center, arcWidth: arcWidth)
     }
@@ -86,6 +90,30 @@ class TomatoBackground: UIView {
             path.stroke()
             currentRadius += arcWidth
         }
+    }
+
+    private func drawShadow(center: CGPoint, radius: CGFloat) {
+        guard let swlayer = self.layer.presentation() as? SWLayer else {
+            return
+        }
+
+        if swlayer.endAngle == Constants.startAngle {
+            return
+        }
+
+        let context = UIGraphicsGetCurrentContext()!;
+
+        let x0 = center.x + Constants.shadowThickness / 2 * cos(-Constants.startAngle + swlayer.endAngle)
+        let y0 = center.y + Constants.shadowThickness / 2 * sin(-Constants.startAngle + swlayer.endAngle)
+        let x1 = x0 + radius * cos(swlayer.endAngle)
+        let y1 = y0 + radius * sin(swlayer.endAngle)
+
+        context.move(to: CGPoint(x: x0, y: y0))
+        context.addLine(to: CGPoint(x: x1, y: y1))
+
+        context.setStrokeColor(Constants.shadowColor.cgColor);
+        context.setLineWidth(Constants.shadowThickness);
+        context.strokePath()
     }
 
     private func drawSeeds(center: CGPoint, arcWidth: CGFloat) {
