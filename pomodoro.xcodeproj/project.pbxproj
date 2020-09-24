@@ -12,13 +12,13 @@
 		941CECD32211E8C300316FDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CECD22211E8C300316FDC /* AppDelegate.swift */; };
 		941CECDA2211E8C400316FDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 941CECD92211E8C400316FDC /* Assets.xcassets */; };
 		941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 941CECDB2211E8C400316FDC /* LaunchScreen.storyboard */; };
-		94A9630E2239C2BE00A274EC /* fantasquesansmono-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 94A9630D2239C2BE00A274EC /* fantasquesansmono-bold.otf */; };
 		94F6872822458F7D00F8810B /* SelectPomodoroInteractorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F6872722458F7D00F8810B /* SelectPomodoroInteractorTest.swift */; };
 		94F6872F224598CA00F8810B /* GetPomodoroListInteractorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F557437CFEF5EFA2F3992 /* GetPomodoroListInteractorTest.swift */; };
 		94F6873422459BD800F8810B /* Cuckoo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94F6873322459BD800F8810B /* Cuckoo.framework */; };
 		94F6873722459E7800F8810B /* GeneratedMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F6873622459E7700F8810B /* GeneratedMocks.swift */; };
 		94F6873B2245A5D800F8810B /* Cuckoo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94F6873322459BD800F8810B /* Cuckoo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C6AC06D1251D26950071A5BB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6AC06CE251D26950071A5BB /* Localizable.strings */; };
+		C6AC06D4251D271B0071A5BB /* fantasquesansmono-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6AC06D3251D271B0071A5BB /* fantasquesansmono-bold.otf */; };
 		D50F5062A3E4E032A58FCADE /* DeviceConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5FBA0C8ACD2E6456B47B /* DeviceConstants.swift */; };
 		D50F50A1952FFC0F21ED1507 /* AppWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F5C0F3E90C2CB5F117C27 /* AppWireframe.swift */; };
 		D50F51FB0622E6121786860C /* PomodorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50F553799F0F7FA551A38A8 /* PomodorVC.swift */; };
@@ -82,6 +82,7 @@
 		94F6873622459E7700F8810B /* GeneratedMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedMocks.swift; sourceTree = "<group>"; };
 		C6AC06CF251D26950071A5BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = pomodoro/resources/translations/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C6AC06D0251D26950071A5BB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = pomodoro/resources/translations/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C6AC06D3251D271B0071A5BB /* fantasquesansmono-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fantasquesansmono-bold.otf"; path = "pomodoro/resources/font/fantasquesansmono-bold.otf"; sourceTree = "<group>"; };
 		D50F50610DE2DC656773033B /* PomodoroStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PomodoroStorage.swift; sourceTree = "<group>"; };
 		D50F5063B2692643DF31BF84 /* TimeManagerImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeManagerImpl.swift; sourceTree = "<group>"; };
 		D50F5068BEDDDC798F7102B3 /* PomodoroStorageDisk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PomodoroStorageDisk.swift; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 		941CECC62211E8C300316FDC = {
 			isa = PBXGroup;
 			children = (
+				C6AC06D3251D271B0071A5BB /* fantasquesansmono-bold.otf */,
 				C6AC06CE251D26950071A5BB /* Localizable.strings */,
 				941CECD12211E8C300316FDC /* pomodoro */,
 				94A963002239AE5500A274EC /* font */,
@@ -372,9 +374,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6AC06D4251D271B0071A5BB /* fantasquesansmono-bold.otf in Resources */,
 				C6AC06D1251D26950071A5BB /* Localizable.strings in Resources */,
 				941CECDD2211E8C400316FDC /* LaunchScreen.storyboard in Resources */,
-				94A9630E2239C2BE00A274EC /* fantasquesansmono-bold.otf in Resources */,
 				941CECDA2211E8C400316FDC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
