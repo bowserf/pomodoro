@@ -13,14 +13,17 @@ class TextAndImageAnimatedButton: UIControl {
         static let shadowOffset = CGSize(width: 2, height: 2)
         static let shadowOpacity: Float = 2.0
         static let shadowColor = UIColor(white: 0.2, alpha: 0.5)
+        
+        static let textColor =  UIColor.init(named: "TextActionButton")!
+        static let iconColor = UIColor.init(named: "IconActionButton")!
+        static let circleColor = UIColor.init(named: "ActionButton")!
     }
 
     private let text: UILabel
     private let icon: UIImageView
     private let container: UIStackView
 
-    @IBInspectable private var circleColor: UIColor = UIColor.white
-    @IBInspectable private var contentColor: UIColor = UIColor.red
+    @IBInspectable private var circleColor: UIColor!
     @IBInspectable private var textOn: String = "START"
     @IBInspectable private var textOff: String = "STOP"
     @IBInspectable private var imageOn: UIImage = UIImage(named: "BtnImageOn")!.withRenderingMode(.alwaysTemplate)
@@ -30,11 +33,9 @@ class TextAndImageAnimatedButton: UIControl {
     override init(frame: CGRect) {
         self.text = UILabel()
         self.text.font = Constants.textFont
-        self.text.textColor = contentColor
 
         self.icon = UIImageView()
         self.icon.contentMode = .scaleToFill
-        self.icon.tintColor = contentColor
 
         self.container = UIStackView()
         self.container.translatesAutoresizingMaskIntoConstraints = false
@@ -57,12 +58,16 @@ class TextAndImageAnimatedButton: UIControl {
         self.icon.heightAnchor.constraint(equalToConstant: Constants.iconSize).isActive = true
 
         updateContent()
-
-        initShadow()
     }
 
     override func layoutSubviews() {
+        self.text.textColor = Constants.textColor
+        self.icon.tintColor = Constants.iconColor
+        self.circleColor = Constants.circleColor
+        
         self.layer.cornerRadius = self.bounds.width / 2
+        
+        initShadow()
     }
 
     required init(coder aDecoder: NSCoder) {

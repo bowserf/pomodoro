@@ -5,18 +5,23 @@ class OneRoundBorderButton: UIControl {
 
     private struct Constants {
         static let defaultRoundBorder = RoundBorder.Right
-        static let bgColor = UIColor.white
         static let horizontalMargin: CGFloat = 30
 
         static let shadowOffset = CGSize(width: 0, height: 2)
         static let shadowOpacity: Float = 2.0
         static let shadowColor = UIColor(white: 0.2, alpha: 0.5)
+        
+        static let iconColor = UIColor.init(named: "IconActionButton")!
+        
+        static let bgColor = UIColor.init(named: "ActionButton")!
     }
 
     public var roundBorder: RoundBorder = Constants.defaultRoundBorder
 
     private let icon: UIImageView
-
+    
+    private var roundedCornerLayer: CAShapeLayer? = nil
+    
     override init(frame: CGRect) {
         self.icon = UIImageView()
         self.icon.translatesAutoresizingMaskIntoConstraints = false
@@ -34,6 +39,8 @@ class OneRoundBorderButton: UIControl {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        self.icon.tintColor = Constants.iconColor
 
         applyRoundedCorners()
 
@@ -65,7 +72,7 @@ class OneRoundBorderButton: UIControl {
             })
         }, completion: nil)
     }
-
+    
     private func applyRoundedCorners() {
         let cornerRadius = self.bounds.height / 2
         let maskPath = UIBezierPath(
@@ -78,6 +85,11 @@ class OneRoundBorderButton: UIControl {
         shapeLayer.shadowColor = Constants.shadowColor.cgColor
         shapeLayer.shadowOffset = Constants.shadowOffset
         shapeLayer.shadowOpacity = Constants.shadowOpacity
+        
+        if roundedCornerLayer != nil {
+            roundedCornerLayer?.removeFromSuperlayer()
+        }
+        roundedCornerLayer = shapeLayer
         layer.insertSublayer(shapeLayer, at: 0)
     }
 

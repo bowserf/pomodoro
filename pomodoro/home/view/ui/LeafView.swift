@@ -69,7 +69,7 @@ class LeafView: UIView {
     public var listener: LeafViewListener?
 
     @IBInspectable private var borderColor: UIColor = UIColor.white
-    @IBInspectable private var leafColor: UIColor = UIColor.init(red: 0.36, green: 0.78, blue: 0.53, alpha: 1.0)
+    @IBInspectable private var leafColor: UIColor = UIColor.init(named:"Leaf")!
 
     private let timeTimerMode: UILabel
     private let underlineTimerMode: UIView
